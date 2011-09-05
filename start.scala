@@ -4,6 +4,7 @@ object state_ {
   var i = 0
   var level = 1
   var prompts: List[Prompt] = Nil
+  var local = false
 
   def curr = prompts(i)
   def next() { i = i + 1 }
@@ -63,8 +64,8 @@ object state_ {
   }
 
   def loadUrl(url: String) = {
-    val stream = new java.net.URL(url).openStream
-    val scan = new java.util.Scanner(url)
+    val stream = new java.net.URL(url).openConnection.getInputStream
+    val scan = new java.util.Scanner(stream)
     def allLines(s: java.util.Scanner): List[String] = if (s.hasNext) s.nextLine :: allLines(s) else Nil
     parse(allLines(scan))
   }
@@ -75,7 +76,7 @@ object state_ {
 
   def loadLevel(l: Int) { 
     level = l
-    prompts = loadFile(l.toString) 
+    prompts = if (local) loadFile("levels/"+l) else loadUrl("https://raw.github.com/jliszka/scalaforbabies/master/levels/"+l)
     i = 0
     show()
   }
