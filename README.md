@@ -1,8 +1,8 @@
 # Scalacademy
 
-A Scala tutorial for absolute beginners. Requires Scala 2.8.1.
+A Scala tutorial for absolute beginners. Mac only for now.
 
 See installation instructions [here](http://cronus.ws/~jliszka/scalacademy/).
 
-## Contributions welcome!
+Contributions welcome!
 
