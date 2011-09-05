@@ -1,9 +1,13 @@
 #!/bin/sh
 
-if [ ! -d scala-2.8.1.final ]; then
-    curl -O "http://www.scala-lang.org/downloads/distrib/files/scala-2.8.1.final.tgz"
-    tar xvzf scala-2.8.1.final.tgz
+PWD=$(dirname "$0")
+echo $PWD
+SCALA="$PWD/scala-2.8.1.final"
+
+if [ ! -d $SCALA ]; then
+    curl -o $SCALA.tgz "http://www.scala-lang.org/downloads/distrib/files/scala-2.8.1.final.tgz"
+    tar xvzf $SCALA.tgz
 fi
 
-curl -O "https://raw.github.com/jliszka/scalacademy/master/start.scala"
-scala-2.8.1.final/bin/scala -i start.scala
+curl -o "$PWD/start.scala" "https://raw.github.com/jliszka/scalacademy/master/start.scala"
+$SCALA/bin/scala -i "$PWD/start.scala"
