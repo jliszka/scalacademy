@@ -1,0 +1,19 @@
+
+Okay, there's one more thing I want to show you before you can level up. It's called the nested if statement
+and it goes like this: if (B) X else if (C) Y else if (D) Z else W. You can probably guess how it works --
+If B is true, the value of the whole expression is X.
+If C is true, the value of the whole expression is Y.
+If D is true, the value of the whole expression is Z.
+Otherwise,  the value of the whole expression is W.
+
+The chain of if-else's can be as long or as short as you want. Just make sure to end it with an else.
+
+Try it now. Type def compareTo5(x: Int) = if (x < 5) "less than 5" else if (x == 5) "equal to 5" else "greater than 5".
+---
+hasTypeStr("compareTo5", "(x: Int)String")
+eval[String]("compareTo5(3)", "less than 5")
+eval[String]("compareTo5(5)", "equal to 5")
+eval[String]("compareTo5(8)", "greater than 5")
+===
+Okay! Now back to our teenager example. Let's say we're interested in more than just whether someone is a teenager.
+Write a function called stageOfLife

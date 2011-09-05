@@ -1,0 +1,113 @@
+
+ == LEVEL 2 ==
+
+Hey there! So far you've been asking Scala to compute things for you. It's a lot like math! Except Scala
+allows you to "do math" on other things besides numbers, like Strings and Booleans. Scala has more in common
+with math than you probably realize yet.
+
+For instance, in algebra you can let names, like x, stand for numbers. You can do that in Scala too!
+
+Try typing val x = 3.
+---
+declared[Int]("x", 3)
+===
+Great! Scala reports back that you defined x, of type Int, with value 3. Now you can use x in other expressions,
+and Scala will treat it as if it were a 3.
+
+Try it now by typing x.
+---
+hasValue[Int](3)
+===
+Great, now let's try using x in an expression. Try x * 2.
+---
+hasValue[Int](6)
+===
+In Scala, x is called a val (short for "value") and a statement creating one is called a declaration.
+
+Try declaring a val called y with the value "hello".
+---
+declared[String]("y", "hello")
+===
+Yes! You can see Scala lets you create vals of any type, not just Ints.
+
+The declaration of a val can come from any expression, and can involve other vals.
+
+Try typing val z = y + y.
+---
+declared[String]("z", "hellohello")
+===
+Was that what you expected? Neat, huh?
+
+Scala lets you use any name for a val. Names can include letters, numbers, and the underscore character, _.
+(They can also include certain symbols, but we'll get to that later). It's a good idea to give your
+vals descriptive names, to remind you what they mean!
+
+Try declaring a val called firstName with the value being your first name, as a string.
+---
+declared[String]("firstName")
+===
+Great! Since we can't put spaces in the middle of a name, it's a common practice to start the first word
+with a lower case character and the subsequent words with an upper case character.
+
+Now declare a val called lastName with your last name in the same way.
+---
+declared[String]("lastName")
+===
+Great. Case is important in Scala. You have to say if, not If or IF, and lastName is not the same as lastname.
+
+Try typing lastname and see what Scala says.
+---
+===
+See? You can even declare lastname as a separate val. Try typing val lastname = "Obama" and check that Scala treats
+lastname and lastName as separate vals, with different types.
+---
+declared[String]("lastname")
+===
+Cool! Yeah, not super cool. Just something that might trip you up later. It's just that it's important to 
+understand how picky Scala is about spelling and capitalization. It's a thing.
+
+Okay, let's try something else. Are you one of those people whose first name is the same as their last name?
+Ask Scala! Try typing firstName == lastName.
+---
+hasType[Boolean]
+===
+Great, there you go. You might have noticed that Scala's response when you declare a val is pretty similar to
+its response when you just write an expression. See that %1$s in the response? Scala declared a val for you!
+You can use it just like any other val.
+
+Try it now. Type if (%1$s) "your first name is the same as your last name, weirdo" else "you are a normal person".
+---
+hasType[String]
+===
+Great! You can use a declared val anywhere you would use the value itself. This is useful for breaking up
+long expressions into smaller, intermediate expressions, or for reusing the value of some expression multiple times.
+
+For instance:
+
+val birthYear = 1990
+val thisYear = 2011
+val age = thisYear - birthYear
+val isTeenager = age >= 13 && age <= 19
+if (isTeenager) "you are a teenager!" else "you are not a teenager!"
+
+Try typing this in and observing the intermediate values. Remember to use exact spelling and capitalization!
+---
+declared[Int]("birthYear")
+declared[Int]("thisYear")
+declared[Int]("age")
+declared[Boolean]("isTeenager")
+===
+Strong work!
+
+Using vals like this to break up an expression really improves the readability of your code. As a famous
+programmer once said, programs should be written for people to read, and only incidentally for machines to execute.
+
+Now's a good time to experiment around with everything you've learned. As an exercise, try redoing the word problem
+from the last lesson, but this time use vals to store intermediate results, like gallonsInTank and milesLeftInTank.
+
+Here's the problem again.
+
+Your car gets 25 miles to the gallon. Your tank holds 12 gallons and it's 1/4 full. The next gas station
+is 70 miles away. Will you make it?
+---
+===

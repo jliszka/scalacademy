@@ -1,0 +1,125 @@
+
+ == LEVEL 3 ==
+
+Hi again! So you know how Scala is a little like math? Well hold on to your hat. Do you remember functions
+from algebra? Stuff like, f(x) = 2x + 3, and then f(2) = 7 and all?  Well you can do the same thing in Scala!
+
+Try typing this: def f(x: Int) = 2*x + 3
+---
+hasTypeStr("f", "(x: Int)Int")
+===
+Good! Now try f(2).
+---
+hasValue[Int](7)
+===
+Neat, huh? Let's break it down a little. The def keyword is like val, but instead of declaring a val it defines
+a function.
+
+The next part, x: Int, is called the argument to the function, also sometimes called a function parameter.
+Scala makes you give the type of the argument, in this case Int. (This should be a hint that Scala lets you
+write functions that take arguments of other types besides Int!)
+
+Then there's an = sign, just like a val, followed by an expression called the body of the function. The body can 
+be any expression, just like in a val declaration, except that in a function, you're also allowed to refer to the 
+function argument (x in this case).
+
+You "call" a function by typing the name of the function (f in this case) followed by some value for the argument
+enclosed in parentheses, just like in math. For example, you did f(2).
+
+When you call a function, you can use any expression for the argument, and you can use the result of the function
+just like any other value. Try it! See what f(3) + f(6*2) is.
+---
+hasValue[Int](36)
+===
+Great! Now play around a little. You can do stuff like f(f(1)) + f(f(2) * f(3)), or whatever.
+---
+===
+Fun, right?
+
+Okay, I lied a little bit when I said you can use any expression as the argument when you call a function.
+
+Try f("hi").
+---
+===
+See what happened? You declared a function that expected an Int as its argument (remember x: Int?) but when
+you called it, you gave it a String. Scala catches this for you automatically. This is called type-safety
+and it's actually a really useful feature For professional programmers. Scala will catch errors of this kind
+before your program even runs, preventing all sorts of bugs before they make it into any production system.
+
+So just like vals, you can name functions (and their arguments) anything you want.
+Let's try this by declaring another function, but for fun let's have it work with another type besides Int.
+
+Try typing def isShortString(s: String) = s.length < 5.
+---
+hasTypeStr("isShortString", "(s: String)Boolean")
+===
+Cool! You just wrote a function that takes a String and returns a Boolean value, by way of Ints. Take that, math!
+
+Try it out on a bunch of different strings to see how it behaves. Try things like isShortString("abc"). See if your
+last name is short by calling isShortString(lastName) -- declare lastName again if it doesn't exist!
+---
+===
+Now try writing a function called isTeenager that takes an Int called age and returns true or false.
+Try it out by calling it with a bunch of different ages to make sure you got it right.
+---
+hasTypeStr("isTeenager", "(age: Int)Boolean")
+eval[Boolean]("isTeenager(10)", false)
+eval[Boolean]("isTeenager(12)", false)
+eval[Boolean]("isTeenager(13)", true)
+eval[Boolean]("isTeenager(15)", true)
+eval[Boolean]("isTeenager(19)", true)
+eval[Boolean]("isTeenager(20)", false)
+===
+Pretty neat, huh?
+
+Scala functions can also take more than one argument.
+
+Try this: def getAge(birthYear: Int, thisYear: Int) = thisYear - birthYear.
+---
+hasTypeStr("getAge", "(birthYear: Int,thisYear: Int)Int")
+===
+Cool! Now call it by separating the arguments with a comma, like this: getAge(1990, 2011).
+
+Try it now! See what happens when you pass in different values to getAge.
+---
+hasType[Int]
+===
+Alright, I think you're ready for a challenge. Write a function called isTeenagerIfBornIn that
+takes a SINGLE argument called birthYear returns whether you're a teenager or not. Your function
+shoud just assume that the current year is 2011.
+
+Hint: You can call isTeenager and getAge in the body of your function if you want!
+
+Remember to try it out on a bunch of different years to make sure you got it right.
+---
+hasTypeStr("isTeenagerIfBornIn", "(birthYear: Int)Boolean")
+eval[Boolean]("isTeenagerIfBornIn(2001)", false)
+eval[Boolean]("isTeenagerIfBornIn(1999)", false)
+eval[Boolean]("isTeenagerIfBornIn(1998)", true)
+eval[Boolean]("isTeenagerIfBornIn(1996)", true)
+eval[Boolean]("isTeenagerIfBornIn(1992)", true)
+eval[Boolean]("isTeenagerIfBornIn(1991)", false)
+===
+You did it!! Great job! Did you end up with something like this?
+
+def isTeenagerIfBornIn(birthYear: Int) = isTeenager(getAge(birthYear, 2011))
+
+If not, make sure you understand why it works.
+
+Alright, one more challenge. Remember that exercise with the car?
+
+Write a function called willIMakeIt that takes three arguments: milesPerGallon, gallonsInTank, and milesToGo.
+Return true if you are going to make it to the next gas station, and false otherwise.
+---
+hasTypeStr("willIMakeIt", "(milesPerGallon: Int,gallonsInTank: Int,milesToGo: Int)Boolean")
+eval[Boolean]("willIMakeIt(25, 3, 70)", true)
+eval[Boolean]("willIMakeIt(25, 3, 80)", false)
+eval[Boolean]("willIMakeIt(25, 4, 80)", true)
+eval[Boolean]("willIMakeIt(20, 4, 81)", false)
+===
+Nice work!
+
+It's a good time to play around with everything you've learned. See if you can write a function that
+returns a different string depending on what arguments you give it, maybe.
+---
+===
