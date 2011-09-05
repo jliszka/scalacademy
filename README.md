@@ -1,15 +1,8 @@
-# Scala for Babies
+# Scalacademy
 
 A Scala tutorial for absolute beginners. Requires Scala 2.8.1.
 
-## Running
+See installation instructions [here](http://cronus.ws/~jliszka/scalacademy/).
 
-Start scala and type
+## Contributions welcome!
 
-    :load start.scala
-
-and then type
-
-    start
-
-and follow the on-screen prompts.
