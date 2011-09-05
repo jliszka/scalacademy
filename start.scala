@@ -76,7 +76,7 @@ object state_ {
 
   def loadLevel(l: Int) { 
     level = l
-    prompts = if (local) loadFile("levels/"+l) else loadUrl("https://raw.github.com/jliszka/scalaforbabies/master/levels/"+l)
+    prompts = if (local) loadFile("levels/"+l) else loadUrl("https://raw.github.com/jliszka/scalacademy/master/levels/"+l)
     i = 0
     show()
   }
