@@ -1,7 +1,8 @@
 
  == LEVEL 1 ==
 
-Hey! Let's get to know each other. What's your name? Type it with quotes around it like this: "Jason", and hit enter.
+Hey! Let's get to know each other. What's your name? Type it with quotes around it 
+like this: "Jason", and hit enter.
 
 When you're done, just type ok and hit enter.
 ---
@@ -23,12 +24,13 @@ Type ok when you're done.
 hasType[Int]
 hasValue[Int](4)
 ===
-See what happened? You can use the Scala prompt to do basic math operations. Try playing around some more.
-You can use - for subtraction and * for multiplication if you want.
+See what happened? You can use the Scala prompt to do basic math operations. Try playing around 
+some more. You can use - for subtraction and * for multiplication if you want.
 
-(Don't be afraid to experiment! The computer will never get mad at you or judge you for typing in something
-weird. Its job is to shut up and compute. If it can't make sense of what you typed, it will simply not compute
-anything and instead give you a friendly message to help you try to figure out what went wrong.)
+(Don't be afraid to experiment! The computer will never get mad at you or judge you for typing 
+in something weird. Its job is to shut up and compute. If it can't make sense of what you typed,
+it will simply not compute anything and instead give you a friendly message to help you try to
+figure out what went wrong.)
 
 Play around a bit and type ok when you're ready to move on.
 ---
@@ -52,9 +54,11 @@ Let's try something different. Type "1" + "2", with the quotes.
 ---
 hasValue[String]("12")
 ===
-Interesting! Instead of adding the numbers 1 and 2, Scala combined "1" and "2" into the sequence of characters "12".
+Interesting! Instead of adding the numbers 1 and 2, Scala combined "1" and "2" into the sequence 
+of characters "12".
 
-In Scala, sequences of characters like this are called strings, and combining them is called string concatenation.
+In Scala, sequences of characters like this are called strings, and combining them is called 
+string concatenation.
 
 Let's try it again with your first and last names. For me that's "Jason" + "Liszka"
 ---
@@ -85,14 +89,15 @@ hasType[Int]
 ===
 Nice!
 
-You should notice that the length Scala reports is the number of characters in your first name, plus the number of
-characters in your last name, PLUS one for the space.
+You should notice that the length Scala reports is the number of characters in your first name,
+plus the number of characters in your last name, PLUS one for the space.
 
 Now is a good time to talk about how Scala responds when you type something in at the "scala>" prompt.
 When you type an expression, it evaluates that expression to a value, and prints the value along with
 its type.
 
-You've encountered two types so far: String and Int. Strings are sequences of characters enclosed in quotes, like "hello".
+You've encountered two types so far: String and Int. 
+Strings are sequences of characters enclosed in quotes, like "hello".
 Ints are integer numbers, which are the positive and negative whole numbers, including 0.
 
 You will learn more about types later and what makes them so useful. But now, let's learn about a new type, Boolean.
@@ -110,18 +115,22 @@ hasValue[Boolean](true)
 ===
 Good! You can compare any two expressions (of the same type) for equality.
 
-There are other operations besides == that give Boolean results. Try using <, >, <=, >=, and != and see if you can
-figure out what they mean. Type ok when you are done experimenting.
+There are other operations besides == that give Boolean results. Try using <, >,
+<=, >=, and != and see if you can figure out what they mean. Type ok when you are done experimenting.
 ---
 ===
-You can also use == and != (equals and not-equals) to compare strings. Try typing "Hello" + "world" == "Hello world".
+You can also use == and != (equals and not-equals) to compare strings.
+
+Try typing "Hello" + "world" == "Hello world".
 ---
 hasValue[Boolean](false)
 ===
 Almost tricked you! Don't forget that space counts as its own character.
 
-Boolean values are fundamentally no different than String or Int values. You can use them in expressions, compare
-them for equality, and type them out as literal values. Try typing true == false.
+Boolean values are fundamentally no different than String or Int values. You can use them in 
+expressions, compare them for equality, and type them out as literal values.
+
+Try typing true == false.
 ---
 hasValue[Boolean](false)
 ===
@@ -136,16 +145,17 @@ Good. Now try logical OR, written with two pipes: 1 + 1 == 2 || 1 + 2 == 4.
 ---
 hasValue[Boolean](true)
 ===
-There. You can see that && results in true only if both sides are true, and || results in true if either side is true.
+There. You can see that && results in true only if both sides are true, and || results in true
+if either side is true.
 
-There's also logical negation, written with a !. Try typing !(3 == 4).
+There's also logical opposite (called NOT), written with a !. Try typing !(3 == 4).
 ---
 hasValue[Boolean](true)
 ===
 Great!
 
 You can write arbitrarily complicated expressions using Strings, Ints, Bools and parentheses.
-Try something like ("hi" == "hello") && (2 * 2 == "abcd".length || "a"+"b" == "ab") && (true || false).
+Try something like ("hi" == "hello") && (2*2 == "abcd".length || "a"+"b" == "ab") && (true || false).
 
 Experiment around and type ok when you're done.
 ---
@@ -200,9 +210,9 @@ everything that's happened. Strings, Ints and Booleans are the first building bl
 you're about to learn, so it's important that you really get them.
 
 To get you started, see if you can write an expression for the following situation:
-Your car gets 25 miles to the gallon. Your tank holds 12 gallons and it's 1/4 full. The next gas station
-is 70 miles away. Will you make it? The result should be a string indicating whether you will make it or not. 
-(Hint: you can use / for division if you need to.)
+Your car gets 25 miles to the gallon. Your tank holds 12 gallons and it's 1/4 full. The next gas 
+station is 70 miles away. Will you make it? The result should be a string indicating whether you 
+will make it or not. (Hint: you can use / for division if you need to.)
 
 Again, don't be afraid to experiment! The computer doesn't care. Go on!
 ---

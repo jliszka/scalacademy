@@ -5,6 +5,7 @@ cd $PWD
 SCALA="scala-2.8.1.final"
 
 if [ ! -e $SCALA.tgz ]; then
+    echo "Downloading Scala..."
     curl -O "http://www.scala-lang.org/downloads/distrib/files/scala-2.8.1.final.tgz"
 fi
 
