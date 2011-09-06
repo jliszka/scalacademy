@@ -144,7 +144,7 @@ result is what you expect. It's a good idea to try to guess the result type befo
 Type ok when you're ready to move on.
 ---
 ===
-Okay, great! Now suppose you have some vals declared as Ints. Type this:
+Okay! Now suppose you have some vals declared as Ints. Type this:
 
 val milesPerGallon = 25
 val milesToGo = 80
@@ -170,5 +170,34 @@ Did you do something like 1.0 * milesToGo / milesPerGallon? If not, think about 
 It's actually a pretty common trick that programmers use all the time.
 
 But anyway, beware of division with Ints! Or rather, be aware of division with Ints.
+---
+===
+Okay! Now using the kmPerMile val you declared earlier, write a function called milesToKm that
+takes an Int argument called miles and returns the number of kilometers it represents.
+---
+hasTypeStr("milesToKm", "(miles:Int)Double")
+eval[Double]("mikesToKm(1)", 1.609)
+eval[Double]("mikesToKm(10)", 16.09)
+===
+Nice work!
+
+Alright, now let's do one more revision to our car example.
+
+Write a function called willIMakeIt that takes four arguments: tankCapacity, percentFull, milesPerGallon,
+and milesToGo. The percentFull argument should be a Double, expected to be between 0.0 and 1.0 representing
+the fraction of gas remaining in the tank. For example, 0.5 would mean half full. The function should
+return true if you are going to make it to the next gas station, and false otherwise.
+
+Write your code in TextEdit and use :load like before. Remember, you can edit, save and :load as many times
+as you want while you're working on your code.
+---
+hasTypeStr("willIMakeIt", "(tankCapacity: Int,percentFull: Double,milesPerGallon: Int,milesToGo: Int)Boolean")
+eval[Boolean]("willIMakeIt(12, 0.25, 25, 70)", true)
+eval[Boolean]("willIMakeIt(12, 0.25, 25, 80)", false)
+eval[Boolean]("willIMakeIt(16, 0.25, 25, 80)", true)
+eval[Boolean]("willIMakeIt(15, 0.20, 25, 80)", false)
+eval[Boolean]("willIMakeIt(15, 0.20, 30, 80)", true)
+===
+Nice, you did it!
 ---
 ===

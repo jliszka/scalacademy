@@ -41,9 +41,9 @@ As usual, type ok to continue.
 ---
 hasValue[Int](56)
 ===
-You might have already noticed that spaces don't matter. Try 3+ 5 *  (  1 +1) and then type ok.
+You might have already noticed that spaces don't matter. Try typing 3+ 5 *  (  1 +1).
 
-(From now on, just type ok to move on to the next lesson.)
+(From now on, just type ok to check your answer and move on to the next lesson.)
 ---
 hasValue[Int](13)
 ===
@@ -211,7 +211,7 @@ you're about to learn, so it's important that you really get them.
 
 To get you started, see if you can write an expression for the following situation:
 Your car gets 25 miles to the gallon. Your tank holds 12 gallons and it's 1/4 full. The next gas 
-station is 70 miles away. Will you make it? The result should be a string indicating whether you 
+station is 70 miles away. Will you make it? The result should be a String indicating whether you 
 will make it or not. (Hint: you can use / for division if you need to.)
 
 Again, don't be afraid to experiment! The computer doesn't care. Go on!
