@@ -39,7 +39,7 @@ declared[String]("z", "hellohello")
 Was that what you expected? Neat, huh?
 
 Scala lets you use any name for a val. Names can include letters, numbers, and the underscore 
-character, _. (They can also include certain symbols, but we'll get to that later). It's a
+character, _. (They can also include certain symbols, but we'll get to that later.) It's a
 good idea to give your vals descriptive names, to remind you what they mean!
 
 Try declaring a val called firstName with the value being your first name, as a string.

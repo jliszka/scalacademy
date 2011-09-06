@@ -43,6 +43,8 @@ prompt directly. Check it by typing milesToMeters(21) now.
 ---
 hasType[Int]
 ===
+Alright!
+
 Wait, there's a bug! Do you see it?
 
 Yep, it should be miles * metersPerMiles, not miles + metersPerMile. Silly.
@@ -99,8 +101,8 @@ Type val kmPerMile = 1.609.
 defined[Double]("kmPerMile", 1.609)
 ===
 Ooh, a new type! Shiny! It has a weird name though, Double. It's short for something like
-"double-precision floating point number" but that's not important. Whereas Ints represent
-whole numbers, Doubles can represent fractional values too.
+"double-precision floating point number" but that's not important. What's important is that
+whereas Ints represent whole numbers, Doubles can represent fractional values too.
 
 Let's do a little math, but paying close attention to the types.
 
@@ -136,7 +138,13 @@ A little tricky, huh? The result has to be an Int since only Ints were involved 
 So Scala truncated 7.5 (the "true" result) by removing everything after the decimal point, and 
 called it an Int. Simple as that.
 
-Okay, now suppose you have some vals declared as Ints. Type this:
+Got the hang of it? Play around with Doubles and Ints a bit if you want, and make sure the
+result is what you expect. It's a good idea to try to guess the result type before you hit enter!
+
+Type ok when you're ready to move on.
+---
+===
+Okay, great! Now suppose you have some vals declared as Ints. Type this:
 
 val milesPerGallon = 25
 val milesToGo = 80
@@ -150,7 +158,7 @@ result that's a Double.
 
 So what do you do? See if you can figure it out using things you already know.
 
-Reme,ber, all you need is a single Double in the expression to make the result a Double.
+Remember, all you need is a single Double in the expression to make the result a Double.
 
 When you get the result you want, type ok.
 ---

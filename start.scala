@@ -37,7 +37,10 @@ object state_ {
       })
     }
     def show() = {
-      prompt.foreach(p => println(p.format(lastVar)))
+      prompt.foreach(p => 
+	println(p.format(lastVar)
+		.replaceAll("<<", Console.BOLD)
+		.replaceAll(">>", Console.RESET)))
     }
   }
 

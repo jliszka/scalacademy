@@ -62,8 +62,8 @@ Cool! You just wrote a function that takes a String and returns a Boolean value,
 Take that, math!
 
 Try it out on a bunch of different strings to see how it behaves. Try things like
-isShortString("abc"). See if your last name is short by calling isShortString(lastName) 
-You might need to declare lastName again if it doesn't exist!
+isShortString("abc"). See if your last name is short by calling isShortString(lastName).
+(You might need to declare lastName again if it doesn't exist!)
 ---
 ===
 Now try writing a function called isTeenager that takes an Int called age and returns true or false.
