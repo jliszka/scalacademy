@@ -42,10 +42,10 @@ object state_ {
   }
 
   def eol() {
-    println("You are now a Level %d coder! To move up to the next level, type next and hit enter.".format(level))
+    println("You are now a Level %d coder! To move up to the next level, type 'next' and hit enter.".format(level))
     println()
-    println("At any time you can restart a level by typing restart, or load any level")
-    println("by typing level(n), where n is the number of the level you want to load.")
+    println("If you want to stop now and come back later, type ':quit' to exit. When you come back,")
+    println("type 'level(%d)' instead of 'start'.".format(level+1))
   }
 
   def show() {

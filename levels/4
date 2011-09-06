@@ -1,19 +1,165 @@
 
-Okay, there's one more thing I want to show you before you can level up. It's called the nested if statement
-and it goes like this: if (B) X else if (C) Y else if (D) Z else W. You can probably guess how it works --
-If B is true, the value of the whole expression is X.
-If C is true, the value of the whole expression is Y.
-If D is true, the value of the whole expression is Z.
-Otherwise,  the value of the whole expression is W.
+ == LEVEL 4 ==
 
-The chain of if-else's can be as long or as short as you want. Just make sure to end it with an else.
+Welcome back! Okay, first order of business. You've probably been getting a little frustrated
+typing things in at the "scala>" prompt. Especially when the code you're typing in stretches
+to the end of the line. Fortunately, there's an easy solution!
 
-Try it now. Type def compareTo5(x: Int) = if (x < 5) "less than 5" else if (x == 5) "equal to 5" else "greater than 5".
+On your Mac, open up TextEdit: type Command-space, then type textedit, then hit enter.
+
+First things first: In the Format menu, select Make Plain Text (alternatively, hit Command-Shift-T).
+This just makes the code you write a little easier to read.
+
+You're now ready to write some code!
+
+Type this into TextEdit, on separate lines:
+
+val metersPerMile = 1609
+def milesToMeters(miles: Int) = miles + metersPerMile
+milesToMeters(15)
+
+Then save the file by hitting Command-s. Give the file a name like script.scala and save it to 
+the scalacademy folder. Make sure the checkbox that says, "If no extension is provided, use .txt" 
+is UNCHECKED.
+
+When you're done with all that, come back here and type ok and hit enter.
 ---
-hasTypeStr("compareTo5", "(x: Int)String")
-eval[String]("compareTo5(3)", "less than 5")
-eval[String]("compareTo5(5)", "equal to 5")
-eval[String]("compareTo5(8)", "greater than 5")
 ===
-Okay! Now back to our teenager example. Let's say we're interested in more than just whether someone is a teenager.
-Write a function called stageOfLife
+Now, type :load script.scala.
+
+If Scala says "That file does not exist", go back and make sure you followed these instructions
+exactly. I promise it works!
+
+Once you've got the script loaded, type ok and hit enter.
+---
+declared[Int]("metersPerMile")
+hasTypeStr("milesToMeters", "(miles: Int)Int")
+===
+Great! It worked!
+
+You can see that when you load the file, it's just as if you had typed it in at the scala>
+prompt directly. Check it by typing milesToMeters(21) now.
+---
+hasType[Int]
+===
+Wait, there's a bug! Do you see it?
+
+Yep, it should be miles * metersPerMiles, not miles + metersPerMile. Silly.
+
+Fix the bug by editing your code in TextEdit, and save the file by hitting Command-s.
+Then, reload the file by typing :load script.scala again.
+
+Once the file is reloaded, type milesToMeters(21) to make sure the bug is fixed.
+---
+hasValue[Int](33789)
+===
+Not so bad, huh?
+
+You might be wondering what happened to the old definition of milesToMeters. You've essentially
+defined it twice, right? Well, the answer is that you can't get to it. The new definition is
+hiding the old definition, and from now on, when you type milesToMeters, you only get the new
+definition.
+
+Okay, so what do you think will happen if you redefine metersPerMile? Well, try it!
+
+Type val metersPerMile = 10. (an obvious lie)
+---
+declared[Int]("metersPerMile", 10)
+===
+Alright, nothing surprising so far. But what do you think milesToMeters(1) will be? Any guesses?
+(Reasonable guesses are 10 and 1609.)
+
+Well, try it!
+---
+hasValue[Int](1609)
+===
+Ah ha! Was that what you guessed?
+
+Okay, I owe you an explanation. The old definition of metersPerMile is still there, but it's being
+hidden by the new definition. All *future* references to metersPerMile will use the new definition.
+But references to metersPerMile you've already made (in particular in milesToMeters), still get
+to use the old definition!
+
+I'm going to explain this two more times, because it's important and a little tricky.
+
+When you define a function, references to vals (or other functions) outside of the function body
+will always refer to the values they had at the time the function was declared.
+
+After you define a function, nothing you can do (short of redefining the function itself)
+will alter the behavior of the function as it existed at the time you defined it.
+
+This might seem like a weird restriction, but it's actually a really useful rule. It's like
+guard rails on the side of a highway next to a cliff. It's just a good idea.
+
+Okay, enough talk. Let's do something new.
+
+Type val kmPerMile = 1.609.
+---
+defined[Double]("kmPerMile", 1.609)
+===
+Ooh, a new type! Shiny! It has a weird name though, Double. It's short for something like
+"double-precision floating point number" but that's not important. Whereas Ints represent
+whole numbers, Doubles can represent fractional values too.
+
+Let's do a little math, but paying close attention to the types.
+
+Try 3 * 5.5.
+---
+hasValue[Double](16.5)
+===
+Okay, nothing super crazy. The result was a fractional number, so the result type is Double.
+
+Now try 4 * 5.5.
+---
+hasValue[Double](22.0)
+===
+Okay, interesting! Even though the result was a whole number, the result type is still a Double.
+
+The general rule here is that if any single value in a numeric expression is a Double, the result
+will be a Double.
+
+Test it out by typing 3 + 4 + 1.0 + 7.
+---
+hasValue[Double](15.0)
+===
+Cool, okay! Now try 15 / 2.0.
+---
+hasValue[Double](7.5)
+===
+Makes sense, right? Okay, now try 15 / 2. But before you hit enter, try to guess what the result
+will be. Remember, the result will be a Double ONLY if there is some Double value in the expression.
+---
+hasValue[Int](7)
+===
+A little tricky, huh? The result has to be an Int since only Ints were involved in the expression.
+So Scala truncated 7.5 (the "true" result) by removing everything after the decimal point, and 
+called it an Int. Simple as that.
+
+Okay, now suppose you have some vals declared as Ints. Type this:
+
+val milesPerGallon = 25
+val milesToGo = 80
+---
+declared[Int]("milesPerGallon", 25)
+declared[Int]("milesToGo", 80)
+===
+Good. Now you want to find out how many gallons you need to go 80 miles. You would do this
+by dividing milesToGo by milesPerGallon, right? But they are both Ints, and you need a
+result that's a Double.
+
+So what do you do? See if you can figure it out using things you already know.
+
+Reme,ber, all you need is a single Double in the expression to make the result a Double.
+
+When you get the result you want, type ok.
+---
+hasValue[Double](3.2)
+===
+Awesome! Nice work!
+
+Did you do something like 1.0 * milesToGo / milesPerGallon? If not, think about why that works.
+It's actually a pretty common trick that programmers use all the time.
+
+But anyway, beware of division with Ints! Or rather, be aware of division with Ints.
+---
+===
