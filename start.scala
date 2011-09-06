@@ -42,7 +42,7 @@ object state_ {
   }
 
   def eol() {
-    println("You are now a Level %d coder! To move up to the next level, type 'next' and hit enter.".format(level))
+    println("You are now a Level %d Scala Coder! To move up to the next level, type 'next' and hit enter.".format(level))
     println()
     println("If you want to stop now and come back later, type ':quit' to exit. When you come back,")
     println("type 'level(%d)' instead of 'start'.".format(level+1))

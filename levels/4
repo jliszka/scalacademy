@@ -19,8 +19,9 @@ def milesToMeters(miles: Int) = miles + metersPerMile
 milesToMeters(15)
 
 Then save the file by hitting Command-s. Give the file a name like script.scala and save it to 
-the scalacademy folder. Make sure the checkbox that says, "If no extension is provided, use .txt" 
-is UNCHECKED.
+the scalacademy folder (to get there you will have to click on the little "down" triangle next 
+to the text box labeled "Save As"). Make sure the checkbox labeled "If no extension is 
+provided, use .txt" is UNCHECKED.
 
 When you're done with all that, come back here and type ok and hit enter.
 ---
@@ -53,7 +54,7 @@ Once the file is reloaded, type milesToMeters(21) to make sure the bug is fixed.
 ---
 hasValue[Int](33789)
 ===
-Not so bad, huh?
+Great!! Not so bad, huh?
 
 You might be wondering what happened to the old definition of milesToMeters. You've essentially
 defined it twice, right? Well, the answer is that you can't get to it. The new definition is
