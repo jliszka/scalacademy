@@ -7,10 +7,12 @@ to the end of the line. Fortunately, there's an easy solution!
 
 On your Mac, open up TextEdit: type Command-space, then type textedit, then hit enter.
 
-First things first: In the Format menu, select Make Plain Text (alternatively, hit Command-Shift-T).
-This just makes the code you write a little easier to read.
+In the Format menu, select Make Plain Text (alternatively, hit Command-Shift-T).
 
-You're now ready to write some code!
+Once you've done that, type ok to continue.
+---
+===
+Alright, You're now ready to write some code!
 
 Type this into TextEdit, on separate lines:
 
@@ -23,7 +25,7 @@ the scalacademy folder (to get there you will have to click on the little "down"
 to the text box labeled "Save As"). Make sure the checkbox labeled "If no extension is 
 provided, use .txt" is UNCHECKED.
 
-When you're done with all that, come back here and type ok and hit enter.
+When you're done with all that, come back here and type ok to continue.
 ---
 ===
 Now, type :load script.scala.
@@ -70,7 +72,6 @@ Type val metersPerMile = 10. (an obvious lie)
 declared[Int]("metersPerMile", 10)
 ===
 Alright, nothing surprising so far. But what do you think milesToMeters(1) will be? Any guesses?
-(Reasonable guesses are 10 and 1609.)
 
 Well, try it!
 ---
@@ -83,11 +84,14 @@ hidden by the new definition. All *future* references to metersPerMile will use 
 But references to metersPerMile you've already made (in particular in milesToMeters), still get
 to use the old definition!
 
-I'm going to explain this two more times, because it's important and a little tricky.
+I'm going to explain this two more times in two differen tways, because it's important and a
+little tricky.
 
-When you define a function, references to vals (or other functions) outside of the function body
-will always refer to the values they had at the time the function was declared.
+Way #1:
+When you define a function, names of vals (or other functions) will always refer to the values
+they had at the time you defined the function.
 
+Way #2:
 After you define a function, nothing you can do (short of redefining the function itself)
 will alter the behavior of the function as it existed at the time you defined it.
 
@@ -98,10 +102,10 @@ Okay, enough talk. Let's do something new.
 
 Type val kmPerMile = 1.609.
 ---
-defined[Double]("kmPerMile", 1.609)
+declared[Double]("kmPerMile", 1.609)
 ===
 Ooh, a new type! Shiny! It has a weird name though, Double. It's short for something like
-"double-precision floating point number" but that's not important. What's important is that
+"double-precision floating point number" but that's not important. What's important is that,
 whereas Ints represent whole numbers, Doubles can represent fractional values too.
 
 Let's do a little math, but paying close attention to the types.

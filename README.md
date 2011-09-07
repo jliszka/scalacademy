@@ -2,7 +2,9 @@
 
 A Scala tutorial for absolute beginners. Mac only for now.
 
-See installation instructions [here](http://cronus.ws/~jliszka/scalacademy/).
+See setup instructions [here](http://cronus.ws/~jliszka/scalacademy/).
 
-Contributions welcome!
+Contributions welcome! 
+
+[@jliszka](http://twitter.com/jliszka)
 
