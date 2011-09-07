@@ -84,7 +84,7 @@ hidden by the new definition. All *future* references to metersPerMile will use 
 But references to metersPerMile you've already made (in particular in milesToMeters), still get
 to use the old definition!
 
-I'm going to explain this two more times in two differen tways, because it's important and a
+I'm going to explain this two more times in two different ways, because it's important and a
 little tricky.
 
 Way #1:
@@ -179,7 +179,7 @@ But anyway, beware of division with Ints! Or rather, be aware of division with I
 Okay! Now using the kmPerMile val you declared earlier, write a function called milesToKm that
 takes an Int argument called miles and returns the number of kilometers it represents.
 ---
-hasTypeStr("milesToKm", "(miles:Int)Double")
+hasTypeStr("milesToKm", "(miles: Int)Double")
 eval[Double]("mikesToKm(1)", 1.609)
 eval[Double]("mikesToKm(10)", 16.09)
 ===
