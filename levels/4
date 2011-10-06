@@ -173,6 +173,19 @@ Awesome! Nice work!
 Did you do something like 1.0 * milesToGo / milesPerGallon? If not, think about why that works.
 It's actually a pretty common trick that programmers use all the time.
 
+Okay, what do you think this will do? milesToGo / milesPerGallon * 1.0
+
+Try it!
+---
+hasValue[Double](3.0)
+===
+Was that what you expected? The result is a Double, but it's the "wrong" result!
+
+What's happening is that Scala evaluates things from left to right, just like you
+do in math (of course respecting operator precedence). So first it evaluates
+milesToGo / milesPerGallon, getting the Int 3. Then in multiplies it by 1.0, giving
+the Double 3.0.
+
 But anyway, beware of division with Ints! Or rather, be aware of division with Ints.
 ---
 ===

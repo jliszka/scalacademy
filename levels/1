@@ -25,7 +25,8 @@ hasType[Int]
 hasValue[Int](4)
 ===
 See what happened? You can use the Scala prompt to do basic math operations. Try playing around 
-some more. You can use - for subtraction and * for multiplication if you want.
+some more. You can use - for subtraction and * for multiplication if you want... try something
+like 11 * 1111 or 999 - 123.
 
 (Don't be afraid to experiment! The computer will never get mad at you or judge you for typing 
 in something weird. Its job is to shut up and compute. If it can't make sense of what you typed,
@@ -60,14 +61,14 @@ of characters "12".
 In Scala, sequences of characters like this are called strings, and combining them is called 
 string concatenation.
 
-Let's try it again with your first and last names. For me that's "Jason" + "Liszka"
+Let's try it again with your first and last names. For me that's "Jason" + "Liszka".
 ---
 hasType[String]
 ===
 Very good! See what happened? Your first and last names got stuck together with no space between them.
 That's because a space is just another character. Try it again, this time with a space in between.
 
-For me that would be "Jason" + " " + "Liszka"
+For me that would be "Jason" + " " + "Liszka".
 ---
 cond[String](_.contains(' '))
 ===
@@ -75,7 +76,7 @@ Good job!
 
 Now let's find out the length of your full name. You can do this in a couple ways.
 
-You could type out your full name as a string, followed by .length: 
+You could type out your full name as a string, followed by .length:
   "Jason Liszka".length
 
 Or, you could use string concatenation to create your full name, and find the length of that:
@@ -100,7 +101,8 @@ You've encountered two types so far: String and Int.
 Strings are sequences of characters enclosed in quotes, like "hello".
 Ints are integer numbers, which are the positive and negative whole numbers, including 0.
 
-You will learn more about types later and what makes them so useful. But now, let's learn about a new type, Boolean.
+You will learn more about types later and what makes them so useful. But now, let's learn about a
+new type, Boolean.
 
 Try typing 3 == 4.
 ---
