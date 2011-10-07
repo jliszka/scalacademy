@@ -21,9 +21,16 @@ object state_ {
   }
   def declared[T: Manifest](ident: String, v: T)(unused: String) = hasValue[T](v)(ident)
   def declared[T: Manifest](ident: String)(unused: String) = hasType[T](ident)
-  def eval[T: Manifest](exp: String, v: T)(unused: String) = {
+  def eval[T: Manifest](exp: String, expected: T)(unused: String) = {
     val vOpt = repl.interpretExpr(exp)
-    vOpt.isDefined && vOpt.get.asInstanceOf[T] == v
+    vOpt.isDefined && {
+      val actualStr = vOpt.get.asInstanceOf[T].toString
+      val expectedStr = expected.toString
+      if (actualStr != expectedStr) {
+        println("Oops! %s is '%s' but it should be '%s'!".format(exp, actualStr, expectedStr))
+      }
+      actualStr == expectedStr
+    }
   }
 
   var lastVar = "res0"

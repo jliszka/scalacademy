@@ -1,0 +1,252 @@
+
+ == LEVEL 5 ==
+
+Oh hi! Good to see you again!
+
+At the end of the last level, you wrote a function called willIMakeIt that took four
+arguments: tankCapacity, percentFull, milesPerGallon and milesToGo. You probably wrote
+an expression like this for the method body:
+
+  tankCapacity * percentFull * milesPerGallon >= milesToGo
+
+Which is great! But maybe you would have liked to have written something like this:
+
+  val gallonsInTank = tankCapacity * percentFull
+  val milesInTank = milesPerGallon * gallonsInTank
+  val willIMakeIt = milesInTank > milesToGo
+
+Now it's much clearer exactly what's going on at each step, which makes it easier
+for you to check whether you made a mistake. Except, how do you fit all those val
+declarations inside the body of the function?
+
+With a block, that's how! A block is simply a series declarations and expressions,
+on separate lines, enclosed in curly braces. For example, try typing this at the
+scala> prompt (you can use your own name):
+
+val fullName = {
+  val firstName = "Jason"
+  val lastName = "Liszka"
+  firstName + " " + lastName
+}
+
+(You can go ahead and hit enter at the end of the first line. Scala assumes that when
+you start a block, you intend to finish it, and so it lets you do that before it
+starts to evaluate anything.)
+---
+declared[String]("fullName")
+===
+Great! You can see that the value of the entire block is the value of the expression
+on the last line of the block. A block can contain a mix of expressions and
+declarations, but it must end with an expression.
+
+Multi-line blocks are a lot easier to write in a text editor though, since the scala>
+prompt doesn't let you go up and edit lines you've already typed. Try typing this 
+into TextEdit and loading in the script file (remember how? :load script.scala --
+and don't forget to save the file before you :load!).
+
+val freeTime = {
+  val hoursWorking = 9
+  val hoursSleeping = 8
+  val hoursEating = 2
+  24 - hoursWorking - hoursSleeping - hoursEating
+}
+---
+declared[Int]("freeTime", 5)
+===
+Nice!
+
+A couple of things to mention:
+
+So far you've only used blocks as the expression in a val declaration, but you can
+use them anywhere an expression would go: as the body of the function, in either
+branch of an if statement, or as the body of a declaration inside another block.
+
+You can think of a block as a single expression whose value is the value of the last
+line of the block (which must always be an expression).
+
+Now rewrite willIMakeIt as a function whose body is a block, using as many lines
+as you want to carry out the computation in stages. Do it in TextEdit if that's easier
+for you. Here's an empty function to get you started:
+
+def willIMakeIt(tankCapacity: Int, percentFull: Double, milesPerGallon: Int, milesToGo: Int) = {
+
+}
+---
+hasTypeStr("willIMakeIt", "(tankCapacity: Int,percentFull: Double,milesPerGallon: Int,milesToGo: Int)Boolean")
+eval[Boolean]("willIMakeIt(12, 0.25, 25, 70)", true)
+eval[Boolean]("willIMakeIt(12, 0.25, 25, 80)", false)
+eval[Boolean]("willIMakeIt(16, 0.25, 25, 80)", true)
+eval[Boolean]("willIMakeIt(15, 0.20, 25, 80)", false)
+eval[Boolean]("willIMakeIt(15, 0.20, 30, 80)", true)
+===
+Very good! You probably ended up with something like this:
+
+def willIMakeIt(tankCapacity: Int, percentFull: Double, milesPerGallon: Int, milesToGo: Int) = {
+  val gallonsInTank = tankCapacity * percentFull
+  val milesInTank = milesPerGallon * gallonsInTank
+  milesInTank > milesToGo
+}
+
+It's also a common convention to indent the lines inside a block by 2 spaces.
+And if you have a block inside another block, indent it by another 2 spaces.
+
+Programmers use blocks all the time to organize and group their code into
+logical pieces.
+
+Okay now let's try something a little tricky. Type this into TextMate and
+load it into scala.
+
+val state = "NY"
+val cityState = {
+  val city = "New York"
+  city + ", " + state
+}
+---
+declared[String]("state", "NY")
+declared[String]("cityState", "New York, NY")
+===
+Okay, nothing crazy so far. But here's the question: What will happen if you
+type city? Try to guess what will happen before you type it.
+---
+===
+Scala appears not to know what city is! But you just declared it! Not to worry.
+What's going on here is that when you declare something inside a block, you can
+only use it inside that block. All declarations have a scope* that they are valid
+inside, and the curly braces define the boundaries of that scope.
+
+* Even declarations you make at the scala prompt with no curly braces are said to 
+  live in the "top-level" scope.
+
+This might seem like a cryptic feature of the language at first, but it helps
+programmers adhere to a principle called encapsulation. Encapsulation basically
+means that the inner details and intermediate values of a computation should not
+be visible outside the expression that computes it. All that you should care 
+about is the result of the computation. If you write other code that somehow
+relies on or refers to those intermediate values then that makes it difficult
+to go back later and change those details without having an impact on those 
+other parts of your code that rely on tem (that you maybe even forgot were relying
+on them). And then you end up with mysterious bugs.
+
+Blocks also commonly appear in if statements. Try the following (in TextExit or
+at the scala> prompt, you choice):
+
+val yearlyRent = if (cityState == "New York, NY") {
+  val monthlyRent = 2400
+  monthlyRent * 12
+} else {
+  val monthlyRent = 800
+  monthlyRent * 12
+}
+---
+declared[Int]("yearlyRent", 12 * 2400)
+===
+I hope I didn't just make you cry.
+
+This is a pretty common way to write if statements, with blocks in each branch.
+Programmers often write them this way even if one of the branches only contains
+a single expression.
+
+A slightly more idiomatic way to write this might be
+
+val yearlyElectricity = {
+  if (cityState == "New York, NY") {
+    val monthlyElectricity = 120
+    monthlyElectricity * 12
+  } else {
+    val monthlyElectricity = 60
+    monthlyElectricity * 12
+  }
+}
+
+Try it!
+---
+===
+That's it! Programmers love blocks.
+
+You know what programmers hate though? Probably more than anything? Repetition.
+
+See how monthlyElectricity * 12 appears twice? See if you can rearrange the
+expression so that that line isn't repeated like that.
+---
+===
+Okay, cool! Did you end up with something like this?
+
+val yearlyElectricity = {
+  if (cityState == "New York, NY") {
+    120
+  } else {
+    60
+  } * 12
+}
+---
+===
+Or maybe this?
+
+val yearlyElectricity = {
+  val monthlyElectricity = {
+    if (cityState == "New York, NY") {
+      120
+    } else {
+      60
+    }
+   }
+   monthlyElectricity * 12
+}
+---
+===
+Or even this?
+
+val yearlyElectricity = {
+  val monthlyElectricity = {
+    if (cityState == "New York, NY") 120 else 60
+  }
+  monthlyElectricity * 12
+}
+---
+===
+All of those are okay. There is more than one way to do it! Often a
+programmer's sense of coding style will dictate which way you go.
+Personally, I like the last one.
+
+But this won't work, can you see why?
+
+val yearlyElectricity = {
+  if (cityState == "New York, NY") {
+    val monthlyElectricity = 120
+  } else {
+    val monthlyElectricity = 60
+  }
+  monthlyElectricity * 12
+}
+
+Try it out and see.
+---
+===
+Yep! It's because monthlyElectricity is declared inside a scope, and can't be
+accessed from outside that scope!
+
+Also, the last line of every block must be an expression. You can't end 
+a block with a declaration.
+---
+===
+Okay, one last exercise. Write a function called makeChange that takes one Int
+argument, cents, and returns a string describing how many quarters, dimes, 
+nickels and pennies you would need to make that amount. For instance,
+makeChange(37) should return "1 quarters, 1 dimes, 0 nickels, 2 pennies". Don't
+worry about pluralization or anything, just get the numbers right.
+
+Hint: use the / (integer division) and %% (remainder) operators. (If you're not
+sure how %% works, play around with it a bit: try 27 %% 25.)
+---
+hasTypeStr("makeChange", "(cents: Int)java.lang.String")
+eval[String]("makeChange(37)", "1 quarters, 1 dimes, 0 nickels, 2 pennies")
+eval[String]("makeChange(14)", "0 quarters, 1 dimes, 0 nickels, 4 pennies")
+eval[String]("makeChange(99)", "3 quarters, 2 dimes, 0 nickels, 4 pennies")
+eval[String]("makeChange(91)", "3 quarters, 1 dimes, 1 nickels, 1 pennies")
+eval[String]("makeChange(3)", "0 quarters, 0 dimes, 0 nickels, 3 pennies")
+===
+You got it! That was huge!!
+
+That's all there is for now... check back in a bit for Level 6!
+---
+===
