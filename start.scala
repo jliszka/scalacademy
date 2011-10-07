@@ -52,10 +52,14 @@ object state_ {
   }
 
   def eol() {
-    println("You are now a Level %d Scala Coder! To move up to the next level, type 'next' and hit enter.".format(level))
-    println()
-    println("If you want to stop now and come back later, type ':quit' to exit. When you come back,")
-    println("type 'level(%d)' instead of 'start'.".format(level+1))
+    println("""
+You are now a Level %d Scala Coder! To move up to the next level, type 'next' and hit enter.
+	    
+If you want to stop now and come back later, type ':quit' to exit. When you come back,
+type 'level(%d)' instead of 'start'.
+
+At any time you an type 'help' for help remembering what each command does.
+""".format(level, level+1))
   }
 
   def show() {
@@ -135,4 +139,29 @@ def restart {
 
 def repeat {
   state_.show()
+}
+
+def help {
+  println("""
+Using Scalacademy
+-------------------------
+
+ok           Check your work and move on to the next prompt.
+
+repeat       Repeat the current prompt.
+
+level(n)     Jump to level n, e.g., level(3).
+
+next         Jump to the next level.
+
+restart      Restart the current level.
+
+help         This help message.
+
+:quit        Leave the program. Your progress will not
+             be saved but you can return to the current
+             level by using the level(n) command.
+
+:load file   Read in the contents of a file as if you had
+             typed it.""")
 }
