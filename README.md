@@ -1,8 +1,10 @@
 # Scalacademy
 
-A Scala tutorial for absolute beginners. Mac only for now.
+A Scala tutorial for absolute beginners. Mac only for now. 
 
-See setup instructions [here](http://cronus.ws/~jliszka/scalacademy/).
+(Also happens to work on Linux, but some of the instructions in the tutorial assume you are on a Mac.)
+
+See setup instructions [here](http://scalacademy.com).
 
 Contributions welcome! 
 
