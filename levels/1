@@ -65,8 +65,9 @@ Let's try it again with your first and last names. For me that's "Jason" + "Lisz
 ---
 hasType[String]
 ===
-Very good! See what happened? Your first and last names got stuck together with no space between them.
-That's because a space is just another character. Try it again, this time with a space in between.
+Very good! See what happened? Your first and last names got stuck together with no space between
+them. That's because a space is just another character. Try it again, this time with a space in
+between.
 
 For me that would be "Jason" + " " + "Liszka".
 ---
@@ -93,9 +94,9 @@ Nice!
 You should notice that the length Scala reports is the number of characters in your first name,
 plus the number of characters in your last name, PLUS one for the space.
 
-Now is a good time to talk about how Scala responds when you type something in at the "scala>" prompt.
-When you type an expression, it evaluates that expression to a value, and prints the value along with
-its type.
+Now is a good time to talk about how Scala responds when you type something in at the "scala>"
+prompt. When you type an expression, it evaluates that expression to a value, and prints the
+value along with its type.
 
 You've encountered two types so far: String and Int. 
 Strings are sequences of characters enclosed in quotes, like "hello".
@@ -108,8 +109,8 @@ Try typing 3 == 4.
 ---
 hasValue[Boolean](false)
 ===
-The operation == is an equality test. The result of an equality test will be a value of type Boolean,
-which just means true or false.
+The operation == is an equality test. The result of an equality test will be a value of type
+Boolean, which just means true or false.
 
 Try it again with 2 + 2 == 4.
 ---
@@ -118,7 +119,8 @@ hasValue[Boolean](true)
 Good! You can compare any two expressions (of the same type) for equality.
 
 There are other operations besides == that give Boolean results. Try using <, >,
-<=, >=, and != and see if you can figure out what they mean. Type ok when you are done experimenting.
+<=, >=, and != and see if you can figure out what they mean. Type ok when you are done
+experimenting.
 ---
 ===
 You can also use == and != (equals and not-equals) to compare strings.
@@ -157,7 +159,7 @@ hasValue[Boolean](true)
 Great!
 
 You can write arbitrarily complicated expressions using Strings, Ints, Bools and parentheses.
-Try something like ("hi" == "hello") && (2*2 == "abcd".length || "a"+"b" == "ab") && (true || false).
+Try something like ("hi" == "Hi") && (2*2 == "abcd".length || "a"+"b" == "ab") && (true || false).
 
 Experiment around and type ok when you're done.
 ---
@@ -183,8 +185,8 @@ If the value of B is true, the value of the ENTIRE if-statement is the value of 
 If the value of B is false, the value of the ENTIRE if-statement is the value of Y.
 It's also a good idea to make sure that X and Y have the same result type.
 
-But the most important thing is that B must be a Boolean, or Scala won't know what to do. Try typing
-if (1 + 1) "a" else "b".
+But the most important thing is that B must be a Boolean, or Scala won't know what to do. Try
+typing if (1 + 1) "a" else "b".
 ---
 ===
 Don't worry, no one got mad! Scala just told you that it was expecting a Boolean there but you
@@ -197,8 +199,8 @@ hasType[String]
 ===
 Great work! You fixed your first bug!
 
-I also want to emphasize that X and Y can be totally arbitrary expressions, even other if-statements!
-Try this crazy expression and make sure you understand what's happening. 
+I also want to emphasize that X and Y can be totally arbitrary expressions, even other
+if statements! Try this crazy expression and make sure you understand what's happening. 
 
 (if (1 == 2) 3 else 4) == (if ("a"+"b" == "ab") (if (true) 2+2 else 0) else 6)
 

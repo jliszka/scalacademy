@@ -79,10 +79,14 @@ hasValue[Int](1609)
 ===
 Ah ha! Was that what you guessed?
 
-Okay, I owe you an explanation. The old definition of metersPerMile is still there, but it's being
-hidden by the new definition. All *future* references to metersPerMile will use the new definition.
-But references to metersPerMile you've already made (in particular in milesToMeters), still get
-to use the old definition!
+You can check that metersPerMile is definitely 10 though. Try it by typing metersPerMile.
+---
+hasValue[Int](10)
+===
+What's going on? Okay, I owe you an explanation. The old definition of metersPerMile (as 1609) is
+still there, but it's being hidden by the new definition (10). All *future* references to
+metersPerMile will use the new definition. But references to metersPerMile you've already made
+(for example, in milesToMeters), still get to use the old definition!
 
 I'm going to explain this two more times in two different ways, because it's important and a
 little tricky.
@@ -94,9 +98,6 @@ they had at the time you defined the function.
 Way #2:
 After you define a function, nothing you can do (short of redefining the function itself)
 will alter the behavior of the function as it existed at the time you defined it.
-
-This might seem like a weird restriction, but it's actually a really useful rule. It's like
-guard rails on the side of a highway next to a cliff. It's just a good idea.
 
 Okay, enough talk. Let's do something new.
 
@@ -134,7 +135,8 @@ Cool, okay! Now try 15 / 2.0.
 hasValue[Double](7.5)
 ===
 Makes sense, right? Okay, now try 15 / 2. But before you hit enter, try to guess what the result
-will be. Remember, the result will be a Double ONLY if there is some Double value in the expression.
+will be. Remember, the result will be a Double ONLY if there is some Double value in the
+expression.
 ---
 hasValue[Int](7)
 ===
@@ -200,13 +202,14 @@ Nice work!
 
 Alright, now let's do one more revision to our car example.
 
-Write a function called willIMakeIt that takes four arguments: tankCapacity, percentFull, milesPerGallon,
-and milesToGo. The percentFull argument should be a Double, expected to be between 0.0 and 1.0 representing
-the fraction of gas remaining in the tank. For example, 0.5 would mean half full. The function should
-return true if you are going to make it to the next gas station, and false otherwise.
+Write a function called willIMakeIt that takes four arguments: tankCapacity, percentFull,
+milesPerGallon, and milesToGo. The percentFull argument should be a Double, expected to be between
+0.0 and 1.0 representing the fraction of gas remaining in the tank. For example, 0.5 would mean
+half full. The function should return true if you are going to make it to the next gas station,
+and false otherwise.
 
-Write your code in TextEdit and use :load like before. Remember, you can edit, save and :load as many times
-as you want while you're working on your code.
+Write your code in TextEdit and use :load like before. Remember, you can edit, save and :load as
+many times as you want while you're working on your code.
 ---
 hasTypeStr("willIMakeIt", "(tankCapacity: Int,percentFull: Double,milesPerGallon: Int,milesToGo: Int)Boolean")
 eval[Boolean]("willIMakeIt(12, 0.25, 25, 70)", true)

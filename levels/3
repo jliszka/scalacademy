@@ -66,8 +66,8 @@ isShortString("abc"). See if your last name is short by calling isShortString(la
 (You might need to declare lastName again if it doesn't exist!)
 ---
 ===
-Now try writing a function called isTeenager that takes an Int called age and returns true or false.
-Try it out by calling it with a bunch of different ages to make sure you got it right.
+Now try writing a function called isTeenager that takes an Int called age and returns true or
+false. Try it out by calling it with a bunch of different ages to make sure you got it right.
 ---
 hasTypeStr("isTeenager", "(age: Int)Boolean")
 eval[Boolean]("isTeenager(10)", false)
@@ -116,7 +116,8 @@ If not, make sure you understand why it works.
 Alright, one more challenge. Remember that exercise with the car?
 
 Write a function called willIMakeIt that takes three arguments: milesPerGallon, gallonsInTank,
-and milesToGo. Return true if you are going to make it to the next gas station, and false otherwise.
+and milesToGo. Return true if you are going to make it to the next gas station, and false
+otherwise.
 ---
 hasTypeStr("willIMakeIt", "(milesPerGallon: Int,gallonsInTank: Int,milesToGo: Int)Boolean")
 eval[Boolean]("willIMakeIt(25, 3, 70)", true)
@@ -126,7 +127,7 @@ eval[Boolean]("willIMakeIt(20, 4, 81)", false)
 ===
 Nice work!
 
-It's a good time to play around with everything you've learned. See if you can write a function that
-returns a different string depending on what arguments you give it, maybe.
+It's a good time to play around with everything you've learned. See if you can write a function
+that returns a different string depending on what arguments you give it, maybe.
 ---
 ===

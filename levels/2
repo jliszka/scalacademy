@@ -5,7 +5,8 @@ Hey there! So far you've been asking Scala to compute things for you. It's a lot
 Except Scala allows you to "do math" on other things besides numbers, like Strings and Booleans.
 Scala has more in common with math than you probably realize yet.
 
-For instance, in algebra you can let names, like x, stand for numbers. You can do that in Scala too!
+For instance, in algebra you can let names, like x, stand for numbers. You can do that in Scala
+too!
 
 Try typing val x = 3.
 ---
@@ -22,7 +23,8 @@ Great, now let's try using x in an expression. Try x * 2.
 ---
 hasValue[Int](6)
 ===
-In Scala, x is called a val (short for "value") and a statement creating one is called a declaration.
+In Scala, x is called a val (short for "value") and a statement creating one is called a
+declaration.
 
 Try declaring a val called y with the value "hello".
 ---
@@ -76,7 +78,8 @@ Great, there you go. You might have noticed that Scala's response when you decla
 pretty similar to its response when you just write an expression. See that %1$s in the response?
 Scala declared a val for you! You can use it just like any other val.
 
-Try it now. Type if (%1$s) "your first name is the same as your last name, weirdo" else "you are a normal person".
+Try it now. Type if (%1$s) "your first name is the same as your last name, weirdo" else "you are
+a normal person".
 ---
 hasType[String]
 ===
