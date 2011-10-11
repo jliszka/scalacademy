@@ -41,9 +41,9 @@ presenting them all as a single expression to the rest of the program. The value
 (as every expression has a value) is simply the value of the last line of the block, which
 must be an expression (not a declaration).
 
-Let's look at another example. But this time do it in TextEdit -- multi-line blocks are a lot
-easier to write in a text editor though, since the scala> prompt doesn't let you go up and edit
-lines you've already typed. Try typing this into TextEdit and loading in the script file
+Let's look at another example. But this time let's do it in TextEdit -- multi-line blocks are a
+lot easier to write in a text editor though, since the scala> prompt doesn't let you go up and
+edit lines you've already typed. Try typing this into TextEdit and loading in the script file
 (remember how? :load script.scala -- and don't forget to save the file before you :load!).
 
 val freeTime = {
@@ -64,7 +64,8 @@ anywhere an expression would go: as the body of the function, in either branch o
 or as the body of a declaration inside another block.
 
 Remember, you can think of a block as a single expression whose value is the value of the last
-line of the block (which must always be an expression).
+line of the block (which must always be an expression). The lines of the block are evaluated in
+order, and later lines can reference things you declared on earlier lines.
 
 Now rewrite willIMakeIt as a function whose body is a block, using as many lines as you want to
 carry out the computation in stages. Do it in TextEdit if that's easier for you. Here's an empty
@@ -121,7 +122,7 @@ This might seem like a cryptic feature of the language at first, but it helps pr
 to a principle called encapsulation. Encapsulation basically means that the inner details and
 intermediate values of a computation should not be visible outside the expression that computes
 it. All that you should care about is the result of the computation. If you write other code that
-somehow relies on or refers to those intermediate values then that makes it difficult to go back
+somehow relies on or refers to those intermediate values, then that makes it difficult to go back
 later and change those details without having an impact on those other parts of your code that
 rely on tem (that you maybe even forgot were relying on them). And then you end up with mysterious
 bugs.
@@ -142,7 +143,7 @@ declared[Int]("yearlyRent", 12 * 2400)
 I hope I didn't just make you cry.
 
 This is a pretty common way to write if statements, with blocks in each branch. Programmers often
-write them this way even if one of the branches only contains a single expression.
+write them this way even if one of the branches only contains a single line.
 
 A slightly more idiomatic way to write this might be
 
