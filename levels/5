@@ -36,10 +36,10 @@ anything.)
 declared[String]("fullName")
 ===
 Great! A block is an expression, just like 2 * 3, or if (true) "hi" else "bye". A block contains
-a series of declarations (vals and defs) and expressions, wrapping them up like a package and
-presenting them all as a single expression to the rest of the program. The value of the block
-(as every expression has a value) is simply the value of the last line of the block, which
-must be an expression (not a declaration).
+a series of declarations (vals and defs) and expressions, on separate lines, wrapping them up like
+a package and presenting them all as a single expression to the rest of the program. The value of
+the block (as every expression has a value) is simply the value of the last line of the block,
+which must be an expression (not a declaration).
 
 Let's look at another example. But this time let's do it in TextEdit -- multi-line blocks are a
 lot easier to write in a text editor though, since the scala> prompt doesn't let you go up and
