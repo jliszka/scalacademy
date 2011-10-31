@@ -66,8 +66,43 @@ isShortString("abc"). See if your last name is short by calling isShortString(la
 (You might need to declare lastName again if it doesn't exist!)
 ---
 ===
-Now try writing a function called isTeenager that takes an Int called age and returns true or
-false. Try it out by calling it with a bunch of different ages to make sure you got it right.
+In these examples, the arguments were (x: Int) and (s: String). But really, the argument can have
+any name or type you want! You can do
+
+  def weightOnMoon(weightOnEarth: Int) = weightOnEarth / 6 
+
+or
+
+  def lifeExpectancy(isMale: Boolean) = if (isMale) 76 else 78
+
+or
+
+  def isPalindrome(word: String) = s.reverse == s
+
+Inside the body of the function (after the '='), you can use the argument just as if it were a val
+declared somewhere. And as in the last example, you can use it as many times as you want.
+
+Okay! Now it's time to try writing a function on your own. First, here's a little secret. You can
+multiply a String and an Int! Weird, huh? Try "hello" * 3 to see what happens.
+---
+===
+Get it? Okay, now write a function called stars that takes an Int argument called 'howMany' and
+returns a string with that many '*'s. For example stars(6) should return "******".
+
+Start out with
+
+ def stars(howMany: Int) = ...
+---
+hasTypeStr("stars", "(howMany: Int)String")
+eval[String]("stars(1)", "*")
+eval[String]("stars(3)", "***")
+eval[String]("stars(6)", "******")
+===
+Cool!
+
+Now try writing a function called isTeenager that takes an Int argument called 'age' and returns
+true or false. Try it out by calling it with a bunch of different ages to make sure you got it
+right.
 ---
 hasTypeStr("isTeenager", "(age: Int)Boolean")
 eval[Boolean]("isTeenager(10)", false)
@@ -95,7 +130,7 @@ Alright, I think you're ready for a challenge. Write a function called isTeenage
 takes a SINGLE argument called birthYear returns whether you're a teenager or not. Your function
 should just assume that the current year is 2011.
 
-Hint: You can call isTeenager and getAge in the body of your function if you want!
+Hint: You should call isTeenager and getAge in the body of your function if you want!
 
 Remember to try it out on a bunch of different years to make sure you got it right.
 ---

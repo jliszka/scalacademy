@@ -91,7 +91,8 @@ def willIMakeIt(tankCapacity: Int, percentFull: Double, milesPerGallon: Int, mil
 }
 
 It's also a common convention to indent the lines inside a block by 2 spaces. And if you have a
-block inside another block, indent it by another 2 spaces.
+block inside another block, indent it by another 2 spaces. But that's just a convention, for
+people, to make it easier to read. Remember, Scala doesn't care about whitespace.
 
 Programmers use blocks all the time to organize and group their code into logical pieces.
 

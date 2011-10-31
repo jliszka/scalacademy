@@ -11,6 +11,7 @@ object state_ {
 
   def hasType[T: Manifest](ident: String) = repl.typeForIdent(ident).exists(_ == implicitly[Manifest[T]].toString)
   def hasTypeStr(ident: String, typ: String)(unused: String) = repl.typeForIdent(ident).exists(_ == typ)
+
   def hasValue[T: Manifest](v: T)(ident: String) = hasType[T](ident) && {
     val vOpt = repl.interpretExpr(ident)
     vOpt.isDefined && vOpt.get.asInstanceOf[T] == v
@@ -26,8 +27,10 @@ object state_ {
     vOpt.isDefined && {
       val actualStr = vOpt.get.asInstanceOf[T].toString
       val expectedStr = expected.toString
-      if (actualStr != expectedStr) {
-        println("Oops! %s is '%s' but it should be '%s'!".format(exp, actualStr, expectedStr))
+      if (actualStr == expectedStr) {
+	println("%s = %s. Good!".format(exp, expectedStr))
+      } else {
+        println("%s = %s. Oops! Should be '%s'!".format(exp, expectedStr, actualStr))
       }
       actualStr == expectedStr
     }
