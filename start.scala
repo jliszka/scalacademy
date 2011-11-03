@@ -11,6 +11,13 @@ object state_ {
 
   def hasType[T: Manifest](ident: String) = repl.typeForIdent(ident).exists(_ == implicitly[Manifest[T]].toString)
   def hasTypeStr(ident: String, typ: String)(unused: String) = repl.typeForIdent(ident).exists(_ == typ)
+  def hasTypeFn(ident: String, args: String, ret: String)(unused: String) = {
+    val ok = hasTypeStr(ident, args+ret)(unused)
+    if (!ok) {
+      println("Oh no, I expected %s to be a function with arguments %s and return type %s!".format(ident, args, ret))
+    }
+    ok
+  }
 
   def hasValue[T: Manifest](v: T)(ident: String) = hasType[T](ident) && {
     val vOpt = repl.interpretExpr(ident)
@@ -28,9 +35,9 @@ object state_ {
       val actualStr = vOpt.get.asInstanceOf[T].toString
       val expectedStr = expected.toString
       if (actualStr == expectedStr) {
-	println("%s = %s. Good!".format(exp, expectedStr))
+        println("%s = %s. Good!".format(exp, actualStr))
       } else {
-        println("%s = %s. Oops! Should be '%s'!".format(exp, expectedStr, actualStr))
+        println("%s = %s. Oops! Should be '%s'!".format(exp, actualStr, expectedStr))
       }
       actualStr == expectedStr
     }
@@ -55,14 +62,12 @@ object state_ {
   }
 
   def eol() {
-    println("""
-You are now a Level %d Scala Coder! To move up to the next level, type 'next' and hit enter.
+    println("""You are now a Level %d Scala Coder! To move up to the next level, type 'next' and hit enter.
 	    
 If you want to stop now and come back later, type ':quit' to exit. When you come back,
 type 'level(%d)' instead of 'start'.
 
-At any time you an type 'help' for help remembering what each command does.
-""".format(level, level+1))
+At any time you an type 'help' for help remembering what each command does.""".format(level, level+1))
   }
 
   def show() {

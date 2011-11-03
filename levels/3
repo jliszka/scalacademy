@@ -7,7 +7,7 @@ Well you can do the same thing in Scala!
 
 Try typing this: def f(x: Int) = 2*x + 3
 ---
-hasTypeStr("f", "(x: Int)Int")
+hasTypeFn("f", "(x: Int)", "Int")
 ===
 Good! Now try f(2).
 ---
@@ -56,7 +56,7 @@ type besides Int.
 
 Try typing def isShortString(s: String) = s.length < 5.
 ---
-hasTypeStr("isShortString", "(s: String)Boolean")
+hasTypeFn("isShortString", "(s: String)", "Boolean")
 ===
 Cool! You just wrote a function that takes a String and returns a Boolean value, by way of Ints.
 Take that, math!
@@ -93,7 +93,7 @@ Start out with
 
  def stars(howMany: Int) = ...
 ---
-hasTypeStr("stars", "(howMany: Int)String")
+hasTypeFn("stars", "(howMany: Int)", "String")
 eval[String]("stars(1)", "*")
 eval[String]("stars(3)", "***")
 eval[String]("stars(6)", "******")
@@ -104,7 +104,7 @@ Now try writing a function called isTeenager that takes an Int argument called '
 true or false. Try it out by calling it with a bunch of different ages to make sure you got it
 right.
 ---
-hasTypeStr("isTeenager", "(age: Int)Boolean")
+hasTypeFn("isTeenager", "(age: Int)", "Boolean")
 eval[Boolean]("isTeenager(10)", false)
 eval[Boolean]("isTeenager(12)", false)
 eval[Boolean]("isTeenager(13)", true)
@@ -118,7 +118,7 @@ Scala functions can also take more than one argument.
 
 Try this: def getAge(birthYear: Int, thisYear: Int) = thisYear - birthYear.
 ---
-hasTypeStr("getAge", "(birthYear: Int,thisYear: Int)Int")
+hasTypeFn("getAge", "(birthYear: Int,thisYear: Int)", "Int")
 ===
 Cool! Now call it by separating the arguments with a comma, like this: getAge(1990, 2011).
 
@@ -134,7 +134,7 @@ Hint: You should call isTeenager and getAge in the body of your function if you 
 
 Remember to try it out on a bunch of different years to make sure you got it right.
 ---
-hasTypeStr("isTeenagerIfBornIn", "(birthYear: Int)Boolean")
+hasTypeFn("isTeenagerIfBornIn", "(birthYear: Int)", "Boolean")
 eval[Boolean]("isTeenagerIfBornIn(2001)", false)
 eval[Boolean]("isTeenagerIfBornIn(1999)", false)
 eval[Boolean]("isTeenagerIfBornIn(1998)", true)
@@ -151,18 +151,15 @@ If not, make sure you understand why it works.
 Alright, one more challenge. Remember that exercise with the car?
 
 Write a function called willIMakeIt that takes three arguments: milesPerGallon, gallonsInTank,
-and milesToGo. Return true if you are going to make it to the next gas station, and false
-otherwise.
+and milesToGo. Return a Boolean indicating whether or not true you are going to make it to the
+next gas station.
 ---
-hasTypeStr("willIMakeIt", "(milesPerGallon: Int,gallonsInTank: Int,milesToGo: Int)Boolean")
+hasTypeFn("willIMakeIt", "(milesPerGallon: Int,gallonsInTank: Int,milesToGo: Int)", "Boolean")
 eval[Boolean]("willIMakeIt(25, 3, 70)", true)
 eval[Boolean]("willIMakeIt(25, 3, 80)", false)
 eval[Boolean]("willIMakeIt(25, 4, 80)", true)
 eval[Boolean]("willIMakeIt(20, 4, 81)", false)
 ===
 Nice work!
-
-It's a good time to play around with everything you've learned. See if you can write a function
-that returns a different string depending on what arguments you give it, maybe.
 ---
 ===

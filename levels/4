@@ -21,22 +21,23 @@ def milesToMeters(miles: Int) = miles + metersPerMile
 milesToMeters(15)
 
 Then save the file by hitting Command-s. Give the file a name like script.scala and save it to 
-the scalacademy folder (to get there you will have to click on the little "down" triangle next 
-to the text box labeled "Save As"). Make sure the checkbox labeled "If no extension is 
-provided, use .txt" is UNCHECKED.
+the scalacademy folder (to get there you might have to click on the little "down" triangle next 
+to the text box labeled "Save As").
+
+Also, make sure the checkbox labeled "If no extension is provided, use .txt" is UNCHECKED.
 
 When you're done with all that, come back here and type ok to continue.
 ---
 ===
 Now, type :load script.scala.
 
-If Scala says "That file does not exist", go back and make sure you followed these instructions
+If Scala says "That file does not exist", go back and make sure you followed the instructions
 exactly. I promise it works!
 
 Once you've got the script loaded, type ok and hit enter.
 ---
 declared[Int]("metersPerMile")
-hasTypeStr("milesToMeters", "(miles: Int)Int")
+hasTypeFn("milesToMeters", "(miles: Int)", "Int")
 ===
 Great! It worked!
 
@@ -58,14 +59,14 @@ Once the file is reloaded, type milesToMeters(21) to make sure the bug is fixed.
 ---
 hasValue[Int](33789)
 ===
-Great!! Not so bad, huh?
+Cool! Not so bad, huh?
 
 You might be wondering what happened to the old definition of milesToMeters. You've essentially
 defined it twice, right? Well, the answer is that you can't get to it. The new definition is
 hiding the old definition, and from now on, when you type milesToMeters, you only get the new
 definition.
 
-Okay, so what do you think will happen if you redefine metersPerMile? Well, try it!
+Okay, so what do you think will happen if you redefine metersPerMile?
 
 Type val metersPerMile = 10. (an obvious lie)
 ---
@@ -83,18 +84,20 @@ You can check that metersPerMile is definitely 10 though. Try it by typing meter
 ---
 hasValue[Int](10)
 ===
-What's going on? Okay, I owe you an explanation. The old definition of metersPerMile (as 1609) is
+So what's going on? What's happening is that the old definition of metersPerMile (1609) is
 still there, but it's being hidden by the new definition (10). All *future* references to
 metersPerMile will use the new definition. But references to metersPerMile you've already made
-(for example, in milesToMeters), still get to use the old definition!
+(for example, in the definition of milesToMeters) still get to use the old definition!
 
-I'm going to explain this two more times in two different ways, because it's important and a
+I'm going to explain that two more times in two different ways, because it's important and a
 little tricky.
-
+---
+===
 Way #1:
-When you define a function, names of vals (or other functions) will always refer to the values
-they had at the time you defined the function.
-
+When you call a function, names of vals that appear in the body of the function will always
+refer to the values they had at the time you defined the function.
+---
+===
 Way #2:
 After you define a function, nothing you can do (short of redefining the function itself)
 will alter the behavior of the function as it existed at the time you defined it.
@@ -106,10 +109,10 @@ Type val kmPerMile = 1.609.
 declared[Double]("kmPerMile", 1.609)
 ===
 Ooh, a new type! Shiny! It has a weird name though, Double. It's short for something like
-"double-precision floating point number" but that's not important. What's important is that,
+"double-precision floating point number" but that's not important. All you need to know is that,
 whereas Ints represent whole numbers, Doubles can represent fractional values too.
 
-Let's do a little math, but paying close attention to the types.
+Let's do a little math, paying close attention to the types.
 
 Try 3 * 5.5.
 ---
@@ -130,7 +133,10 @@ Test it out by typing 3 + 4 + 1.0 + 7.
 ---
 hasValue[Double](15.0)
 ===
-Cool, okay! Now try 15 / 2.0.
+Cool, okay! 1.0 is a Double just because it has a decimal point, regardless of the fact that it's
+a whole number.
+
+Now try 15 / 2.0.
 ---
 hasValue[Double](7.5)
 ===
@@ -141,7 +147,7 @@ expression.
 hasValue[Int](7)
 ===
 A little tricky, huh? The result has to be an Int since only Ints were involved in the expression.
-So Scala truncated 7.5 (the "true" result) by removing everything after the decimal point, and 
+So Scala truncated 7.5 (the "correct" answer) by removing everything after the decimal point, and
 called it an Int. Simple as that.
 
 Got the hang of it? Play around with Doubles and Ints a bit if you want, and make sure the
@@ -181,43 +187,53 @@ Try it!
 ---
 hasValue[Double](3.0)
 ===
-Was that what you expected? The result is a Double, but it's the "wrong" result!
+Was that what you expected? The result is a Double, but it's the wrong answer!
 
-What's happening is that Scala evaluates things from left to right, just like you
-do in math (of course respecting operator precedence). So first it evaluates
-milesToGo / milesPerGallon, getting the Int 3. Then in multiplies it by 1.0, giving
-the Double 3.0.
+What's happening is that Scala evaluates things from left to right, just like you do in math
+(of course respecting operator precedence). So first it evaluates milesToGo / milesPerGallon,
+getting the Int 3. Then in multiplies it by 1.0, giving the Double 3.0.
 
-But anyway, beware of division with Ints! Or rather, be aware of division with Ints.
+But anyway, beware of division with Ints! Or rather, be aware of division with Ints. It actually
+comes in handy sometimes!
 ---
 ===
-Okay! Now using the kmPerMile val you declared earlier, write a function called milesToKm that
+Okay. Now using the kmPerMile val you declared earlier, write a function called milesToKm that
 takes an Int argument called miles and returns the number of kilometers it represents.
 ---
-hasTypeStr("milesToKm", "(miles: Int)Double")
+hasTypeFn("milesToKm", "(miles: Int)", "Double")
 eval[Double]("milesToKm(1)", 1.609)
 eval[Double]("milesToKm(10)", 16.09)
 ===
-Nice work!
+Nice work! Functions can return Doubles too, just like any other type.
 
 Alright, now let's do one more revision to our car example.
-
+---
+===
 Write a function called willIMakeIt that takes four arguments: tankCapacity, percentFull,
 milesPerGallon, and milesToGo. The percentFull argument should be a Double, expected to be between
 0.0 and 1.0 representing the fraction of gas remaining in the tank. For example, 0.5 would mean
-half full. The function should return true if you are going to make it to the next gas station,
-and false otherwise.
+half full. 
 
-Write your code in TextEdit and use :load like before. Remember, you can edit, save and :load as
-many times as you want while you're working on your code.
+The function should return a String indicating what will happen. If you will make it to the next
+gas station, it should return "You will make it with x gallons to spare!", where x is the number of
+gallons left in the tank after you have gone milesToGo miles.
+
+On the other hand, if you will not make it to the next gas station, the function should return
+"You will run out of gas with x miles to go!", where x is the number of miles short of milesToGo
+that the gas in the tank will take you.
+
+Hint: Do something like "there are " + (kmPermile * 3) + " km in 3 miles" to build your String.
+
+You should write your code in TextEdit and use :load like before. Remember, you can edit, save
+and :load as many times as you want while you're working on your code!
 ---
-hasTypeStr("willIMakeIt", "(tankCapacity: Int,percentFull: Double,milesPerGallon: Int,milesToGo: Int)Boolean")
-eval[Boolean]("willIMakeIt(12, 0.25, 25, 70)", true)
-eval[Boolean]("willIMakeIt(12, 0.25, 25, 80)", false)
-eval[Boolean]("willIMakeIt(16, 0.25, 25, 80)", true)
-eval[Boolean]("willIMakeIt(15, 0.20, 25, 80)", false)
-eval[Boolean]("willIMakeIt(15, 0.20, 30, 80)", true)
+hasTypeFn("willIMakeIt", "(tankCapacity: Int,percentFull: Double,milesPerGallon: Int,milesToGo: Int)", "java.lang.String")
+eval[String]("willIMakeIt(12, 0.25, 28, 70)", "You will make it with 0.5 gallons to spare!")
+eval[String]("willIMakeIt(12, 0.25, 25, 80)", "You will run out of gas with 5.0 miles to go!")
+eval[String]("willIMakeIt(16, 0.25, 25, 75)", "You will make it with 1.0 gallons to spare!")
+eval[String]("willIMakeIt(15, 0.20, 25, 85)", "You will run out of gas with 10.0 miles to go!")
+eval[String]("willIMakeIt(15, 0.20, 32, 80)", "You will make it with 0.5 gallons to spare!")
 ===
-Nice, you did it!
+Yay, you did it!
 ---
 ===
