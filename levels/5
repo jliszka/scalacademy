@@ -7,17 +7,33 @@ At the end of the last level, you wrote a function called willIMakeIt that took 
 tankCapacity, percentFull, milesPerGallon and milesToGo. You probably wrote an expression like
 this for the method body:
 
-  tankCapacity * percentFull * milesPerGallon >= milesToGo
+  if (tankCapacity * percentFull * milesPerGallon >= milesToGo)
+    "You will make it with " + 
+      (tankCapacity * percentFull * milesPerGallon - milesToGo) / milesPerGallon) +
+      " gallons to spare!"
+  else
+    "You will run out of gas with " + 
+      (milesToGo - (tankCapacity * percentFull * milesPerGallon)) +
+      " miles to go!"
 
-Which is great! But maybe you would have liked to have written something like this:
+But look at all that repeated code! (Programmers hate that!) And it's hard to tell what each
+expression means... you have to read them and think them through each time, which makes mistakes
+harder to catch. So maybe instead you would have liked to write something like this:
 
   val gallonsInTank = tankCapacity * percentFull
-  val milesInTank = milesPerGallon * gallonsInTank
-  val willIMakeIt = milesInTank > milesToGo
+  val gallonsNeeded = 1.0 * milesToGo / milesPerGallon
+  val milesInTank = gallonsInTank * milesPerGallon
 
-Now it's much clearer exactly what's going on at each step, which makes it easier for you to
-check whether you made a mistake. Except, how do you fit all those val declarations inside
-the body of the function?
+  if (milesInTank >= milesToGo)
+    "You will make it with " + (gallonsInTank - gallonsNeeded) + " gallons to spare!"
+  else
+    "You will run out of gas with " + (milesToGo - milesInTank) + " miles to go!"
+
+There, now each step of the computation makes sense, and there is no repeated work! The
+strings are a lot easier to read too, without all those complicated expressions in the middle.
+---
+===
+But wait, how do you fit all those val declarations inside the body of a function?
 
 With a block, that's how! A block is simply a series declarations and expressions, on separate
 lines, enclosed in curly braces. For example, try typing this at the scala> prompt (you can
@@ -38,13 +54,13 @@ declared[String]("fullName")
 Great! A block is an expression, just like 2 * 3, or if (true) "hi" else "bye". A block contains
 a series of declarations (vals and defs) and expressions, on separate lines, wrapping them up like
 a package and presenting them all as a single expression to the rest of the program. The value of
-the block (as every expression has a value) is simply the value of the last line of the block,
+the block (every expression has a value!) is simply the value of the last line of the block,
 which must be an expression (not a declaration).
 
 Let's look at another example. But this time let's do it in TextEdit -- multi-line blocks are a
-lot easier to write in a text editor though, since the scala> prompt doesn't let you go up and
-edit lines you've already typed. Try typing this into TextEdit and loading in the script file
-(remember how? :load script.scala -- and don't forget to save the file before you :load!).
+lot easier to write in a text editor, since the scala> prompt doesn't let you go up and edit lines
+you've already typed. Try typing this into TextEdit and loading in the script file (remember how?
+:load script.scala -- and don't forget to save the file before you :load!).
 
 val freeTime = {
   val hoursWorking = 9
@@ -68,31 +84,36 @@ line of the block (which must always be an expression). The lines of the block a
 order, and later lines can reference things you declared on earlier lines.
 
 Now rewrite willIMakeIt as a function whose body is a block, using as many lines as you want to
-carry out the computation in stages. Do it in TextEdit if that's easier for you. Here's an empty
-function to get you started:
+carry out the computation in stages. Do it in TextEdit if that's easier for you. Here's some code
+to get you started:
 
 def willIMakeIt(tankCapacity: Int, percentFull: Double, milesPerGallon: Int, milesToGo: Int) = {
 
 }
 ---
-hasTypeStr("willIMakeIt", "(tankCapacity: Int,percentFull: Double,milesPerGallon: Int,milesToGo: Int)Boolean")
-eval[Boolean]("willIMakeIt(12, 0.25, 25, 70)", true)
-eval[Boolean]("willIMakeIt(12, 0.25, 25, 80)", false)
-eval[Boolean]("willIMakeIt(16, 0.25, 25, 80)", true)
-eval[Boolean]("willIMakeIt(15, 0.20, 25, 80)", false)
-eval[Boolean]("willIMakeIt(15, 0.20, 30, 80)", true)
+hasTypeFn("willIMakeIt", "(tankCapacity: Int,percentFull: Double,milesPerGallon: Int,milesToGo: Int)", "java.lang.String")
+eval[String]("willIMakeIt(12, 0.25, 28, 70)", "You will make it with 0.5 gallons to spare!")
+eval[String]("willIMakeIt(12, 0.25, 25, 80)", "You will run out of gas with 5.0 miles to go!")
+eval[String]("willIMakeIt(16, 0.25, 25, 75)", "You will make it with 1.0 gallons to spare!")
+eval[String]("willIMakeIt(15, 0.20, 25, 85)", "You will run out of gas with 10.0 miles to go!")
+eval[String]("willIMakeIt(15, 0.20, 32, 80)", "You will make it with 0.5 gallons to spare!")
 ===
 Very good! You probably ended up with something like this:
 
 def willIMakeIt(tankCapacity: Int, percentFull: Double, milesPerGallon: Int, milesToGo: Int) = {
   val gallonsInTank = tankCapacity * percentFull
-  val milesInTank = milesPerGallon * gallonsInTank
-  milesInTank > milesToGo
+  val gallonsNeeded = 1.0 * milesToGo / milesPerGallon
+  val milesInTank = gallonsInTank * milesPerGallon
+
+  if (milesInTank >= milesToGo)
+    "You will make it with " + (gallonsInTank - gallonsNeeded) + " gallons to spare!"
+  else
+    "You will run out of gas with " + (milesToGo - milesInTank) + " miles to go!"
 }
 
-It's also a common convention to indent the lines inside a block by 2 spaces. And if you have a
+It's a common convention to indent the lines inside a block by 2 spaces. And if you have a
 block inside another block, indent it by another 2 spaces. But that's just a convention, for
-people, to make it easier to read. Remember, Scala doesn't care about whitespace.
+people, to make it easier to read. Scala doesn't care about spaces or indentation.
 
 Programmers use blocks all the time to organize and group their code into logical pieces.
 
@@ -113,8 +134,8 @@ guess what will happen before you type it.
 ===
 Scala appears not to know what city is! But you just declared it! Not to worry. What's going on
 here is that when you declare something inside a block, you can only use it inside that block.
-All declarations have a scope* that they are valid inside, and the curly braces define the
-boundaries of that scope.
+Every declaration* has a scope that it is valid inside, and the curly braces define the boundaries
+of that scope.
 
 * Even declarations you make at the scala prompt with no curly braces are said to 
   live in the "top-level" scope.
@@ -125,122 +146,134 @@ intermediate values of a computation should not be visible outside the expressio
 it. All that you should care about is the result of the computation. If you write other code that
 somehow relies on or refers to those intermediate values, then that makes it difficult to go back
 later and change those details without having an impact on those other parts of your code that
-rely on tem (that you maybe even forgot were relying on them). And then you end up with mysterious
+rely on them (that you maybe even forgot were relying on them). And then you end up with mysterious
 bugs.
-
-Blocks also commonly appear in if statements. Try the following (in TextExit or at the scala>
-prompt, you choice):
-
-val yearlyRent = if (cityState == "New York, NY") {
-  val monthlyRent = 2400
-  monthlyRent * 12
-} else {
-  val monthlyRent = 800
-  monthlyRent * 12
-}
 ---
-declared[Int]("yearlyRent", 12 * 2400)
 ===
-I hope I didn't just make you cry.
+Blocks also commonly appear in if statements. For example, we could clean up the willIMakeIt
+function a little using blocks, like this:
 
-This is a pretty common way to write if statements, with blocks in each branch. Programmers often
-write them this way even if one of the branches only contains a single line.
+def willIMakeIt(tankCapacity: Int, percentFull: Double, milesPerGallon: Int, milesToGo: Int) = {
+  val gallonsInTank = tankCapacity * percentFull
+  val gallonsNeeded = 1.0 * milesToGo / milesPerGallon
+  val milesInTank = gallonsInTank * milesPerGallon
 
-A slightly more idiomatic way to write this might be
-
-val yearlyElectricity = {
-  if (cityState == "New York, NY") {
-    val monthlyElectricity = 120
-    monthlyElectricity * 12
+  if (milesInTank >= milesToGo) {
+    val gallonsLeft = gallonsInTank - gallonsNeeded
+    "You will make it with " + gallonsLeft + " gallons to spare!"
   } else {
-    val monthlyElectricity = 60
-    monthlyElectricity * 12
+    val milesLeft = milesToGo - milesInTank
+    "You will run out of gas with " + milesLeft + " miles to go!"
   }
 }
 
-Try it!
+Make sense? Modify your version of willIMakeIt in a similar way and :load it in to scala.
+---
+hasTypeFn("willIMakeIt", "(tankCapacity: Int,percentFull: Double,milesPerGallon: Int,milesToGo: Int)", "java.lang.String")
+eval[String]("willIMakeIt(12, 0.25, 28, 70)", "You will make it with 0.5 gallons to spare!")
+eval[String]("willIMakeIt(12, 0.25, 25, 80)", "You will run out of gas with 5.0 miles to go!")
+eval[String]("willIMakeIt(16, 0.25, 25, 75)", "You will make it with 1.0 gallons to spare!")
+eval[String]("willIMakeIt(15, 0.20, 25, 85)", "You will run out of gas with 10.0 miles to go!")
+eval[String]("willIMakeIt(15, 0.20, 32, 80)", "You will make it with 0.5 gallons to spare!")
+===
+Alright, time to put your new block skills to work!
+
+You are going to write a little game that you will play against the computer. The game is called
+Twenty-One Pickup. It's a 2-player game that starts with 21 stones in a pile. Each player takes
+turns picking up 1, 2 or 3 stones from the pile, and whoever picks up the last stone wins.
+
+You will write a function called computersTurn that takes an Int called stonesLeft (indicating the
+number of stones left in the pile) and simulates the computer's play. You as a human player play
+the game against the computer by making moves in your head, and then calling computersTurn with the
+number of stones remaining as a result of your turn. Here's an example of how it might go.
+(Naturally, the computer goes first.)
+
+  scala> computersTurn(21)
+  res0: String = "The computer takes 1 stones, leaving 20 stones in the pile."
+
+  scala> computersTurn(18)
+  res1: String = "The computer takes 2 stones, leaving 16 stones in the pile."
+
+  scala> computersTurn(13)
+  res2: String = "The computer takes 1 stones, leaving 12 stones in the pile."
+
+  scala> computersTurn(11)
+  res3: String = "The computer takes 3 stones, leaving 8 stones in the pile."
+
+  scala> computersTurn(5)
+  res4: String = "The computer takes 1 stones, leaving 4 stones in the pile."
+
+  scala> computersTurn(2)
+  res5: String = "The computer takes the last 2 stones and wins the game!"
+
+I'll show you how to write computersTurn so that if the computer gets to go first (and the human
+player doesn't cheat!) then the computer always wins. I'll explain it after you type ok,
+in case you want to try to figure it out for yourself. (As a hint, study the sample run above.)
 ---
 ===
-That's it! Programmers love blocks.
+Okay, did you figure it out?
 
-You know what programmers hate though? Probably more than anything? Repetition.
+The trick is that the computer should move so as to leave a multiple of 4 stones in the pile.
+That way, the human player is unable to make the pile a multiple of 4 (since you can only take
+1, 2, or 3 stones). And once the human player leaves the pile with something that is not a multiple
+of 4, the computer is always able to make it a multiple of 4 again. This continues until the
+computer wins by making the pile 0 (a multiple of 4!).
 
-See how monthlyElectricity * 12 appears twice? See if you can rearrange the expression so that
-that line isn't repeated like that.
+But, what should the computer do on its turn when the pile is already multiple of 4? Well, it can't
+take 0 stones, and it can't take 4 stones, so all it can really do is take, say, 1 stone and hope
+that the human player makes a mistake. Really, this should never happen if the computer goes first
+(and the human doesn't cheat), but you need to write code to handle that situation anyway.
 
-(Hint: Remember that an if-else is an expression, just like 2 * 3. You can use it anywhere any
-other expression would go. That includes multiplying it by something, or using it as the body
-of a val declaration.)
+Now, write the function computersTurn that takes an Int called stonesLeft, decides how many stones
+to take, and returns a String describing its move, as in the example game above. Don't worry about
+pluralization -- saying "1 stones" is fine.
+
+Oh, and make sure to handle the case where the computer takes the last stones from the pile
+and wins!
+
+Hint: Use the %% operator to find the remainder of a division. For example, 21 %% 4 will be 1.
+Try it out if you're unsure how it works! Try 46 %% 10.
 ---
+hasTypeFn("computersTurn", "(stonesLeft: Int)", "java.lang.String")
+eval[String]("computersTurn(21)", "The computer takes 1 stones, leaving 20 stones in the pile.")
+eval[String]("computersTurn(17)", "The computer takes 1 stones, leaving 16 stones in the pile.")
+eval[String]("computersTurn(15)", "The computer takes 3 stones, leaving 12 stones in the pile.")
+eval[String]("computersTurn(12)", "The computer takes 1 stones, leaving 11 stones in the pile.")
+eval[String]("computersTurn(10)", "The computer takes 2 stones, leaving 8 stones in the pile.")
+eval[String]("computersTurn(8)", "The computer takes 1 stones, leaving 7 stones in the pile.")
+eval[String]("computersTurn(7)", "The computer takes 3 stones, leaving 4 stones in the pile.")
+eval[String]("computersTurn(3)", "The computer takes the last 3 stones and wins the game!")
 ===
-Okay, cool! Did you end up with something like this?
+Yes! Awesome!
 
-val yearlyElectricity = {
-  if (cityState == "New York, NY") {
-    120
+Here's the code I came up with, for reference.
+
+def computersTurn(stonesLeft: Int) = {
+  val stonesToTake = stonesLeft %% 4
+  val newStonesLeft = stonesLeft - stonesToTake
+
+  if (newStonesLeft == 0) {
+    "The computer takes the last " + stonesToTake + " stones and wins the game!"
+  } else if (stonesToTake == 0) {
+    val newStonesLeft = stonesLeft - 1
+    "The computer takes 1 stone, leaving " + newStonesLeft + " stones in the pile."
   } else {
-    60
-  } * 12
-}
----
-===
-Or maybe this?
-
-val yearlyElectricity = {
-  val monthlyElectricity = {
-    if (cityState == "New York, NY") {
-      120
-    } else {
-      60
-    }
-   }
-   monthlyElectricity * 12
-}
----
-===
-Or even this?
-
-val yearlyElectricity = {
-  val monthlyElectricity = {
-    if (cityState == "New York, NY") 120 else 60
+    "The computer takes " + stonesToTake +
+      " stones, leaving " + newStonesLeft + " stones in the pile."
   }
-  monthlyElectricity * 12
 }
----
-===
-All of those are okay. There is more than one way to do it! Often a programmer's sense of coding
-style will dictate which way you go. Personally, I like the last one.
-
-But this won't work, can you see why?
-
-val yearlyElectricity = {
-  if (cityState == "New York, NY") {
-    val monthlyElectricity = 120
-  } else {
-    val monthlyElectricity = 60
-  }
-  monthlyElectricity * 12
-}
-
-Try it out and see.
----
-===
-Yep! It's because monthlyElectricity is declared inside a scope, and can't be accessed from
-outside that scope!
-
-Also, the last line of every block must be an expression. You can't end a block with a declaration.
 ---
 ===
 Okay, one last exercise. Write a function called makeChange that takes one Int argument, cents,
-and returns a string describing how many quarters, dimes, nickels and pennies you would need to
+and returns a String describing how many quarters, dimes, nickels and pennies you would need to
 make that amount. For instance, makeChange(37) should return
   "1 quarters, 1 dimes, 0 nickels, and 2 pennies"
+
 Don't worry about pluralization or anything, just get the numbers right.
 
-Hint: use the / (integer division) and %% (remainder) operators. (If you're not sure how %% works,
-play around with it a bit: try 27 %% 25.)
+Hint: Use the / (integer division) and %% (remainder) operators.
 ---
-hasTypeStr("makeChange", "(cents: Int)java.lang.String")
+hasTypeFn("makeChange", "(cents: Int)", "java.lang.String")
 eval[String]("makeChange(37)", "1 quarters, 1 dimes, 0 nickels, and 2 pennies")
 eval[String]("makeChange(14)", "0 quarters, 1 dimes, 0 nickels, and 4 pennies")
 eval[String]("makeChange(99)", "3 quarters, 2 dimes, 0 nickels, and 4 pennies")
@@ -248,6 +281,21 @@ eval[String]("makeChange(91)", "3 quarters, 1 dimes, 1 nickels, and 1 pennies")
 eval[String]("makeChange(3)", "0 quarters, 0 dimes, 0 nickels, and 3 pennies")
 ===
 You got it! That was huge!!
+---
+===
+Here's how I did it, in case you want to compare notes.
+
+def makeChange(cents: Int) = {
+  val quarters = cents / 25
+  val remainder = cents %% 25
+  val dimes = remainder / 10
+  val remainder2 = remainder %% 10
+  val nickels = remainder2 / 5
+  val pennies = remainder2 %% 5
+  quarters + " quarters, " + dimes + " dimes, " + nickels + " nickels, and " + pennies + " pennies"
+}
+
+Yeah, remainder2. I'm not proud of it.
 
 That's all there is for now... check back in a bit for Level 6!
 ---

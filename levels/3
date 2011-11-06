@@ -117,6 +117,8 @@ Pretty neat, huh?
 Scala functions can also take more than one argument.
 
 Try this: def getAge(birthYear: Int, thisYear: Int) = thisYear - birthYear.
+
+Notice that the arguments are separated by a comma.
 ---
 hasTypeFn("getAge", "(birthYear: Int,thisYear: Int)", "Int")
 ===
@@ -130,7 +132,7 @@ Alright, I think you're ready for a challenge. Write a function called isTeenage
 takes a SINGLE argument called birthYear returns whether you're a teenager or not. Your function
 should just assume that the current year is 2011.
 
-Hint: You should call isTeenager and getAge in the body of your function if you want!
+Hint: Try using isTeenager and getAge in the body of the function.
 
 Remember to try it out on a bunch of different years to make sure you got it right.
 ---

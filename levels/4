@@ -168,7 +168,8 @@ Good. Now you want to find out how many gallons you need to go 80 miles. You wou
 by dividing milesToGo by milesPerGallon, right? But they are both Ints, and you need a
 result that's a Double.
 
-So what do you do? See if you can figure it out using things you already know.
+So what do you do? See if you can figure it out using things you already know, but WITHOUT
+redefining milesPerGallon or milesToGo.
 
 Remember, all you need is a single Double in the expression to make the result a Double.
 
