@@ -117,7 +117,7 @@ people, to make it easier to read. Scala doesn't care about spaces or indentatio
 
 Programmers use blocks all the time to organize and group their code into logical pieces.
 
-Okay now let's try something a little tricky. Type this into TextMate and load it into scala.
+Okay now let's try something a little tricky. Type this into TextEdit and load it into scala.
 
 val state = "NY"
 val cityState = {
@@ -206,22 +206,22 @@ number of stones remaining as a result of your turn. Here's an example of how it
   scala> computersTurn(2)
   res5: String = "The computer takes the last 2 stones and wins the game!"
 
-I'll show you how to write computersTurn so that if the computer gets to go first (and the human
-player doesn't cheat!) then the computer always wins. I'll explain it after you type ok,
-in case you want to try to figure it out for yourself. (As a hint, study the sample run above.)
+I'll show you the strategy that allows the computer to win every time, provided it gets to go
+first (and the human player doesn't cheat!). I'll explain it after you type ok, in case you want
+to try to figure it out for yourself first. (As a hint, study the sample run above.)
 ---
 ===
 Okay, did you figure it out?
 
-The trick is that the computer should move so as to leave a multiple of 4 stones in the pile.
-That way, the human player is unable to make the pile a multiple of 4 (since you can only take
-1, 2, or 3 stones). And once the human player leaves the pile with something that is not a multiple
-of 4, the computer is always able to make it a multiple of 4 again. This continues until the
-computer wins by making the pile 0 (a multiple of 4!).
+The trick is that the computer should always leave a multiple of 4 stones in the pile. That way,
+the human player is unable to make the pile a multiple of 4 (since you can only take 1, 2, or 3
+stones). And once the human player leaves the pile with something that is not a multiple of 4,
+the computer is always able to make it a multiple of 4 again. This continues until the computer
+wins by making the pile 0 (a multiple of 4!).
 
-But, what should the computer do on its turn when the pile is already multiple of 4? Well, it can't
-take 0 stones, and it can't take 4 stones, so all it can really do is take, say, 1 stone and hope
-that the human player makes a mistake. Really, this should never happen if the computer goes first
+But, what should the computer do when the pile is already multiple of 4? Well, it can't take 0
+stones, and it can't take 4 stones, so all it can really do is take, say, 1 stone and hope that
+the human player makes a mistake. Really, this should never happen if the computer goes first
 (and the human doesn't cheat), but you need to write code to handle that situation anyway.
 
 Now, write the function computersTurn that takes an Int called stonesLeft, decides how many stones
@@ -231,7 +231,7 @@ pluralization -- saying "1 stones" is fine.
 Oh, and make sure to handle the case where the computer takes the last stones from the pile
 and wins!
 
-Hint: Use the %% operator to find the remainder of a division. For example, 21 %% 4 will be 1.
+Hint: Use the %% (modulus) operator to find the remainder of a division. For example, 21 %% 4 is 1.
 Try it out if you're unsure how it works! Try 46 %% 10.
 ---
 hasTypeFn("computersTurn", "(stonesLeft: Int)", "java.lang.String")

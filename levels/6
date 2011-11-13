@@ -1,0 +1,342 @@
+
+ == LEVEL 6 ==
+
+Well hello!
+
+You've learned a lot so far! Strings, Ints, Booleans, Doubles, if/else, functions and blocks. Whew!
+
+It's time to step back for a second and talk about how scala goes about evaluating an expression.
+Scala's job is to take an expression you give it and reduce it step-by-step to a value. It can be
+important to know exactly what those steps are, so let's go through them with a few examples.
+
+We'll start with something simple -- an expression just containing numbers and arithmetic.
+---
+===
+So consider this expression:
+
+  3 * (4 + 7) / 2
+
+Scala evaluates this expression using the rules of arithmetic you're probably familiar with:
+parentheses first, then multiplication and division, then addition and subtraction.
+
+In these examples, I'll show each step of the evaluation and what subexpression is being evaluated
+in that step.
+
+   3.0 * (4 + 7) / 2
+          ^^^^^
+=> 3.0 * 11 / 2
+   ^^^^^^^^
+=> 33.0 / 2
+   ^^^^^^^^
+=> 16.5
+
+Make sense?
+---
+===
+Let's look at a declaration now. Since an expression is just a name and an expression, this just
+boils down to evaluating the expression.
+
+   val a = 3 * 4 - 1
+           ^^^^^
+=> val a = 12 - 1
+           ^^^^^^
+=> val a = 11
+---
+===
+When the name of a val is encountered, its value is plugged in for the name.
+
+   val b = (a + 1) * a
+            ^
+=> val b = (11 + 1) * a
+            ^^^^^^
+=> val b = 12 * a
+                ^
+=> val b = 12 * 11
+           ^^^^^^^
+=> val b = 132
+---
+===
+When an if/else statement is encountered, the condition is evaluated first, and then ONE of the
+branches is evaluated depending on the value of the condition.
+
+   if (a > 4) b - 2 else b * b
+       ^
+=> if (11 > 4) b - 2 else b * b
+       ^^^^^^
+=> if (true) b - 2 else b * b
+   ^^
+=> b - 2
+   ^
+=> 132 - 2
+   ^^^^^^^
+=> 130
+
+The important thing here is that the branch of the if/else that is not taken is never evaluated.
+---
+===
+When a function definition is encountered, nothing is evaluated. The body of the function is saved
+as is until the function is called.
+
+   def f(x: Int) = 2 * x + 3
+=> Nothing happens!
+---
+===
+When a function CALL is encountered, 3 things happen:
+
+ 1. The arguments to the function call are evaluated.
+ 2. The values of the arguments are plugged into the function body.
+ 3. The function body is plugged into the expression it was called from and is evaluated.
+
+Let me show you what I mean with an example.
+
+   f(a - 1) + 4
+     ^
+=> f(11 - 1) + 4
+     ^^^^^^
+=> f(10) + 4
+   ^^^^^
+=> (2 * 10 + 3) + 4
+    ^^^^^^
+=> (20 + 3) + 4
+    ^^^^^^
+=> 23 + 4
+   ^^^^^^
+=> 27
+---
+===
+Let's look at another example of a function call.
+
+   f(f(3 + 4) - 2)
+       ^^^^^
+=> f(f(7) - 2)
+     ^^^^
+=> f((2 * 7 + 3) - 2)
+      ^^^^^
+=> f((14 + 3) - 2)
+      ^^^^^^
+=> f(17 - 2)
+     ^^^^^^
+=> f(15)
+   ^^^^^
+=> 2 * 15 + 3
+   ^^^^^^
+=> 30 + 3
+   ^^^^^^
+=> 33
+
+In general, expression are evaluated from the innermost parenthese out, left to right.
+Arguments to functions are evaluated before the function is called. The function call
+itself evaluates to whatever the body of the function evaluates to when the values of
+the arguments are substituted for their names.
+---
+===
+Now let's try something a little tricky. Do you remember factorials from math class?
+It's defined this way:
+
+  n! = n x (n-1) x (n-2) x ... x 1
+
+So for example, 5! = 5 x 4 x 3 x 2 x 1 = 120. Here's an alternative (but equivalent) definition:
+
+  1! = 1 and
+  n! = n x (n-1)!
+
+Make sense? Think about it for a minute to make sure you get why this definition is the same as
+the first one.
+---
+===
+Now, how would you implement the factorial function in scala? Thankfully we can translate the
+second definition almost directly into code! It looks like this:
+
+  def factorial(n: Int): Int = if (n == 1) 1 else n * factorial(n-1)
+
+Try typing that in and making sure it works. Make sure you get factorial(3) = 6 and
+factorial(5) = 120.
+---
+===
+hasTypeFn("factorial", "(n: Int)", "Int")
+eval[Int]("factorial(4)", 24)
+eval[Int]("factorial(10)", 3628800)
+---
+===
+Cool! One thing to notice is that there's an extra ": Int" between the argument list and the =.
+It just indicates the return type of the function, and is usually optional in scala. The only
+time it is required is when the function body makes a call to the function itself. Functions that
+do that are called recursive functions. 
+
+Let's walk through the evaluation of factorial(4) so you get how it works.
+
+   factorial(4)
+   ^^^^^^^^^^^^
+=> if (4 == 1) 1 else 4 * factorial(4 - 1)
+       ^^^^^^
+=> if (false) 1 else 4 * factorial(4 - 1)
+   ^^
+=> 4 * factorial(4 - 1)
+                 ^^^^^
+=> 4 * factorial(3)
+       ^^^^^^^^^^^^
+=> 4 * (if (3 == 1) 1 else 3 * factorial(3 - 1))
+            ^^^^^^
+=> 4 * (if (false) 1 else 3 * factorial(3 - 1))
+        ^^
+=> 4 * (3 * factorial(3 - 1))
+                      ^^^^^
+=> 4 * (3 * factorial(2))
+            ^^^^^^^^^^^^
+=> 4 * (3 * (if (2 == 1) 1 else 2 * factorial(2 - 1)))
+                 ^^^^^^
+=> 4 * (3 * (if (false) 1 else 2 * factorial(2 - 1)))
+             ^^
+=> 4 * (3 * (2 * factorial(2 - 1)))
+                           ^^^^^
+=> 4 * (3 * (2 * factorial(1)))
+                 ^^^^^^^^^^^^
+=> 4 * (3 * (2 * (if (1 == 1) 1 else 1 * factorial(1 - 1))))
+                      ^^^^^^
+=> 4 * (3 * (2 * (if (true) 1 else 1 * factorial(1 - 1))))
+                  ^^
+=> 4 * (3 * (2 * (1)))
+             ^^^^^^^
+=> 4 * (3 * (2))
+        ^^^^^^^
+=> 4 * 6
+   ^^^^^
+=> 24
+
+Whew!
+---
+===
+You might have been worried that a function that calls itself would just loop around forever.
+But that's what "if (n == 1)" is for -- it provides an escape hatch to jump out of a potentially
+infinite loop. Every recursive function must have an escape hatch like this (usually called the
+base case), or else it will indeed run forever. (Don't worry though -- if your program might be
+stuck in an infinite loop, you can just hit Ctrl-C to break out of it.)
+
+Okay, now (finally) it's time to write some code. Write a function called sum1toN that returns
+the sum of the numbers between 1 and n. For example, sum1toN(10) = 55. Here's some code to
+get you started.
+
+  def sum1toN(n: Int): Int = if (n == 1) 1 else n + sum1toN(n-1)
+
+Don't forget the base case!
+---
+hasTypeFn("sum1toN", "(n: Int)", "Int")
+eval[Int]("sum1toN(50)", 1275)
+eval[Int]("sum1toN(100)", 5050)
+===
+Great!! Here are some rules of thumb for building recursive functions. These are simple rules
+and if you follow them, you are almost guaranteed to produce correct code.
+
+  1. Handle the simplest case in the base case. This is usually when the argument is 1 or 0.
+  2. For the other cases:
+    a. Phrase the problem in terms of a slightly smaller version of itself.
+    b. Pretend your function already works for that smaller case and use it to compute
+       "most" of the answer.
+    c. Then write some code to get the rest of the way to the answer you want.
+
+Let's put that to use in another exercise. We'll write code to answer the following questions:
+If you have, say, 25 people in a room, what is the probability that no two people have the same
+birthday?
+
+Don't worry, I'll walk you through it.
+---
+===
+Let's use the rules to break down the problem. First, let's handle the simple case. If there's
+one person in the room, what is the probability that no two people have the same birthday?
+
+Well, it's trivially 100% (1.0). So you would write
+
+  def differentBirthdays(people: Int): Double = if (people == 1) 1.0 else ???
+
+Now, what about the other cases? How do you break down the problem into a smaller version of
+itself? I'll walk through the rest after you type ok.
+---
+===
+Imagine a room with, say, 10 people in it, and that they all have different birthdays. When a new
+person walks is, what is the probability that everyone in the room still has different birthdays?
+We just have to make sure that the new guy doesn't have the same birthday as anyone else. There
+are 365-10 birthdays available, so the probability is (365.0 - 10) / 365.
+
+So the probability that 11 people all have different birthdays is the probability that 10 of them
+have different birthdays times the probability that the 11th guy has a different birthday from
+the other 10.
+
+You should now be able to finish writing differentBirthdays by filling in the ???.
+Try differentBirthdays(25) and see what you get!
+---
+hasTypeFn("differentBirthdays", "(people: Int)", "Double")
+eval[Double]("differentBirthdays(25)", 0.4028629138746765)
+eval[Double]("differentBirthdays(30)", 0.2702858755193543)
+eval[Double]("differentBirthdays(50)", 0.025638248442125422)
+===
+Wow, the probability of 25 people having different birthdays is only about 40%! And if there are
+50 people in the room, the probability goes all the way down to 2.5%!
+
+More fun with math! Did you know that the square of the sume is the sum of the cubes?
+
+  (1 + 2 + 3 + ... + n)^2 == (1^3 + 2^3 + 3^3 + ... + n^3)
+
+For instance, 
+  (1 + 2 + 3)^2 = 6^2 = 36
+  1^3 + 2^3 + 3^3 = 1 + 8 + 27 = 36
+
+Do you think that's really true for every number? Well, let's try it out!
+
+First, write a function called sumOfCubes that takes an Int n and returns the sum of the cubes of
+the numbers from 1 to n. (You can just use n*n*n to compute the cube of n.)
+
+You should get subOfCubes(10) = 3025.
+---
+===
+hasTypeFn("sumOfCubes", "(n: Int)", "Int")
+eval[Int]("sumOfCubes(20)", 44100)
+eval[Int]("sumOfCubes(100)", 25502500)
+---
+===
+Now write a function called squareOfSum that takes an Int n and returns the square of the sum
+of the numbers from 1 to n. (This function doesn't have to be recursive; you can call the sum1toN
+function you wrote earler and square the result.)
+
+Hint: Don't duplicate work! Use a block!
+---
+===
+hasTypeFn("squareOfSum", "(n: Int)", "Int")
+eval[Int]("squareOfSum(20)", 44100)
+eval[Int]("squareOfSum(100)", 25502500)
+---
+===
+Good! Now try it out for a few different numbers. I get
+
+  sumOfCubes(41)  = 741321
+  squareOfSum(41) = 741321
+
+Okay, but that's not really good enough. Maybe there's some number we didn't try that it doesn't
+work for. Well we can't try *every* number, but we can try it out for ever number up to some number
+we specify.
+
+For instance, I might want to know whether
+
+  sumOfCubes(1) == squareOfSum(1) and
+  sumOfCubes(2) == squareOfSum(2) and
+  sumOfCubes(3) == squareOfSum(3) and
+  ...
+  sumOfCubes(n) == squareOfSum(n)
+
+for some number n.
+
+Write a function called worksForEverythingUpTo that takes an Int n and returns a Boolean
+indicating whether sumOfCubes(i) == squareOfSum(i) for every i between 1 and n.
+---
+===
+hasTypeFn("worksForEverythingUpTo", "(n: Int)", "Boolean")
+eval[Boolean]("worksForEverythingUpTp(10)", true)
+eval[Boolean]("worksForEverythingUpTp(100)", true)
+eval[Boolean]("worksForEverythingUpTp(1000)", true)
+eval[Boolean]("worksForEverythingUpTp(10000)", true)
+---
+===
+It's great getting computers to do all the work, isn't it?
+
+
+---
+===

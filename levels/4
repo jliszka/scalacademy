@@ -108,7 +108,7 @@ Type val kmPerMile = 1.609.
 ---
 declared[Double]("kmPerMile", 1.609)
 ===
-Ooh, a new type! Shiny! It has a weird name though, Double. It's short for something like
+Ooh, a new type! It has a weird name though, Double. It's short for something like 
 "double-precision floating point number" but that's not important. All you need to know is that,
 whereas Ints represent whole numbers, Doubles can represent fractional values too.
 
