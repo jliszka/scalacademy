@@ -296,7 +296,5 @@ def makeChange(cents: Int) = {
 }
 
 Yeah, remainder2. I'm not proud of it.
-
-That's all there is for now... check back in a bit for Level 6!
 ---
 ===

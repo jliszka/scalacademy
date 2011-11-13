@@ -14,7 +14,7 @@ We'll start with something simple -- an expression just containing numbers and a
 ===
 So consider this expression:
 
-  3 * (4 + 7) / 2
+  3.0 * (4 + 7) / 2
 
 Scala evaluates this expression using the rules of arithmetic you're probably familiar with:
 parentheses first, then multiplication and division, then addition and subtraction.
@@ -137,8 +137,8 @@ It's defined this way:
 
 So for example, 5! = 5 x 4 x 3 x 2 x 1 = 120. Here's an alternative (but equivalent) definition:
 
-  1! = 1 and
   n! = n x (n-1)!
+  with the special case that 1! = 1
 
 Make sense? Think about it for a minute to make sure you get why this definition is the same as
 the first one.
@@ -164,44 +164,35 @@ time it is required is when the function body makes a call to the function itsel
 do that are called recursive functions. 
 
 Let's walk through the evaluation of factorial(4) so you get how it works.
-
-   factorial(4)
+---
+===
+   factorial(3)
    ^^^^^^^^^^^^
-=> if (4 == 1) 1 else 4 * factorial(4 - 1)
-       ^^^^^^
-=> if (false) 1 else 4 * factorial(4 - 1)
+=> if (3 == 1) 1 else 3 * factorial(3 - 1)
+      ^^^^^^
+=> if (false) 1 else 3 * factorial(3 - 1)
    ^^
-=> 4 * factorial(4 - 1)
+=> 3 * factorial(3 - 1)
                  ^^^^^
-=> 4 * factorial(3)
+=> 3 * factorial(2)
        ^^^^^^^^^^^^
-=> 4 * (if (3 == 1) 1 else 3 * factorial(3 - 1))
+=> 3 * (if (2 == 1) 1 else 2 * factorial(2 - 1))
             ^^^^^^
-=> 4 * (if (false) 1 else 3 * factorial(3 - 1))
+=> 3 * (if (false) 1 else 2 * factorial(2 - 1))
         ^^
-=> 4 * (3 * factorial(3 - 1))
+=> 3 * (2 * factorial(2 - 1))
                       ^^^^^
-=> 4 * (3 * factorial(2))
+=> 3 * (2 * factorial(1))
             ^^^^^^^^^^^^
-=> 4 * (3 * (if (2 == 1) 1 else 2 * factorial(2 - 1)))
+=> 3 * (2 * (if (1 == 1) 1 else 1 * factorial(1 - 1)))
                  ^^^^^^
-=> 4 * (3 * (if (false) 1 else 2 * factorial(2 - 1)))
+=> 3 * (2 * (if (true) 1 else 1 * factorial(1 - 1)))
              ^^
-=> 4 * (3 * (2 * factorial(2 - 1)))
-                           ^^^^^
-=> 4 * (3 * (2 * factorial(1)))
-                 ^^^^^^^^^^^^
-=> 4 * (3 * (2 * (if (1 == 1) 1 else 1 * factorial(1 - 1))))
-                      ^^^^^^
-=> 4 * (3 * (2 * (if (true) 1 else 1 * factorial(1 - 1))))
-                  ^^
-=> 4 * (3 * (2 * (1)))
-             ^^^^^^^
-=> 4 * (3 * (2))
+=> 3 * (2 * (1))
         ^^^^^^^
-=> 4 * 6
-   ^^^^^
-=> 24
+=> (3 * 2)
+    ^^^^^
+=> 6
 
 Whew!
 ---
@@ -216,7 +207,7 @@ Okay, now (finally) it's time to write some code. Write a function called sum1to
 the sum of the numbers between 1 and n. For example, sum1toN(10) = 55. Here's some code to
 get you started.
 
-  def sum1toN(n: Int): Int = if (n == 1) 1 else n + sum1toN(n-1)
+  def sum1toN(n: Int): Int = ...
 
 Don't forget the base case!
 ---
@@ -244,7 +235,7 @@ Don't worry, I'll walk you through it.
 Let's use the rules to break down the problem. First, let's handle the simple case. If there's
 one person in the room, what is the probability that no two people have the same birthday?
 
-Well, it's trivially 100% (1.0). So you would write
+Well, it's trivially 100%% (1.0). So you would write
 
   def differentBirthdays(people: Int): Double = if (people == 1) 1.0 else ???
 
@@ -269,8 +260,8 @@ eval[Double]("differentBirthdays(25)", 0.4028629138746765)
 eval[Double]("differentBirthdays(30)", 0.2702858755193543)
 eval[Double]("differentBirthdays(50)", 0.025638248442125422)
 ===
-Wow, the probability of 25 people having different birthdays is only about 40%! And if there are
-50 people in the room, the probability goes all the way down to 2.5%!
+Wow, the probability of 25 people having different birthdays is only about 40%%! And if there are
+50 people in the room, the probability goes all the way down to 2.5%%!
 
 More fun with math! Did you know that the square of the sume is the sum of the cubes?
 
@@ -325,18 +316,16 @@ For instance, I might want to know whether
 for some number n.
 
 Write a function called worksForEverythingUpTo that takes an Int n and returns a Boolean
-indicating whether sumOfCubes(i) == squareOfSum(i) for every i between 1 and n.
+indicating whether sumOfCubes(i) == squareOfSum(i) for every number i between 1 and n.
 ---
 ===
 hasTypeFn("worksForEverythingUpTo", "(n: Int)", "Boolean")
-eval[Boolean]("worksForEverythingUpTp(10)", true)
-eval[Boolean]("worksForEverythingUpTp(100)", true)
-eval[Boolean]("worksForEverythingUpTp(1000)", true)
-eval[Boolean]("worksForEverythingUpTp(10000)", true)
+eval[Boolean]("worksForEverythingUpTo(10)", true)
+eval[Boolean]("worksForEverythingUpTo(100)", true)
+eval[Boolean]("worksForEverythingUpTo(1000)", true)
+eval[Boolean]("worksForEverythingUpTo(10000)", true)
 ---
 ===
 It's great getting computers to do all the work, isn't it?
-
-
 ---
 ===
