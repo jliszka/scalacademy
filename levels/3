@@ -149,8 +149,60 @@ You did it!! Great job! Did you end up with something like this?
 def isTeenagerIfBornIn(birthYear: Int) = isTeenager(getAge(birthYear, 2011))
 
 If not, make sure you understand why it works.
+---
+===
+More practice with functions! But first I want to show you a feature of if/else that's pretty
+handy. It's called the nested if/else, and it goes like this:
 
-Alright, one more challenge. Remember that exercise with the car?
+  if (B1) E1 else if (B2) E2 else E3
+
+where B1 and B2 are Boolean expressions and E1, E2 and E3 are any expressions (of the same type!).
+It's not really a special feature of the language, it's really just this:
+
+  if (B1) E1 else (if (B2) E2 else E3)
+
+It's an if/else expression nested inside the else case of another if/else expression. The parens
+are optional because Scala groups them that way on its own without the parens. You can chain them
+indefinitely, too:
+
+  if (B1) E1 else if (B2) E2 else if (B3) E3 else if (B4) E4 else E5
+
+When Scala evaluates an expression like that, it finds the FIRST condition that evaluates to true
+and returns the corresponding expression. For example,
+
+  val a = 2
+  if (a < 5) "a is less than 5" else if (a < 10) "a is less than 10" else "a is not less than 10"
+
+evaluates to "a is less than 5", even though a < 10 is also true.
+---
+===
+Okay, now let's put it to work! Write a function called stageOfLife that takes an Int argument
+called age and returns "baby" when age is 3 or under, "child" for 4 to 12, "teenager"
+for 13 to 19, and "adult" for anything else.
+---
+hasTypeFn("stageOfLife", "(age: Int)", "String")
+eval[String]("stageOfLife(0)", "baby")
+eval[String]("stageOfLife(1)", "baby")
+eval[String]("stageOfLife(3)", "baby")
+eval[String]("stageOfLife(4)", "child")
+eval[String]("stageOfLife(8)", "child")
+eval[String]("stageOfLife(13)", "teenager")
+eval[String]("stageOfLife(19)", "teenager")
+eval[String]("stageOfLife(20)", "adult")
+eval[String]("stageOfLife(50)", "adult")
+===
+Great!!
+
+Did you end up with something like this?
+
+  def stageOfLife(age: Int) = if (age < 4) "baby" else if (age < 13) "child" else 
+                                 if (age < 20) "teenager" else "adult"
+
+If you did something like "age >= 4 && age < 13", it's totally fine, but just remember you can
+take advantage of the fact that Scala will pick the first condition that evaluates to true.
+---
+===
+Alright, one last challenge. Remember that exercise with the car?
 
 Write a function called willIMakeIt that takes three arguments: milesPerGallon, gallonsInTank,
 and milesToGo. Return a Boolean indicating whether or not true you are going to make it to the

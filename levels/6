@@ -7,12 +7,14 @@ You've learned a lot so far! Strings, Ints, Booleans, Doubles, if/else, function
 
 It's time to step back for a second and talk about how scala goes about evaluating an expression.
 Scala's job is to take an expression you give it and reduce it step-by-step to a value. It can be
-important to know exactly what those steps are, so let's go through them with a few examples.
+important to know exactly what those steps are, so I'll introduce them by way of 6 examples of
+increasing complexity. Hang tight -- this might be a tiny bit tedious. But it's super important
+for what's coming next.
 
-We'll start with something simple -- an expression just containing numbers and arithmetic.
+We'll start with something simple: an expression just containing numbers and arithmetic.
 ---
 ===
-So consider this expression:
+Consider this expression:
 
   3.0 * (4 + 7) / 2
 
@@ -130,7 +132,7 @@ itself evaluates to whatever the body of the function evaluates to when the valu
 the arguments are substituted for their names.
 ---
 ===
-Now let's try something a little tricky. Do you remember factorials from math class?
+Now let's try something a little tricky. Do you remember factorials from high school math?
 It's defined this way:
 
   n! = n x (n-1) x (n-2) x ... x 1
@@ -152,11 +154,9 @@ second definition almost directly into code! It looks like this:
 Try typing that in and making sure it works. Make sure you get factorial(3) = 6 and
 factorial(5) = 120.
 ---
-===
 hasTypeFn("factorial", "(n: Int)", "Int")
 eval[Int]("factorial(4)", 24)
 eval[Int]("factorial(10)", 3628800)
----
 ===
 Cool! One thing to notice is that there's an extra ": Int" between the argument list and the =.
 It just indicates the return type of the function, and is usually optional in scala. The only
@@ -169,7 +169,7 @@ Let's walk through the evaluation of factorial(4) so you get how it works.
    factorial(3)
    ^^^^^^^^^^^^
 => if (3 == 1) 1 else 3 * factorial(3 - 1)
-      ^^^^^^
+       ^^^^^^
 => if (false) 1 else 3 * factorial(3 - 1)
    ^^
 => 3 * factorial(3 - 1)
@@ -200,8 +200,8 @@ Whew!
 You might have been worried that a function that calls itself would just loop around forever.
 But that's what "if (n == 1)" is for -- it provides an escape hatch to jump out of a potentially
 infinite loop. Every recursive function must have an escape hatch like this (usually called the
-base case), or else it will indeed run forever. (Don't worry though -- if your program might be
-stuck in an infinite loop, you can just hit Ctrl-C to break out of it.)
+base case), or else it will indeed run forever. (Don't worry though -- if you call a function
+that calls itself forever, Scala will detect it and report a StackOverflowError.)
 
 Okay, now (finally) it's time to write some code. Write a function called sum1toN that returns
 the sum of the numbers between 1 and n. For example, sum1toN(10) = 55. Here's some code to
@@ -209,7 +209,7 @@ get you started.
 
   def sum1toN(n: Int): Int = ...
 
-Don't forget the base case!
+Use factorial for inspiration. And don't forget the base case!
 ---
 hasTypeFn("sum1toN", "(n: Int)", "Int")
 eval[Int]("sum1toN(50)", 1275)
@@ -224,6 +224,15 @@ and if you follow them, you are almost guaranteed to produce correct code.
     b. Pretend your function already works for that smaller case and use it to compute
        "most" of the answer.
     c. Then write some code to get the rest of the way to the answer you want.
+---
+===
+For example, when you wrote sum1toN, your base case was "if (n == 1) 1". For the other cases,
+you can rephrase "the sum from 1 to n" as "n plus the sum from 1 to n-1". If you pretend that
+sum1toN(n-1) works, you can use that to compute "the sum from 1 to n-1" which is "most" of the
+answer. Then the only thing left is to implement the "rest" of the answer, which is just adding
+n to it. So you get:
+
+  def sum1toN(n: Int): Int = if (n == 1) 1 else n + sum1toN(n-1)
 
 Let's put that to use in another exercise. We'll write code to answer the following questions:
 If you have, say, 25 people in a room, what is the probability that no two people have the same
@@ -240,13 +249,13 @@ Well, it's trivially 100%% (1.0). So you would write
   def differentBirthdays(people: Int): Double = if (people == 1) 1.0 else ???
 
 Now, what about the other cases? How do you break down the problem into a smaller version of
-itself? I'll walk through the rest after you type ok.
+itself? Think about it for a minute and I'll walk through the rest after you type ok.
 ---
 ===
 Imagine a room with, say, 10 people in it, and that they all have different birthdays. When a new
 person walks is, what is the probability that everyone in the room still has different birthdays?
 We just have to make sure that the new guy doesn't have the same birthday as anyone else. There
-are 365-10 birthdays available, so the probability is (365.0 - 10) / 365.
+are 365-10 birthdays available, so the probability is (365 - 10) / 365.0.
 
 So the probability that 11 people all have different birthdays is the probability that 10 of them
 have different birthdays times the probability that the 11th guy has a different birthday from
@@ -262,12 +271,14 @@ eval[Double]("differentBirthdays(50)", 0.025638248442125422)
 ===
 Wow, the probability of 25 people having different birthdays is only about 40%%! And if there are
 50 people in the room, the probability goes all the way down to 2.5%%!
-
-More fun with math! Did you know that the square of the sume is the sum of the cubes?
+---
+===
+More fun with math! Did you know that the square of the sum is the sum of the cubes?
 
   (1 + 2 + 3 + ... + n)^2 == (1^3 + 2^3 + 3^3 + ... + n^3)
 
 For instance, 
+
   (1 + 2 + 3)^2 = 6^2 = 36
   1^3 + 2^3 + 3^3 = 1 + 8 + 27 = 36
 
@@ -276,33 +287,31 @@ Do you think that's really true for every number? Well, let's try it out!
 First, write a function called sumOfCubes that takes an Int n and returns the sum of the cubes of
 the numbers from 1 to n. (You can just use n*n*n to compute the cube of n.)
 
-You should get subOfCubes(10) = 3025.
+Write it recursively! You should get subOfCubes(10) = 3025.
 ---
-===
 hasTypeFn("sumOfCubes", "(n: Int)", "Int")
 eval[Int]("sumOfCubes(20)", 44100)
 eval[Int]("sumOfCubes(100)", 25502500)
----
 ===
+Great!
+
 Now write a function called squareOfSum that takes an Int n and returns the square of the sum
 of the numbers from 1 to n. (This function doesn't have to be recursive; you can call the sum1toN
 function you wrote earler and square the result.)
 
 Hint: Don't duplicate work! Use a block!
 ---
-===
 hasTypeFn("squareOfSum", "(n: Int)", "Int")
 eval[Int]("squareOfSum(20)", 44100)
 eval[Int]("squareOfSum(100)", 25502500)
----
 ===
 Good! Now try it out for a few different numbers. I get
 
   sumOfCubes(41)  = 741321
   squareOfSum(41) = 741321
 
-Okay, but that's not really good enough. Maybe there's some number we didn't try that it doesn't
-work for. Well we can't try *every* number, but we can try it out for ever number up to some number
+Okay! But that's not really good enough. Maybe there's some number we didn't try that it doesn't
+work for. Well, we can't try *every* number, but we can try it out for ever number up to some number
 we specify.
 
 For instance, I might want to know whether
@@ -315,17 +324,27 @@ For instance, I might want to know whether
 
 for some number n.
 
-Write a function called worksForEverythingUpTo that takes an Int n and returns a Boolean
+Write a recursive function called worksForEverythingUpTo that takes an Int n and returns a Boolean
 indicating whether sumOfCubes(i) == squareOfSum(i) for every number i between 1 and n.
+
+Don't forget the base case!
 ---
-===
 hasTypeFn("worksForEverythingUpTo", "(n: Int)", "Boolean")
 eval[Boolean]("worksForEverythingUpTo(10)", true)
 eval[Boolean]("worksForEverythingUpTo(100)", true)
 eval[Boolean]("worksForEverythingUpTo(1000)", true)
 eval[Boolean]("worksForEverythingUpTo(10000)", true)
----
 ===
-It's great getting computers to do all the work, isn't it?
+Pretty cool! It's great getting computers to do all the work, isn't it?
+
+Here's how I did it. There's more than one way!
+
+  def worksForEverythingUpTo(n: Int): Boolean = {
+    val worksForN = sumOfCubes(n) == squareOfSum(n)
+    if (n == 1) 
+      worksForN
+    else
+      worksForN && worksForEverythingUpTo(n-1)
+  }
 ---
 ===

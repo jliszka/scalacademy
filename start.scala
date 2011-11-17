@@ -67,7 +67,7 @@ object state_ {
 If you want to stop now and come back later, type ':quit' to exit. When you come back,
 type 'level(%d)' instead of 'start'.
 
-At any time you an type 'help' for help remembering what each command does.""".format(level, level+1))
+At any time you can type 'help' for help remembering what each command does.""".format(level, level+1))
   }
 
   def show() {
@@ -171,5 +171,8 @@ help         This help message.
              level by using the level(n) command.
 
 :load file   Read in the contents of a file as if you had
-             typed it.""")
+             typed it.
+
+For more help, tweet at @scalacademy on twitter!
+""")
 }

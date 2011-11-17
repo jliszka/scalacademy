@@ -219,11 +219,6 @@ stones). And once the human player leaves the pile with something that is not a 
 the computer is always able to make it a multiple of 4 again. This continues until the computer
 wins by making the pile 0 (a multiple of 4!).
 
-But, what should the computer do when the pile is already multiple of 4? Well, it can't take 0
-stones, and it can't take 4 stones, so all it can really do is take, say, 1 stone and hope that
-the human player makes a mistake. Really, this should never happen if the computer goes first
-(and the human doesn't cheat), but you need to write code to handle that situation anyway.
-
 Now, write the function computersTurn that takes an Int called stonesLeft, decides how many stones
 to take, and returns a String describing its move, as in the example game above. Don't worry about
 pluralization -- saying "1 stones" is fine.
@@ -232,19 +227,37 @@ Oh, and make sure to handle the case where the computer takes the last stones fr
 and wins!
 
 Hint: Use the %% (modulus) operator to find the remainder of a division. For example, 21 %% 4 is 1.
-Try it out if you're unsure how it works! Try 46 %% 10.
+Try it out if you're unsure how it works! Try 46 %% 10. (Extra hint: 32 %% 5 = 2 is the same as
+saying, 32 divided by 5 is something remainder 2, which is another way of saying, 32 is 2 more than
+a some multiple of 5.)
 ---
 hasTypeFn("computersTurn", "(stonesLeft: Int)", "java.lang.String")
 eval[String]("computersTurn(21)", "The computer takes 1 stones, leaving 20 stones in the pile.")
 eval[String]("computersTurn(17)", "The computer takes 1 stones, leaving 16 stones in the pile.")
 eval[String]("computersTurn(15)", "The computer takes 3 stones, leaving 12 stones in the pile.")
-eval[String]("computersTurn(12)", "The computer takes 1 stones, leaving 11 stones in the pile.")
 eval[String]("computersTurn(10)", "The computer takes 2 stones, leaving 8 stones in the pile.")
 eval[String]("computersTurn(8)", "The computer takes 1 stones, leaving 7 stones in the pile.")
 eval[String]("computersTurn(7)", "The computer takes 3 stones, leaving 4 stones in the pile.")
 eval[String]("computersTurn(3)", "The computer takes the last 3 stones and wins the game!")
 ===
 Yes! Awesome!
+
+There's one thing left you have to do, though. What if it's the computer's turn and the pile is
+already a multiple of 4? This should only really happen if the human goes first, or the human
+cheats, or the computer goes first and the game starts with a multiple of 4 stones -- but you should
+handle it anyway!
+
+So, you can't take 0 stones, and you can't take 4 stones, so all you can really do is take, say,
+1 stone and hope that the human player makes a mistake.
+
+Modify your function so that the computer takes 1 stone when the pile is already a multiple of 4.
+If it helps, you can use a nested if/else like you did back in level 3!
+---
+eval[String]("computersTurn(16)", "The computer takes 1 stones, leaving 15 stones in the pile.")
+eval[String]("computersTurn(12)", "The computer takes 1 stones, leaving 11 stones in the pile.")
+eval[String]("computersTurn(10)", "The computer takes 2 stones, leaving 8 stones in the pile.")
+===
+Great job!
 
 Here's the code I came up with, for reference.
 
@@ -255,8 +268,7 @@ def computersTurn(stonesLeft: Int) = {
   if (newStonesLeft == 0) {
     "The computer takes the last " + stonesToTake + " stones and wins the game!"
   } else if (stonesToTake == 0) {
-    val newStonesLeft = stonesLeft - 1
-    "The computer takes 1 stone, leaving " + newStonesLeft + " stones in the pile."
+    "The computer takes 1 stone, leaving " + (stonesLeft - 1) + " stones in the pile."
   } else {
     "The computer takes " + stonesToTake +
       " stones, leaving " + newStonesLeft + " stones in the pile."
