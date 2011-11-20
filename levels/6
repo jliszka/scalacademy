@@ -163,7 +163,7 @@ It just indicates the return type of the function, and is usually optional in sc
 time it is required is when the function body makes a call to the function itself. Functions that
 do that are called recursive functions. 
 
-Let's walk through the evaluation of factorial(4) so you get how it works.
+Let's walk through the evaluation of factorial(3) so you get how it works.
 ---
 ===
    factorial(3)
@@ -253,15 +253,26 @@ itself? Think about it for a minute and I'll walk through the rest after you typ
 ---
 ===
 Imagine a room with, say, 10 people in it, and that they all have different birthdays. When a new
-person walks is, what is the probability that everyone in the room still has different birthdays?
+person walks in, what is the probability that everyone in the room still has different birthdays?
 We just have to make sure that the new guy doesn't have the same birthday as anyone else. There
-are 365-10 birthdays available, so the probability is (365 - 10) / 365.0.
+are 365-10 birthdays available, so the probability is (365 - 10) / 365.0, which is about 0.97.
 
-So the probability that 11 people all have different birthdays is the probability that 10 of them
-have different birthdays times the probability that the 11th guy has a different birthday from
-the other 10.
+The probability that 10 people all have different birthdays happens to be about 0.86. So the
+probability that 11 people all have different birthdays is 0.86 times the probability that the
+11th person has a different birthday from the other 10 (0.97), which comes to about 0.84.
 
-You should now be able to finish writing differentBirthdays by filling in the ???.
+When a 12th person enters the room, the probability that that person has a different birthday from
+everyone else is now (365 - 11) / 365.0 (since 11 birthdays are already taken), which is about 0.97.
+And from that we conclude that the probability of 12 people in a room having different birthdays
+is 0.84 * 0.97, which is about 0.81.
+
+And in general, the probability that n people have different birthdays is the probability that n-1
+of them have different birthdays, times the probability that the nth person has a different birthday
+from the other n-1 people.
+
+You should now be able to finish writing differentBirthdays by filling in the ???. Use recursion to
+find the probability of n-1 people having different birthdays.
+
 Try differentBirthdays(25) and see what you get!
 ---
 hasTypeFn("differentBirthdays", "(people: Int)", "Double")
@@ -287,7 +298,7 @@ Do you think that's really true for every number? Well, let's try it out!
 First, write a function called sumOfCubes that takes an Int n and returns the sum of the cubes of
 the numbers from 1 to n. (You can just use n*n*n to compute the cube of n.)
 
-Write it recursively! You should get subOfCubes(10) = 3025.
+Write it recursively! You should get sumOfCubes(10) = 3025.
 ---
 hasTypeFn("sumOfCubes", "(n: Int)", "Int")
 eval[Int]("sumOfCubes(20)", 44100)
