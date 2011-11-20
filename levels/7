@@ -1,0 +1,320 @@
+
+ == LEVEL 7 ==
+
+Hi again! You've come a long way! In this level I'll introduce you to your first data structure,
+the List, and tell you about data structures in general. Next after that is input and output,
+which is what connects your program to the outside world -- interacting with the keyboard, the
+display, the file system, or even a network connection (like, for example, answering a web
+browser's request for a web page!). Don't worry, none of it is very complicated, it's all about
+using some functions someone else wrote to, say, create a JPEG file with certain pixels having
+certain colors.
+
+At that point, you'll have all the tools you need to pretty much code anything! Everything after
+that is all about ways to get your programs to run faster, or to organize your code better, or to
+make your code more concise with less repetition. Don't get me wrong, these topics are extremely
+deep fields that professional programmers spend their careers learning. But they are just
+optimizations. You'll really know everything you need to know to get the computer to do anything
+you want after the next few levels.
+---
+===
+So let's get started! Here's a List:
+
+  val list = 2 :: 3 :: 4 :: Nil
+
+It's just a bunch of simple values (Ints, Strings, Booleans, anything) separated by ::s ending with
+Nil. Try typing that in at the scala> prompt now.
+---
+declared[List[Int]]("list", List(2, 3, 4))
+===
+Great! Scala tells you that list is not just a List, it's a List[Int], which just means it's a List
+containing Ints. Now try this:
+
+  val stringList = "hello" :: "world" :: Nil
+---
+declared[List[String]]("stringList", List("hello", "world"))
+===
+There, see? A List of Strings! List[Int] and List[String] are different types, and if you write a
+function that takes a List[Int], and try to pass it a List[String], Scala will complain. This also
+means that every item in a List should have the same type.
+
+Scala's response to your list declarations should give you a clue to another way of creating lists.
+You can also do it this way:
+
+  val anotherList = List(3.14, 2.72, 1.62)
+
+You can use either one, but the :: notation is more indicative of how a List actually works. Let me
+explain.
+---
+===
+The :: is an operator, like +, that operates on Lists instead of Ints. What it does is combine an
+item with a List to produce a new List. It's also right-associative, meaning if you have several
+::s in a row, the one on the right happens first. So earlier when you declared your first list,
+Scala saw it this way:
+
+  val list = 2 :: (3 :: (4 :: Nil))
+
+Nil is just the empty list (of any type). So you can see that in the expression above, :: always has
+a List on its right and a single item on its left.
+
+You can use :: with any List on the right. Try this:
+
+  val newList = 1 :: list
+---
+declared[List[Int]]("newList", List(1, 2, 3, 4))
+===
+There, you just created a new List by prepending 1 onto an existing List, list!
+
+So in general, the way you should think about Lists is that any List is either
+
+  1. Nil, or
+  2. an item followed by a List
+
+For example, newList is 1 followed by the List 2 :: 3 :: 4 :: Nil. And the List 3 :: 4 :: Nil
+is 3 followed by the List 4 :: Nil. And the List 4 :: Nil is 4 followed by the List Nil. And 
+Nil is just Nil (case 1). Make sense?
+---
+===
+There's even an explicit way to get at this fact in Scala. It's called pattern matching, and it
+looks like this:
+
+  newList match {
+    case Nil => "the list is empty!"
+    case item :: rest => "this list is " + item + " followed by " + rest
+  }
+
+Try typing it in now!
+---
+hasValue[String]("this list is 1 followed by List(2, 3, 4)")
+===
+Okay!
+
+A match is an expression, which has a value, just like any expression. It consists of a scrutinee,
+which is the thing being scrutinized against some patterns (here, newList, but it can be any
+expression) followed by the word match, followed by several cases mapping patterns to expressions
+with the double arrow =>. Scala finds the first pattern that matches the scrutinee, and the entire
+match evaluates to the expression that corresponds to that pattern. It's a lot like an if/else,
+except instead of evaluating Boolean expressions it matches patterns. It's also similar to if/else
+in that ONLY the expression corresponding to the matching pattern gets evaluated.
+
+Okay, try typing out this function that uses the match expression above to "scrutinize" a list.
+
+  def scrutinize(list: List[Int]) = {
+    list match {
+      case Nil => "the list is empty!"
+      case item :: rest => "this list is " + item + " followed by " + rest
+    }
+  }
+
+And try it out on list, newList and Nil, or any other List you want!
+---
+hasTypeFn("scrutinize", "(list: List[Int])", "String")
+eval[String]("scrutinize(Nil)", "the list is empty!")
+eval[String]("scrutinize(3::Nil)", "this list is 3 followed by List()")
+eval[String]("scrutinize(2::3::Nil)", "this list is 2 followed by List(3)")
+===
+Cool! I should point out that in the match expression you wrote, item and rest aren't special
+words, they are just names that get bound to whatever part of the scrutinee they correspond
+to. You could have also written
+
+  case head :: tail => "this list is " + head + " followed by " + tail
+
+to the same effect. (For what it's worth, the first item of a List is often referred to as its
+head, and the rest of the list is called the tail.)
+---
+===
+This way of thinking about Lists should remind you of recursive functions, where we thought about
+a problem in terms of a simple base case (like 0 or 1) and a recursive step where we break down
+the problem into a smaller version of itself plus some extra work.
+
+That's exactly what we have here with Lists -- a base case, Nil, and a way to think about a List
+in terms of a smaller List (the tail) plus an extra item (the head). Let's see how to put this to
+work with an example: finding the length of a List.
+
+  def length(list: List[Int]): Int = {
+    list match {
+      case Nil => ??
+      case head :: tail => ??
+    }
+  }
+
+We'll fill in the missing pieces after you type ok, but if you want, you can to try to fill them
+in yourself before continuing.
+---
+===
+The base case is easy. What's the length of an empty List?
+
+    case Nil => 0
+
+No problem there. Now what's the length of a list that has a head and a tail? Keep in mind that
+we're going to write a recursive function here, so we'll probably be calling length on a smaller
+List to solve "most" of the problem. See if you can figure out what the head :: tail case should
+be. I'll reveal it after you type ok.
+---
+===
+Did you get this?
+
+   case head :: tail => 1 + length(tail)
+
+Cool, huh? If you haven't already, write out the complete length function and :load it into Scala.
+---
+hasTypeFn("length", "(list: List[Int])", "Int")
+eval[Int]("length(Nil)", 0)
+eval[Int]("length(3::4::5::Nil)", 3)
+eval[Int]("length(3::4::5::10::15::11::Nil)", 6)
+eval[Int]("length(List(3, 4, 2, 1, 0, 8, 8, 9, 1))", 9)
+===
+Great!
+
+As an aside, you might notice that even though you wrote length to take a List[Int] argument, the
+function does not depend in any way on the fact that the List contains Ints. If you wanted to
+find the length of a List[String], you would have to write a separate function whose definition
+would be identical except for the argument type. Later on, I will show you how to write functions
+that work on Lists with items of any type -- these are of course functions that only concern
+themselves with the structure of the list, rather than its contents. For example, functions that
+reverse a List, or return only the first n elements of a List, etc.
+
+Okay, time for another exercise! This time your function will actually depend on the contents
+of the list. Write a function called sumList that takes a List[Int] argument called list and
+returns the sum of all the items in the List. Do it recursively!
+---
+hasTypeFn("sumList", "(list: List[Int])", "Int")
+eval[Int]("sumList(List(4, 3, 2))", 9)
+eval[Int]("sumList(List(1, 2, 3, 4, 5, 6))", 21)
+eval[Int]("sumList(List(8, 8, 8))", 24)
+===
+Awesome!
+
+Alright, now it's time for a little challenge, putting together a couple of the things you've
+learned so far.
+
+Suppose you're given a List[Int] containing only the numbers between 1 and 10, with no number
+repeated, but with one number missing (so the List's length is only 9). How can you quickly
+determine the missing number?
+
+For example, given List(8, 6, 7, 5, 3, 10, 9, 2, 1), you would have to say that 4 is missing.
+
+I'll let you think about it for a minute. After you type ok I'll explain one way to do it.
+
+Hint: could you use sumList and another function you wrote earlier?
+---
+===
+Okay, all you have to do is add up all the numbers in the List, and add up all the numbers between
+1 and 10, and subtract them. The difference is the missing number!
+
+Now, write a function called missingNumber that takes a List[Int] argument called numbers that
+is assumed to contain all the numbers between 1 and length(numbers) + 1, with no repeats, and
+returns the missing number. You don't have to worry about cases where there are repeats or
+the List contains numbers not between 1 and length(numbers) + 1.
+
+For example, missingNumber(List(1, 4, 3)) should return 2.
+
+Hint: Use functions you've written already! This function doesn't need to be recursive.
+---
+hasTypeFn("missingNumber", "(numbers: List[Int])", "Int")
+eval[Int]("missingNumber(Nil)", 1)
+eval[Int]("missingNumber(List(4, 5, 2, 1))", 3)
+eval[Int]("missingNumber(List(8, 6, 7, 5, 3, 10, 9, 2, 1))", 4)
+eval[Int]("missingNumber(List(3, 1, 5, 6, 7, 4))", 2)
+===
+Great job!!
+
+Here's how I did it:
+
+  def missingNumber(numbers: List[Int]) = {
+    val sum = sumList(numbers)
+    val expectedSum = sum1toN(length(numbers) + 1)
+    expectedSum - sum
+  }
+---
+===
+Okay, that was fun! The best way to get a handle on recursion is more practice! So let's try another
+exercise.
+
+Write a function called addOne that takes a List[Int] called list and returns a new List with every
+item increased by 1. For example, addOne(List(2, 3, 5)) should return List(3, 4, 6).
+
+Do it recursively! Break it down with the usual rules for recursive functions.
+
+Hint: In your recursive case, use :: to construct a new List made from any item and any List.
+---
+hasTypeFn("addOne", "(list: List[Int])", "List[Int]")
+eval[List[Int]]("addOne(Nil)", Nil)
+eval[List[Int]]("addOne(List(1, 2, 3))", List(2, 3, 4))
+eval[List[Int]]("addOne(List(5, 1))", List(6, 2))
+===
+Excellent! Here's what I came up with:
+
+  def addOne(list: List[Int]): List[Int] = {
+    list match {
+      case Nil => Nil
+      case head :: tail => (head + 1) :: addOne(tail)
+    }
+  }
+---
+===
+Alright, one last challenge. You are going to write a function that sorts a List in order from
+smallest to largest. Don't worry, I'll walk you through it!
+
+We'll do it a couple of parts. First, let's write a function that inserts a number into a sorted
+List so that the resulting List is still sorted.
+
+This will be a recursive function, so let's break it down and apply our recursive function rules.
+
+For the base case, we are inserting an item into an empty list. So we just return a list with the
+single item in it.
+
+For the recursive case, we have to compare the item to insert to the head of the List. If it's
+smaller, the new item belongs at the front of the list, so we just return a new list with the item
+prepended to the front. What should happen if the new item is not smaller than the head of the
+list? I'll let you think about it for a minute. I'll explain how to do it after you type ok.
+Think recursively!
+---
+===
+Did you figure it out? All you need to do is (recursively) insert the new item into the tail, and
+prepend head onto the front of the result of that. Remember, we get to assume our function already
+works for smaller lists!
+
+Now, write a function a insert that takes two arguments, an Int called x and a List[Int] called
+sortedList, which is assumed to be already sorted, and returns a new List with x inserted into
+sortedList.
+---
+hasTypeFn("insert", "(x: Int,sortedList: List[Int])", "List[Int]")
+eval[List[Int]]("insert(3, Nil)", List(3))
+eval[List[Int]]("insert(3, List(2))", List(2, 3))
+eval[List[Int]]("insert(3, List(4, 6, 7, 8))", List(3, 4, 6, 7, 8))
+eval[List[Int]]("insert(9, List(4, 6, 7, 8))", List(4, 6, 7, 8, 9))
+eval[List[Int]]("insert(5, List(4, 6, 7, 8))", List(4, 5, 6, 7, 8))
+eval[List[Int]]("insert(7, List(4, 6, 7, 8))", List(4, 6, 7, 7, 8))
+===
+Wow, great job!!
+
+Here's what I did, how does yours compare?
+
+  def insert(x: Int, list: List[Int]): List[Int] = {
+    list match {
+      case Nil => x :: Nil
+      case head :: tail => if (x < head) x :: list else head :: insert(x, tail)
+    }
+  }
+
+All the hard work is done. Sorting a List is just one small step away! See if you can figure
+out how it's done. I'll tell you more after you type ok.
+
+Hint: It's another recursive function! Break it down recursive style. And use insert!
+---
+===
+Okay, the base case is easy. How do you sort an empty List? It's already sorted!
+
+The recursive case is also pretty easy: just insert the head into the (recursively) sorted
+tail!
+
+Go on, code it up! Write a function called insertionSort that takes a List[Int] argument called
+list and returns the list sorted from smallest to largest.
+---
+hasTypeFn("insertionSort", "(list: List[Int])", "List[Int]")
+eval[List[Int]]("insertionSort(Nil)", Nil)
+eval[List[Int]]("insertionSort(List(3))", List(3))
+eval[List[Int]]("insertionSort(List(7, 3, 4, 7, 1))", List(1, 3, 4, 7, 7))
+eval[List[Int]]("insertionSort(List(9, 23, -11, 8, 44, 12, 0, 31))", List(-11, 0, 8, 9, 12, 23, 31, 44))
+===
+Wow, amazing! You did it!

@@ -9,8 +9,9 @@ object state_ {
   def curr = prompts(i)
   def next() { i = i + 1 }
 
-  def hasType[T: Manifest](ident: String) = repl.typeForIdent(ident).exists(_ == implicitly[Manifest[T]].toString)
-  def hasTypeStr(ident: String, typ: String)(unused: String) = repl.typeForIdent(ident).exists(_ == typ)
+  def cleanTypeName(t: String) = t.replaceAll("scala.collection.immutable.", "").replaceAll("java.lang.", "")
+  def hasType[T: Manifest](ident: String) = repl.typeForIdent(ident).exists(t => cleanTypeName(t) == cleanTypeName(implicitly[Manifest[T]].toString))
+  def hasTypeStr(ident: String, typ: String)(unused: String) = repl.typeForIdent(ident).exists(t => cleanTypeName(t) == cleanTypeName(typ))
   def hasTypeFn(ident: String, args: String, ret: String)(unused: String) = {
     val ok = hasTypeStr(ident, args+ret)(unused)
     if (!ok) {
