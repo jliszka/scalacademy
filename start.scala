@@ -124,6 +124,10 @@ At any time you can type 'help' for help remembering what each command does.""".
       println("Oops, try again!")
     }
   }
+
+  def progress() {
+    println("You are on prompt %d of %d.".format(i+1, prompts.length))
+  }
 }
 
 def ok { 
@@ -150,6 +154,10 @@ def repeat {
   state_.show()
 }
 
+def progress {
+  state_.progress()
+}
+
 def help {
   println("""
 Using Scalacademy
@@ -164,6 +172,8 @@ level(n)     Jump to level n, e.g., level(3).
 next         Jump to the next level.
 
 restart      Restart the current level.
+
+progress     Show how far along you are in this level.
 
 help         This help message.
 
