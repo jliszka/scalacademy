@@ -274,9 +274,9 @@ Did you figure it out? All you need to do is (recursively) insert the new item i
 prepend head onto the front of the result of that. Remember, we get to assume our function already
 works for smaller lists!
 
-Now, write a function a insert that takes two arguments, an Int called x and a List[Int] called
-sortedList, which is assumed to be already sorted, and returns a new List with x inserted into
-sortedList.
+Now, write a function called insert that takes two arguments, an Int called x and a List[Int]
+called sortedList, which is assumed to be already sorted, and returns a new List with x inserted
+into sortedList in the proper position.
 ---
 hasTypeFn("insert", "(x: Int,sortedList: List[Int])", "List[Int]")
 eval[List[Int]]("insert(3, Nil)", List(3))
@@ -318,3 +318,5 @@ eval[List[Int]]("insertionSort(List(7, 3, 4, 7, 1))", List(1, 3, 4, 7, 7))
 eval[List[Int]]("insertionSort(List(9, 23, -11, 8, 44, 12, 0, 31))", List(-11, 0, 8, 9, 12, 23, 31, 44))
 ===
 Wow, amazing! You did it!
+---
+===

@@ -257,14 +257,14 @@ person walks in, what is the probability that everyone in the room still has dif
 We just have to make sure that the new guy doesn't have the same birthday as anyone else. There
 are 365-10 birthdays available, so the probability is (365 - 10) / 365.0, which is about 0.97.
 
-The probability that 10 people all have different birthdays happens to be about 0.86. So the
-probability that 11 people all have different birthdays is 0.86 times the probability that the
-11th person has a different birthday from the other 10 (0.97), which comes to about 0.84.
+The probability that 10 people all have different birthdays happens to be about 0.88. So the
+probability that 11 people all have different birthdays is 0.88 times the probability that the
+11th person has a different birthday from the other 10 (0.97), which comes to about 0.86.
 
 When a 12th person enters the room, the probability that that person has a different birthday from
 everyone else is now (365 - 11) / 365.0 (since 11 birthdays are already taken), which is about 0.97.
 And from that we conclude that the probability of 12 people in a room having different birthdays
-is 0.84 * 0.97, which is about 0.81.
+is 0.84 * 0.97, which is about 0.83.
 
 And in general, the probability that n people have different birthdays is the probability that n-1
 of them have different birthdays, times the probability that the nth person has a different birthday
@@ -276,12 +276,12 @@ find the probability of n-1 people having different birthdays.
 Try differentBirthdays(25) and see what you get!
 ---
 hasTypeFn("differentBirthdays", "(people: Int)", "Double")
-eval[Double]("differentBirthdays(25)", 0.4028629138746765)
-eval[Double]("differentBirthdays(30)", 0.2702858755193543)
-eval[Double]("differentBirthdays(50)", 0.025638248442125422)
+eval[Double]("differentBirthdays(25)", 0.431300296030536)
+eval[Double]("differentBirthdays(30)", 0.2936837572807312)
+eval[Double]("differentBirthdays(50)", 0.029626420422011596)
 ===
-Wow, the probability of 25 people having different birthdays is only about 40%%! And if there are
-50 people in the room, the probability goes all the way down to 2.5%%!
+Wow, the probability of 25 people having different birthdays is only 43%%! And if there are 50
+people in the room, the probability goes all the way down to 3%%!
 ---
 ===
 More fun with math! Did you know that the square of the sum is the sum of the cubes?
