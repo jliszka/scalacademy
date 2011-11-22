@@ -1,13 +1,16 @@
 
  == LEVEL 7 ==
 
-Hi again! You've come a long way! In this level I'll introduce you to your first data structure,
-the List, and tell you about data structures in general. Next after that is input and output,
-which is what connects your program to the outside world -- interacting with the keyboard, the
-display, the file system, or even a network connection (like, for example, answering a web
-browser's request for a web page!). Don't worry, none of it is very complicated, it's all about
-using some functions someone else wrote to, say, create a JPEG file with certain pixels having
-certain colors.
+Hi again! You've come a long way! Let me give you a glimpse into where you are and we're going next.
+
+In this level I'll introduce you to your first data structure, the List. After that we'll look at
+one or two more data structures that come in handy a lot.
+
+Right after that is input and output, which is what connects your program to the outside world --
+interacting with the keyboard, the display, the file system, or even a network connection (like,
+for example, answering a web browser's request for a web page!). Don't worry, none of it is very
+complicated, it's all about using some functions someone else wrote to, say, create a JPEG file
+with certain pixels having certain colors.
 
 At that point, you'll have all the tools you need to pretty much code anything! Everything after
 that is all about ways to get your programs to run faster, or to organize your code better, or to
@@ -17,7 +20,11 @@ optimizations. You'll really know everything you need to know to get the compute
 you want after the next few levels.
 ---
 ===
-So let's get started! Here's a List:
+So let's get started! A data structure is just what it sounds like -- some data (like Ints or
+Strings or Doubles) in some kind of structure. About the simplest and most common structure around
+is the list, an ordered collection of items.
+
+Here's a List in scala:
 
   val list = 2 :: 3 :: 4 :: Nil
 
@@ -26,7 +33,7 @@ Nil. Try typing that in at the scala> prompt now.
 ---
 declared[List[Int]]("list", List(2, 3, 4))
 ===
-Great! Scala tells you that list is not just a List, it's a List[Int], which just means it's a List
+Great! Scala tells you that list is not just a List, it's a List[Int], which means it's a List
 containing Ints. Now try this:
 
   val stringList = "hello" :: "world" :: Nil
@@ -64,6 +71,15 @@ declared[List[Int]]("newList", List(1, 2, 3, 4))
 ===
 There, you just created a new List by prepending 1 onto an existing List, list!
 
+And as usual, both the item and the list on either side of the :: can be expressions (but you might
+have to use parens). So this will work:
+
+  (10 - 9) :: (if (true) 2 else 7) :: "abc".length :: "wxyz".length :: newList
+
+Try it!
+---
+hasValue[List[Int]](List(1, 2, 3, 4, 1, 2, 3, 4))
+===
 So in general, the way you should think about Lists is that any List is either
 
   1. Nil, or
@@ -91,10 +107,12 @@ Okay!
 A match is an expression, which has a value, just like any expression. It consists of a scrutinee,
 which is the thing being scrutinized against some patterns (here, newList, but it can be any
 expression) followed by the word match, followed by several cases mapping patterns to expressions
-with the double arrow =>. Scala finds the first pattern that matches the scrutinee, and the entire
-match evaluates to the expression that corresponds to that pattern. It's a lot like an if/else,
-except instead of evaluating Boolean expressions it matches patterns. It's also similar to if/else
-in that ONLY the expression corresponding to the matching pattern gets evaluated.
+with the double arrow =>. Scala finds the first pattern that matches the scrutinee, and the ENTIRE
+match evaluates to the expression that corresponds to that pattern.
+
+It's important to know that ONLY the expression corresponding to the pattern that got picked is
+evaluated. It's a lot like an if/else, except instead of evaluating Boolean expressions, it matches
+patterns.
 
 Okay, try typing out this function that uses the match expression above to "scrutinize" a list.
 
@@ -128,7 +146,7 @@ the problem into a smaller version of itself plus some extra work.
 
 That's exactly what we have here with Lists -- a base case, Nil, and a way to think about a List
 in terms of a smaller List (the tail) plus an extra item (the head). Let's see how to put this to
-work with an example: finding the length of a List.
+work with an example, finding the length of a List.
 
   def length(list: List[Int]): Int = {
     list match {
@@ -143,7 +161,7 @@ in yourself before continuing.
 ===
 The base case is easy. What's the length of an empty List?
 
-    case Nil => 0
+      case Nil => 0
 
 No problem there. Now what's the length of a list that has a head and a tail? Keep in mind that
 we're going to write a recursive function here, so we'll probably be calling length on a smaller
@@ -153,7 +171,7 @@ be. I'll reveal it after you type ok.
 ===
 Did you get this?
 
-   case head :: tail => 1 + length(tail)
+     case head :: tail => 1 + length(tail)
 
 Cool, huh? If you haven't already, write out the complete length function and :load it into Scala.
 ---
@@ -170,11 +188,11 @@ function does not depend in any way on the fact that the List contains Ints. If 
 find the length of a List[String], you would have to write a separate function whose definition
 would be identical except for the argument type. Later on, I will show you how to write functions
 that work on Lists with items of any type -- these are of course functions that only concern
-themselves with the structure of the list, rather than its contents. For example, functions that
+themselves with the structure of the List, rather than its contents. For example, functions that
 reverse a List, or return only the first n elements of a List, etc.
 
 Okay, time for another exercise! This time your function will actually depend on the contents
-of the list. Write a function called sumList that takes a List[Int] argument called list and
+of the List. Write a function called sumList that takes a List[Int] argument called list and
 returns the sum of all the items in the List. Do it recursively!
 ---
 hasTypeFn("sumList", "(list: List[Int])", "Int")
@@ -260,7 +278,7 @@ List so that the resulting List is still sorted.
 
 This will be a recursive function, so let's break it down and apply our recursive function rules.
 
-For the base case, we are inserting an item into an empty list. So we just return a list with the
+For the base case, we are inserting an item into an empty List. So we just return a List with the
 single item in it.
 
 For the recursive case, we have to compare the item to insert to the head of the List. If it's
@@ -305,8 +323,7 @@ Hint: It's another recursive function! Break it down recursive style. And use in
 ===
 Okay, the base case is easy. How do you sort an empty List? It's already sorted!
 
-The recursive case is also pretty easy: just insert the head into the (recursively) sorted
-tail!
+The recursive case is also pretty easy: just insert the head into the (recursively) sorted tail.
 
 Go on, code it up! Write a function called insertionSort that takes a List[Int] argument called
 list and returns the list sorted from smallest to largest.
@@ -318,5 +335,16 @@ eval[List[Int]]("insertionSort(List(7, 3, 4, 7, 1))", List(1, 3, 4, 7, 7))
 eval[List[Int]]("insertionSort(List(9, 23, -11, 8, 44, 12, 0, 31))", List(-11, 0, 8, 9, 12, 23, 31, 44))
 ===
 Wow, amazing! You did it!
+
+Insertion sort is a real sorting algorithm that is used in the real world. Visit the Wikipedia page
+on Insertion sort to learn more about it! http://en.wikipedia.org/wiki/Insertion_sort
+
+A couple of things to notice:
+
+ - Typical implementations insert each item into a sorted prefix of the list rather than into the
+   sorted tail. But it's the same idea.
+ - The pseudocode implementation is like twice as much code as your Scala implementation!
+ - There are other sorting algorithms out there, some more efficient on larger lists. Some of them
+   are particularly suited to recursive style. We'll see one or two of them a little later on.
 ---
 ===

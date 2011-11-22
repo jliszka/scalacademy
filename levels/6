@@ -252,26 +252,22 @@ Now, what about the other cases? How do you break down the problem into a smalle
 itself? Think about it for a minute and I'll walk through the rest after you type ok.
 ---
 ===
-Imagine a room with, say, 10 people in it, and that they all have different birthdays. When a new
-person walks in, what is the probability that everyone in the room still has different birthdays?
-We just have to make sure that the new guy doesn't have the same birthday as anyone else. There
-are 365-10 birthdays available, so the probability is (365 - 10) / 365.0, which is about 0.97.
+Let's break it down recursive style. The probability that, say, 10 people all have different
+birthdays is just:
 
-The probability that 10 people all have different birthdays happens to be about 0.88. So the
-probability that 11 people all have different birthdays is 0.88 times the probability that the
-11th person has a different birthday from the other 10 (0.97), which comes to about 0.86.
+  - the probability that 9 people have different birthdays, times
+  - the probability that the 10th person has a different birthday from the other 9.
 
-When a 12th person enters the room, the probability that that person has a different birthday from
-everyone else is now (365 - 11) / 365.0 (since 11 birthdays are already taken), which is about 0.97.
-And from that we conclude that the probability of 12 people in a room having different birthdays
-is 0.84 * 0.97, which is about 0.83.
+That's all there is to it! Let's examine each piece in more detail.
 
-And in general, the probability that n people have different birthdays is the probability that n-1
-of them have different birthdays, times the probability that the nth person has a different birthday
-from the other n-1 people.
+We can compute the probability that 9 people (or, generally, n-1 people) have different birthdays
+just by calling differentBirthdays (pretending that it already works for n-1). Easy!
 
-You should now be able to finish writing differentBirthdays by filling in the ???. Use recursion to
-find the probability of n-1 people having different birthdays.
+The probability that the 10th person (more generally, the nth person) has a different birthday from
+the other 9 people (n-1 people) is 356 / 365.0 (generally, (366 - n) / 365.0), because there are 9
+(n-1) birthdays already "taken" out of the available 365.
+
+You should now be able to finish writing differentBirthdays by filling in the ???.
 
 Try differentBirthdays(25) and see what you get!
 ---
@@ -280,8 +276,12 @@ eval[Double]("differentBirthdays(25)", 0.431300296030536)
 eval[Double]("differentBirthdays(30)", 0.2936837572807312)
 eval[Double]("differentBirthdays(50)", 0.029626420422011596)
 ===
-Wow, the probability of 25 people having different birthdays is only 43%%! And if there are 50
-people in the room, the probability goes all the way down to 3%%!
+Wow, the probability of 25 people having different birthdays is only 43%%! If you walk into
+a room and there are 25 people there, the chances are better than even odds that 2 of them
+share a birthday. Crazy!
+
+And if there are 50 people in the room, it's almost certain (97%%!) that two of them share
+a birthday!
 ---
 ===
 More fun with math! Did you know that the square of the sum is the sum of the cubes?
@@ -293,7 +293,8 @@ For instance,
   (1 + 2 + 3)^2 = 6^2 = 36
   1^3 + 2^3 + 3^3 = 1 + 8 + 27 = 36
 
-Do you think that's really true for every number? Well, let's try it out!
+Well, it happens to work for n = 3, but do you think that's really true for every number? Let's
+try it out!
 
 First, write a function called sumOfCubes that takes an Int n and returns the sum of the cubes of
 the numbers from 1 to n. (You can just use n*n*n to compute the cube of n.)
@@ -322,8 +323,8 @@ Good! Now try it out for a few different numbers. I get
   squareOfSum(41) = 741321
 
 Okay! But that's not really good enough. Maybe there's some number we didn't try that it doesn't
-work for. Well, we can't try *every* number, but we can try it out for ever number up to some number
-we specify.
+work for. Well, we can't try *every* number, but we can try it out for every number up to some
+number we specify.
 
 For instance, I might want to know whether
 
