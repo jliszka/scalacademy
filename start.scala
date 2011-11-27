@@ -6,6 +6,8 @@ object state_ {
   var prompts: List[Prompt] = Nil
   var local = false
 
+  val id = findOrGetId()
+
   def curr = prompts(i)
   def next() { i = i + 1 }
 
@@ -90,18 +92,32 @@ At any time you can type 'help' for help remembering what each command does.""".
     val stream = new java.net.URL(url).openConnection.getInputStream
     val scan = new java.util.Scanner(stream)
     def allLines(s: java.util.Scanner): List[String] = if (s.hasNext) s.nextLine :: allLines(s) else Nil
-    parse(allLines(scan))
+    allLines(scan)
   }
 
   def loadFile(file: String) = {
-    parse(scala.io.Source.fromFile(file).getLines.toList)
+    scala.io.Source.fromFile(file).getLines.toList
   }
 
   def loadLevel(l: Int) { 
     level = l
-    prompts = if (local) loadFile("levels/"+l) else loadUrl("https://raw.github.com/jliszka/scalacademy/master/levels/"+l)
+    prompts = parse(if (local) loadFile("levels/"+l) else loadUrl("https://raw.github.com/jliszka/scalacademy/master/levels/"+l))
     i = 0
     show()
+  }
+
+  def findOrGetId() = {
+    import java.io.{File, PrintWriter}
+    val f = new File("id")
+    if (f.exists) {
+      loadFile("id").mkString("").trim
+    } else {
+      val id = loadUrl("http://www.scalacademy.com/id").mkString("").trim
+      val p = new PrintWriter(f)
+      p.println(id)
+      p.close()
+      id
+    }
   }
 
   def nextLevel() { 
@@ -114,12 +130,24 @@ At any time you can type 'help' for help remembering what each command does.""".
     show()
   }
 
+  def sendProgress(correct: Boolean) {
+    try {
+      val c = if (correct) 1 else 0
+      val url = "http://www.scalacademy.com/inc?id=%s&level=%d&step=%s&correct=%d".format(id, level, i, c)
+      new java.net.URL(url).openConnection.getInputStream
+    } catch {
+      case e =>
+    }
+  }
+
   def check() {
     if (curr.check()) {
+      sendProgress(true)
       next()
       println()
       show()
     } else {
+      sendProgress(false)
       println()
       println("Oops, try again!")
     }
