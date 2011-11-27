@@ -19,7 +19,7 @@ from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp import util
-from models import Log, Counter
+from models import Log, User
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
@@ -31,32 +31,42 @@ class MainHandler(webapp.RequestHandler):
 class IncHandler(webapp.RequestHandler):
     def get(self):
         id = int(self.request.get('id'))
-        level = self.request.get('level')
-        step = int(self.request.get('step'))
-        correct = self.request.get('correct') == '1'
-        log = Log(id=id, level=level, step=step, correct=correct)
-        log.put()
-        self.response.out.write('ok')
+        secret = int(self.request.get('secret'))
+        user = db.get(db.Key.from_path("User", id))
+        if user.secret == secret:
+            level = self.request.get('level')
+            step = int(self.request.get('step'))
+            correct = self.request.get('correct') == '1'
+            log = Log(user=user, level=level, step=step, correct=correct)
+            log.put()
+            user.level = level
+            user.step = step
+            user.put()
+        self.response.out.write("ok")
 
 class IdHandler(webapp.RequestHandler):
     def get(self):
-        def get_and_increment(key):
-            counter = db.get(key)
-            counter.value += 1
-            counter.put()
-            return counter.value
-        counter = Counter.gql("").get()
-        if counter == None:
-            counter = Counter()
-            counter.put()
-        id = db.run_in_transaction(get_and_increment, counter.key())
-        self.response.out.write(id)
+        secret = int(self.request.get('secret'))
+        user = User(secret=secret)
+        user.put()
+        self.response.out.write(user.key().id())
 
+
+class LastHandler(webapp.RequestHandler):
+    def get(self):
+        id = int(self.request.get('id'))
+        secret = int(self.request.get('secret'))
+        user = db.get(db.Key.from_path("User", id))
+        if user.secret == secret:
+            self.response.out.write("%s:%d" % (user.level, user.step))
+        else:
+            self.response.out.write("1:1")
 
 def main():
     application = webapp.WSGIApplication([('/', MainHandler),
                                           ('/inc', IncHandler),
-                                          ('/id', IdHandler)],
+                                          ('/id', IdHandler),
+                                          ('/last', LastHandler)],
                                          debug=True)
     util.run_wsgi_app(application)
 

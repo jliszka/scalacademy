@@ -1,13 +1,18 @@
 from google.appengine.ext import db
 
-class Log(db.Model):
+class User(db.Model):
     user = db.UserProperty()
-    id = db.IntegerProperty()
+    secret = db.IntegerProperty()
+    level = db.StringProperty()
+    step = db.IntegerProperty()
+
+class Log(db.Model):
+    user = db.ReferenceProperty(User)
     level = db.StringProperty()
     step = db.IntegerProperty()
     correct = db.BooleanProperty()
     time = db.DateTimeProperty(auto_now_add=True)
 
-class Counter(db.Model):
-    value = db.IntegerProperty(default=0)
+
+
 

@@ -6,7 +6,9 @@ object state_ {
   var prompts: List[Prompt] = Nil
   var local = false
 
-  val id = findOrGetId()
+  val rand = new scala.util.Random
+  val (id, secret) = findOrGetId()
+  val baseUrl = "http://www.scalacademy.com/%%s?id=%d&secret=%d".format(id, secret)
 
   def curr = prompts(i)
   def next() { i = i + 1 }
@@ -103,41 +105,49 @@ At any time you can type 'help' for help remembering what each command does.""".
     level = l
     prompts = parse(if (local) loadFile("levels/"+l) else loadUrl("https://raw.github.com/jliszka/scalacademy/master/levels/"+l))
     i = 0
-    show()
   }
 
   def findOrGetId() = {
     import java.io.{File, PrintWriter}
-    val f = new File("id")
-    if (f.exists) {
-      loadFile("id").mkString("").trim
+    val idFile = new File("id")
+    if (idFile.exists) {
+      val parts = loadFile("id").mkString("").trim.split(":")
+      (parts(0).toInt, parts(1).toInt)
     } else {
-      val id = loadUrl("http://www.scalacademy.com/id").mkString("").trim
-      val p = new PrintWriter(f)
-      p.println(id)
+      val secret = math.abs(rand.nextInt() % 10000000)
+      val id = loadUrl("http://www.scalacademy.com/id?secret="+secret).mkString("").trim.toInt
+      val p = new PrintWriter(idFile)
+      p.println(id+":"+secret)
       p.close()
-      id
+      (id, secret)
     }
   }
 
   def nextLevel() { 
     level = level + 1
-    loadLevel(level) 
+    loadLevel(level)
   }
 
   def restartLevel() {
     i = 0
-    show()
   }
 
   def sendProgress(correct: Boolean) {
     try {
       val c = if (correct) 1 else 0
-      val url = "http://www.scalacademy.com/inc?id=%s&level=%d&step=%s&correct=%d".format(id, level, i, c)
+      val url = "%s&level=%d&step=%s&correct=%d".format(baseUrl.format("inc"), level, i, c)
       new java.net.URL(url).openConnection.getInputStream
     } catch {
       case e =>
     }
+  }
+
+  def resume() {
+    val url = baseUrl.format("last")
+    val parts = loadUrl(url).mkString("").trim.split(":")
+    level = parts(0).toInt
+    loadLevel(level)
+    i = parts(1).toInt + 1
   }
 
   def check() {
@@ -164,18 +174,22 @@ def ok {
 
 def start {
   state_.loadLevel(1)
+  state_.show()
 }
 
 def level(l: Int) { 
   state_.loadLevel(l) 
+  state_.show()
 }
 
 def next { 
   state_.nextLevel()
+  state_.show()
 }
 
 def restart { 
   state_.restartLevel()
+  state_.show()
 }
 
 def repeat {
@@ -184,6 +198,11 @@ def repeat {
 
 def progress {
   state_.progress()
+}
+
+def resume {
+  state_.resume()
+  state_.show()
 }
 
 def help {
@@ -203,11 +222,14 @@ restart      Restart the current level.
 
 progress     Show how far along you are in this level.
 
+resume       Resume from where you last left off (progress is
+             saved automatically -- although definitions you made
+             in the console are not).
+
 help         This help message.
 
-:quit        Leave the program. Your progress will not
-             be saved but you can return to the current
-             level by using the level(n) command.
+:quit        Leave the program. When you return to Scalacademy
+             you can pick up where you left off by typing 'resume'.
 
 :load file   Read in the contents of a file as if you had
              typed it.
@@ -215,3 +237,12 @@ help         This help message.
 For more help, tweet at @scalacademy on twitter!
 """)
 }
+
+println("""
+
+  Welcome to Scalacademy!
+
+  To get started, type 'start' at the 'scala>' prompt below and hit enter.
+
+  Type 'help' at any time for help using Scalacademy.
+""")
