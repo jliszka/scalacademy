@@ -161,7 +161,7 @@ eval[Int]("factorial(10)", 3628800)
 Cool! One thing to notice is that there's an extra ": Int" between the argument list and the =.
 It just indicates the return type of the function, and is usually optional in scala. The only
 time it is required is when the function body makes a call to the function itself. Functions that
-do that are called recursive functions. 
+"call themselves" like that are called recursive functions. 
 
 Let's walk through the evaluation of factorial(3) so you get how it works.
 ---
@@ -264,7 +264,7 @@ We can compute the probability that 9 people (or, generally, n-1 people) have di
 just by calling differentBirthdays (pretending that it already works for n-1). Easy!
 
 The probability that the 10th person (more generally, the nth person) has a different birthday from
-the other 9 people (n-1 people) is 356 / 365.0 (generally, (366 - n) / 365.0), because there are 9
+the other 9 people (n-1 people) is 356 / 365.0 (generally, (365 - (n-1)) / 365.0), because there are 9
 (n-1) birthdays already "taken" out of the available 365.
 
 You should now be able to finish writing differentBirthdays by filling in the ???.
@@ -309,7 +309,7 @@ Great!
 
 Now write a function called squareOfSum that takes an Int n and returns the square of the sum
 of the numbers from 1 to n. (This function doesn't have to be recursive; you can call the sum1toN
-function you wrote earler and square the result.)
+function you wrote earlier and square the result.)
 
 Hint: Don't duplicate work! Use a block!
 ---
@@ -339,7 +339,7 @@ for some number n.
 Write a recursive function called worksForEverythingUpTo that takes an Int n and returns a Boolean
 indicating whether sumOfCubes(i) == squareOfSum(i) for every number i between 1 and n.
 
-Don't forget the base case!
+Don't forget the base case! And especially don't forget about &&!
 ---
 hasTypeFn("worksForEverythingUpTo", "(n: Int)", "Boolean")
 eval[Boolean]("worksForEverythingUpTo(10)", true)

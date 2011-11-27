@@ -54,14 +54,15 @@ explain.
 ---
 ===
 The :: is an operator, like +, that operates on Lists instead of Ints. What it does is combine an
-item with a List to produce a new List. It's also right-associative, meaning if you have several
-::s in a row, the one on the right happens first. So earlier when you declared your first list,
-Scala saw it this way:
+item with a List to produce a new List. It always takes a single item on its left and a List on its
+right. In order for that to work, it has to be right-associative, meaning if you have several ::s
+in a row, the one on the right happens first. So earlier when you declared your first list, Scala
+saw it this way:
 
   val list = 2 :: (3 :: (4 :: Nil))
 
 Nil is just the empty list (of any type). So you can see that in the expression above, :: always has
-a List on its right and a single item on its left.
+a single item on its left and a List on its right.
 
 You can use :: with any List on the right. Try this:
 
@@ -80,7 +81,7 @@ Try it!
 ---
 hasValue[List[Int]](List(1, 2, 3, 4, 1, 2, 3, 4))
 ===
-So in general, the way you should think about Lists is that any List is either
+In general, the way you should think about Lists is that any List is either
 
   1. Nil, or
   2. an item followed by a List
@@ -124,6 +125,8 @@ Okay, try typing out this function that uses the match expression above to "scru
   }
 
 And try it out on list, newList and Nil, or any other List you want!
+
+Notice that the argument, list, has type List[Int], which is the full type
 ---
 hasTypeFn("scrutinize", "(list: List[Int])", "String")
 eval[String]("scrutinize(Nil)", "the list is empty!")
@@ -274,7 +277,8 @@ Alright, one last challenge. You are going to write a function that sorts a List
 smallest to largest. Don't worry, I'll walk you through it!
 
 We'll do it a couple of parts. First, let's write a function that inserts a number into a sorted
-List so that the resulting List is still sorted.
+List so that the resulting List is still sorted. For instance, inserting 5 into the already-sorted
+List(1, 3, 6, 9) gives List(1, 3, 5, 6, 9).
 
 This will be a recursive function, so let's break it down and apply our recursive function rules.
 
@@ -284,7 +288,7 @@ single item in it.
 For the recursive case, we have to compare the item to insert to the head of the List. If it's
 smaller, the new item belongs at the front of the list, so we just return a new list with the item
 prepended to the front. What should happen if the new item is not smaller than the head of the
-list? I'll let you think about it for a minute. I'll explain how to do it after you type ok.
+List? I'll let you think about it for a minute. I'll explain how to do it after you type ok.
 Think recursively!
 ---
 ===
