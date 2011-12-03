@@ -1,0 +1,289 @@
+
+ == LEVEL 8 ==
+
+Lists are fun! But they're not the only data structure in town. In this level, I'll show you another
+data structure that's really useful: tuples.
+
+Tuples are nothing more than pairs, triples, or quadruples (or really any "arity") of values. 
+For example:
+
+  val t = ("hello", 4)
+
+Try it!
+---
+declared[(String, Int)]("t", ("hello", 4))
+===
+Cool! Unlike Lists, the values in the tuple can be different types, which are reflected in the type
+of the tuple. For example, t is composed of a String and an Int, so it has type (String, Int).
+Here's another tuple:
+
+  val point = (3.5, 0.25, -1.0)
+
+Try it!
+---
+declared[(Double, Double, Double)]("point", (3.5, 0.25, -1.0))
+===
+The type of point is (Double, Double, Double) -- it is a 3-tuple. You can see that the type also
+encodes the number of items in the tuple. Whereas List(1, 2) and List(7, 8, 9) are both List[Int]s,
+(1, 2) is an (Int, Int) and (7, 8, 9) is an (Int, Int, Int), which are not the same types. If you
+had a function that took an (Int, Int) as an argument, and you tried to call it with the 3-tuple
+(4, 5, 6), Scala would complain.
+---
+===
+Tuples are useful when you want to write a function that returns more than one thing, especially
+when those things are different types and you know how many of them there are going to be. For
+example, here's a function that returns the quotient and remainder after dividing two numbers:
+
+  def quotrem(dividend: Int, divisor: Int): (Int, Int) = {
+    (dividend / divisor, dividend %% divisor) 
+  }
+
+(The return type, (Int, Int) is optional, but I specified it here for illustration.)
+
+Try typing that in and calling it with different numbers.
+---
+hasTypeFn("quotrem", "(dividend: Int,divisor: Int)", "(Int, Int)")
+eval[(Int, Int)]("quotrem(9, 4)", (2, 1))
+eval[(Int, Int)]("quotrem(10, 8)", (1, 2))
+eval[(Int, Int)]("quotrem(20, 25)", (0, 20))
+eval[(Int, Int)]("quotrem(45, 6)", (7, 3))
+===
+Cool!
+
+In this case I know there are only going to be two values to return. Here they happen to be the same
+type, so I could have used a List[Int], but it's more appropriate to use tuples here because you can
+encode in the return type the fact that there will always be two values. If quotrem returned a List,
+whoever called it would have to pattern match on the result and handle the case when there aren't
+only two items in the List, which can be annoying.
+
+So what do you do with a tuple once you have one? There are two ways to get values out of a tuple.
+The first way is the so-called "projections" _1, _2, _3, etc. (don't ask why they're called that),
+which return the nth item of the tuple. For example, t._1 is "hello", t._2 is 4 and point._3 is -1.
+
+Try it!
+---
+===
+The other way is by pattern matching. It looks like this:
+
+  val (x, y, z) = point
+
+Scala scrutinizes point and assigns x, y and z to be the corresponding items in the tuple.
+Try it now!
+---
+declared[Double]("x", 3.5)
+declared[Double]("y", 0.25)
+declared[Double]("z", -1.0)
+===
+Neat, huh?
+
+Now write a single expression that calls quotrem(50, 7) and uses pattern matching to assign the
+result to two vals called quotient and remainder, respectively.
+---
+declared[Int]("quotient", 7)
+declared[Int]("remainder", 1)
+===
+Great!!
+
+As an aside, you can use List pattern matching in a val declaration, too -- try these:
+
+  val List(a, b, c) = List(1, 2, 3)
+  val head :: tail = List("hello", "there", "nice", "day", "isn't", "it")
+  val h1 :: h2 :: rest = List("why", "yes", "it's", "quite", "pleasant")
+---
+===
+You might be wondering what the difference is between expressions like that and the match/case
+you learned earlier. The difference is that match/case lets you provide several patterns and will
+pick for you the first one that matches the scrutinee. Here, there is only one pattern, and if it
+doesn't match, Scala will give you an error. Try typing val (a, b) = (1, 2, 3), for example.
+---
+===
+See?
+
+Pattern matching is the more "idiomatic" way to get values out of a tuple, but I see people using
+_1 and _2 plenty as well.
+
+You can pass tuples to a function just like any other value. You can also have a List of tuples
+(List[(String, Boolean)], say), or a tuple of Lists (e.g., (List[String], List[Int], List[Double])),
+or a tuple of Lists of tuples, or anything. Which one should you use? It all depends on what fits
+your problem domain the best.
+---
+===
+Let's try an exercise. Write a function called partition that takes an Int called pivot and a
+List[Int] called list and returns two List[Int]s, in a tuple (that is, (List[Int], List[Int])).
+The first item in the tuple should be a List containing all the items in list that are smaller
+than pivot, and the second item in the tuple should be a List containing all the other items in
+list.
+
+For example, partition(5, List(2, 9, 1, 5, 11, 8)) should return (List(2, 1), List(9, 5, 11, 8)).
+
+Hint: Do it recursively! Pattern match on the result of the recursive call to partition.
+---
+hasTypeFn("partition", "(pivot: Int,list: List[Int])", "(List[Int], List[Int])")
+eval[(List[Int], List[Int])]("partition(5, Nil)", (Nil, Nil))
+eval[(List[Int], List[Int])]("partition(5, List(1, 2))", (List(1, 2), Nil))
+eval[(List[Int], List[Int])]("partition(5, List(9, 8))", (Nil, List(9, 8)))
+eval[(List[Int], List[Int])]("partition(5, List(2, 9, 1, 11, 5))", (List(2, 1), List(9, 11, 5)))
+===
+Awesome!
+
+Here's how I did it, but there's more than one way!
+
+  def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
+    list match {
+      case Nil => (Nil, Nil)
+      case h :: t => {
+        val (smaller, rest) = partition(pivot, t)
+        if (h < pivot) (h :: smaller, rest) else (smaller, h :: rest)
+      }
+    }
+  }
+
+As a brief aside, I've found it a useful strategy to keep the types of all the sub-expressions in
+mind when I'm trying to write a function. Very often, functions "write themselves" if I let the
+types guide me -- for instance, when you know you need something of a certain type and you only
+have one thing available of that type, you can (very often) just plug it in. At the very least,
+it will guide your thinking as to the general form of what "goes in the blank", and prevent you
+from making silly mistakes.
+---
+===
+You might not realize it, but you are one small step away from writing a very well-known list
+sorting algorithm called Quicksort. Here's how it goes:
+
+  0. If the list is empty, return it.
+  1. Otherwise, take the head of the list and call it the "pivot".
+  2. Partition the tail into two lists: items smaller than the pivot and everything else.
+  3. Recursively sort the two lists.
+  4. Concatenate the sorted lists back together with the pivot between them.
+
+Go on, code it up! You can do it! Call your function quicksort and have it take a single List[Int]
+argument called list.
+
+Hint: Use ++ to concatenate Lists: List(1, 2) ++ List(3, 4) is List(1, 2, 3, 4)
+---
+hasTypeFn("quicksort", "(list: List[Int])", "List[Int]")
+eval[List[Int]]("quicksort(Nil)", Nil)
+eval[List[Int]]("quicksort(List(2, 1))", List(1, 2))
+eval[List[Int]]("quicksort(List(4, 3, 1, 8))", List(1, 3, 4, 8))
+eval[List[Int]]("quicksort(List(51, 6, -11, 23, 99, 41, 15, 8, 100, -5))", List(-11, -5, 6, 8, 15, 23, 41, 51, 99, 100))
+===
+Excellent!
+
+Here's what my code looks like:
+
+  def quicksort(list: List[Int]): List[Int] = {
+    list match {
+      case Nil => Nil
+      case pivot :: tail => {
+        val (smaller, rest) = partition(pivot, tail)
+	quicksort(smaller) ++ (pivot :: quicksort(rest))
+      }
+    }
+  }
+
+When I interview Software Engineers, I ask them to code up Quicksort. You've come a long way!
+
+Have a look at the Quicksort article on Wikipedia: http://en.wikipedia.org/wiki/Quicksort
+---
+===
+Tuples are also a good way to represent points on a plane, like the way you see them in math
+class: (3, 4) represents the point 3 units over in the horizontal (x) direction and 4 units up
+in the vertical (y) direction.
+
+Complex numbers, if you remember them from high school math, are another kind of mathematical
+object that can be represented by two numbers. The complex number 3 + 4i could be represented
+in Scala as the tuple (3, 4). Likewise, the number i could be reprsented as (0, 1).
+
+Representation is only one part of it, though. What makes it a complex number is the way it
+behaves. For example, you can add, subtract, multiply and divide complex numbers if you know
+how.
+---
+===
+Let's take a look at how that works. To add two complex numbers, you just add their real and
+imaginary parts. For example, (2 + 3i) + (2 - i) = 4 + 2i. And in general, (a + bi) + (c + di) = 
+(a + c) + (b + d)i.
+
+Write a function called addComplex that takes two tuples of type (Double, Double) called w and z,
+and returns their sum as if each tuple represented the real and imaginary parts of some complex
+number.  For example, addComplex((3.0, 1.0), (-1.0, 5.0)) should return (2.0, 6.0).
+---
+hasTypeFn("addComplex", "(w: (Double, Double),z: (Double, Double))", "(Double, Double)")
+eval[(Double, Double)]("addComplex((0.0, 1.0), (4.0, 0.0))", (4.0, 1.0))
+eval[(Double, Double)]("addComplex((3.0, 1.0), (-1.0, 5.0))", (2.0, 6.0))
+===
+Great!
+
+Subtracting complex numbers is just as easy! You just subtract them component-wise the same way
+you added them: (a + bi) - (c + di) = (a - c) + (b - d)i.
+
+Write a function called subtractComplex that takes two tuples of type (Double, Double) called w and
+z, representing complex numbers, and returns the difference w - z.
+---
+hasTypeFn("subtractComplex", "(w: (Double, Double),z: (Double, Double))", "(Double, Double)")
+eval[(Double, Double)]("subtractComplex((0.0, 1.0), (4.0, 0.0))", (-4.0, 1.0))
+eval[(Double, Double)]("subtractComplex((3.0, 1.0), (-1.0, 5.0))", (4.0, -4.0))
+===
+Nice work!
+
+Now let's multiply. It's straightforward if you remember that i*i = -1.
+
+    (2 + i) x (3 + 2i) 
+  = 2 x (3 + 2i) + i x (3 + 2i)
+  = 6 + 4i       + 3i + (2i x i)
+  = 6 + 4i       + 3i - 2
+  = 4 + 7i.
+
+In general, (a + bi) x (c + di) = (ac - bd) + (ad + bc)i.
+
+Now write a function called multiplyComplex that takes two tuples of type (Double, Double) called
+w and z, representing complex numbers, and returns their product w x z.
+---
+hasTypeFn("multiplyComplex", "(w: (Double, Double),z: (Double, Double))", "(Double, Double)")
+eval[(Double, Double)]("multiplyComplex((0.0, 1.0), (4.0, 0.0))", (0.0, 4.0))
+eval[(Double, Double)]("multiplyComplex((3.0, 1.0), (-1.0, 5.0))", (-8.0, 14.0))
+===
+Great!!
+
+Here's one way to do it:
+
+  def multiplyComplex(w: (Double, Double), z: (Double, Double)) = {
+     val ((a, b), (c, d)) = (w, z)
+     (a*c - b*d, a*d + b*c)
+  }
+
+Division we'll leave for another time.
+
+So now you can implement a function that operates on complex numbers instead of just real numbers.
+Before, you implemented f(x) = 2*x + 3. Now, implement f(z) = z*z + 0.25 + 0.125i. Use the functions
+you already wrote!
+---
+hasTypeFn("f", "(z: (Double, Double))", "(Double, Double)")
+eval[(Double, Double)]("f((0.0, 0.0))", (0.25, 0.125))
+eval[(Double, Double)]("f((1.0, 0.0))", (1.25, 0.125))
+eval[(Double, Double)]("f((0.0, 1.0))", (-0.75, 0.125))
+===
+Nice!
+
+You probably wrote code like this:
+
+  def f(z: (Double, Double)): (Double, Double) = addComplex(multiplyComplex(z, z), (0.25, 0.125))
+
+and are wondering whether it's possible to get Scala to just let you write it like this:
+
+  def f(z: (Double, Double)): (Double, Double) = z*z + (0.25, 0.125)
+
+or maybe like this:
+
+  def f(z: (Double, Double)): (Double, Double) = z*z + 0.25 + 0.125i
+
+or maybe even like this:
+
+  def f(z: Complex): Complex = z*z + 0.25 + 0.125i.
+
+That would be so much easier to write, not to mention easier to read! Well, I am happy to inform you
+that it IS possible to do this in Scala, and it's not all that difficult either! Scala lets you
+create your own user-defined types, and you get to define how they behave. In fact, professional
+programmers do it all the time. But unfortunately it's a subject for a bit later on.
+
+Next up: input and output!
+---
+===

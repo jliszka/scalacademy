@@ -24,14 +24,11 @@ object state_ {
     ok
   }
 
-  def hasValue[T: Manifest](v: T)(ident: String) = hasType[T](ident) && {
+  def cond[T: Manifest](pred: T => Boolean)(ident: String) = {
     val vOpt = repl.interpretExpr(ident)
-    vOpt.isDefined && vOpt.get.asInstanceOf[T] == v
+    vOpt.isDefined && vOpt.get.isInstanceOf[T] && pred(vOpt.get.asInstanceOf[T])
   }
-  def cond[T: Manifest](pred: T => Boolean)(ident: String) = hasType[T](ident) && {
-    val vOpt = repl.interpretExpr(ident)
-    vOpt.isDefined && pred(vOpt.get.asInstanceOf[T])
-  }
+  def hasValue[T: Manifest](v: T)(ident: String) = cond((x: T) => x == v)(ident)
   def declared[T: Manifest](ident: String, v: T)(unused: String) = hasValue[T](v)(ident)
   def declared[T: Manifest](ident: String)(unused: String) = hasType[T](ident)
   def eval[T: Manifest](exp: String, expected: T)(unused: String) = {

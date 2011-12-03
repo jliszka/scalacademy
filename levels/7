@@ -126,7 +126,7 @@ Okay, try typing out this function that uses the match expression above to "scru
 
 And try it out on list, newList and Nil, or any other List you want!
 
-Notice that the argument, list, has type List[Int], which is the full type
+Notice that the argument, list, has type List[Int], which is the full name of the type.
 ---
 hasTypeFn("scrutinize", "(list: List[Int])", "String")
 eval[String]("scrutinize(Nil)", "the list is empty!")
