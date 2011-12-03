@@ -1,32 +1,32 @@
 
  == LEVEL 1 ==
 
-Hey! Let's get to know each other. What's your name? Type it with quotes around it 
-like this: "Jason", and hit enter.
+Hello and welcome! Let's get to know each other. What's your name? 
+Type it with quotes around it, like this: "Jason", and hit enter.
 
 When you're done, just type ok and hit enter.
 ---
 hasType[String]
 ===
-Well done! How long is your name? Find out by typing your name in quotes and ending it with .length
+Great! Now let's figure out how long your name is. Scala will tell you if you ask it! Type your
+name in quotes, like before, followed by .length.
 
-For me, that'd be "Jason".length
+For example, I would type "Jason".length
 
 When you're done, type ok to check your answer and continue.
 ---
 hasType[Int]
 ===
-Great job! Now, let's do some math. You can do math in Scala!
-To calculate 2+2, for instance, just type 2+2. Try it now!
+Nice work! You can also use Scala as a basic calculator. To calculate 2+3, for example, just
+type 2+3 and hit enter. Try it now!
 
 Type ok when you're done.
 ---
 hasType[Int]
-hasValue[Int](4)
+hasValue[Int](5)
 ===
-See what happened? You can use the Scala prompt to do basic math operations. Try playing around 
-some more. You can use - for subtraction and * for multiplication if you want... try something
-like 11 * 1111 or 999 - 123.
+There, it worked! Try playing around  some more. You can use - for subtraction and * for
+multiplication if you want. Try something like 11 * 1111 or 999 - 123.
 
 (Don't be afraid to experiment! The computer will never get mad at you or judge you for typing 
 in something weird. Its job is to shut up and compute. If it can't make sense of what you typed,

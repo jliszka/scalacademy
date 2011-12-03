@@ -133,12 +133,14 @@ At any time you can type 'help' for help remembering what each command does.""".
   }
 
   def sendProgress(correct: Boolean) {
-    try {
-      val c = if (correct) 1 else 0
-      val url = "%s&level=%d&step=%s&correct=%d".format(baseUrl.format("inc"), level, i, c)
-      new java.net.URL(url).openConnection.getInputStream
-    } catch {
-      case e =>
+    if (!local) {
+      try {
+	val c = if (correct) 1 else 0
+	val url = "%s&level=%d&step=%s&correct=%d".format(baseUrl.format("inc"), level, i, c)
+	new java.net.URL(url).openConnection.getInputStream
+      } catch {
+	case e =>
+      }
     }
   }
 
