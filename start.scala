@@ -1,5 +1,7 @@
 :power
 
+Console.setIn(new jline.ConsoleReaderInputStream(new jline.ConsoleReader))
+
 object state_ {
   var i = 0
   var level = 1
@@ -43,6 +45,23 @@ object state_ {
       }
       actualStr == expectedStr
     }
+  }
+
+  def evalIO[T: Manifest](exp: String, expectedOut: String, in: String = "")(unused: String) = {
+    val os = new java.io.ByteArrayOutputStream
+    val is = new java.io.ByteArrayInputStream(in.getBytes("UTF-8"))
+    Console.withOut(os) {
+      Console.withIn(is) { 
+	repl.interpretExpr(exp)
+      }
+    }
+    val actualOut = os.toString.trim
+    if (actualOut == expectedOut) {
+      println("%s outputs '%s'. Good!".format(exp, actualOut))
+    } else {
+      println("%s outputs '%s'. Oops! Should be '%s'!".format(exp, actualOut, expectedOut))
+    }
+    actualOut == expectedOut
   }
 
   var lastVar = "res0"

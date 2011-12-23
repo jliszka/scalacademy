@@ -151,8 +151,8 @@ That's exactly what we have here with Lists -- a base case, Nil, and a way to th
 in terms of a smaller List (the tail) plus an extra item (the head). Let's see how to put this to
 work with an example, finding the length of a List.
 
-  def length(list: List[Int]): Int = {
-    list match {
+  def length(myList: List[Int]): Int = {
+    myList match {
       case Nil => ??
       case head :: tail => ??
     }
@@ -178,7 +178,7 @@ Did you get this?
 
 Cool, huh? If you haven't already, write out the complete length function and :load it into Scala.
 ---
-hasTypeFn("length", "(list: List[Int])", "Int")
+hasTypeFn("length", "(myList: List[Int])", "Int")
 eval[Int]("length(Nil)", 0)
 eval[Int]("length(3::4::5::Nil)", 3)
 eval[Int]("length(3::4::5::10::15::11::Nil)", 6)

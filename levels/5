@@ -310,3 +310,102 @@ def makeChange(cents: Int) = {
 Yeah, remainder2. I'm not proud of it.
 ---
 ===
+Now that you're starting to write more complex code, I want to say a quick word about debugging.
+You're probably getting the sense for how particular computers are about what you give them -- the
+slightest thing out of place makes it reject everything completely. Of course, that doesn't always
+mean your entire program is wrong, it usually just means there is one piece (maybe even a single
+character!) you need to correct before you're on your way.
+
+There are three classes of errors you will run into: syntax errors, type errors and runtime errors.
+
+Syntax errors are about the language itself: Did you misspell "else" or omit it entirely? Did you
+forget a comma between the arguments in a function call? Is one of your opening braces or paren
+missing a closing brace or paren? These errors are reported by the Scala compiler (the compiler is
+just the thing that takes human-readable text and turns it into machine-executable instructions) 
+as soon as you enter code into the console or :load it in from a file. The reason Scala (and every
+other programming language) is so particular about these errors is that, although the compiler could
+possibly infer what you meant, in some cases it could lead to ambiguity in what your program is
+expressing. If there is some ambiguity in your code, the compiler either has to pick one
+interpretation or report an error. If it picks one interpretation, and it's not the one you
+intended, you are going to be very confused when your program doesn't behave the way it appears it
+should. So compilers do what they can to prevent that from ever happening, and that means being
+really strict about syntax.
+---
+===
+Type errors are also reported by the compiler. Types are used as a "sanity check" to make sure
+you're not doing something that couldn't possibly make sense, like adding two functions, or dividing
+a String by another String, or making change for "true". This is another layer of safety that
+prevents errors from happening at runtime, when they are hardest (and most expensive!) to find and
+fix.
+
+With both syntax and type errors, you are going to get an error message from the compiler as soon
+as you enter in your code. Compiler errors are often cryptic, even to professional programmers.
+My advice to you is to do your best to interpret the message. At the very least, the message will
+give an indication (with that little ^) about what part of your code is causing the error, and you
+can just look at that part of your code to try to figure out what it is the compiler doesn't like.
+
+Sometimes, the part of your code the compiler thinks is at fault is not actually where the problem
+is. This is usually because the compiler and type checker work by reading your code line by line
+and building up expectations about what the rest of your code should look like. When another piece
+of code doesn't conform to those expectations, it has to decide whether this new code was wrong or
+whether its expectations were wrong. Which one it is really depends on what you were trying to do
+with the code, and there's really no way for the compiler to read your mind and know that. So it
+guesses, and sometimes its guesses are wrong. So keep in mind that the error might not always be
+where the compiler thinks it is, but instead sometimes in a dependent or related place in the code.
+
+If you're confused by an error that appears to be a type error, I recommend playing "type checker"
+in your mind while walking through the code. Do both branches of the if/else have the same type?
+Does the expression in the body of the function have the type I expect it to? When I make function
+calls, do the arguments all have the expected type?
+
+Sometimes, no amount of staring at the code gets you any closer to figuring out your mistake. In
+those cases, you can try retyping your code (without looking at the original). If this works, it
+isn't magic, it's just that you made some tiny mistake that your brain for some reason kept skimming
+over, and when you typed it out again, you happened not to make the same mistake twice.
+---
+===
+The third type of error, the runtime error, is simply when your code doesn't behave as expected.
+These errors are also known as "bugs" and are by far the most difficult errors to fix, because there
+is no compiler to point out what you did wrong (although, I will say that Scala's type checker goes
+a long way to finding bugs before they happen, something many modern programming languages lack).
+For this kind of error, it might help to evaluate your code by hand with specific examples and to
+try to figure out at what point things start going wrong. For example, if I were debugging my
+makeChange code:
+
+  def makeChange(cents: Int) = {
+    val quarters = cents / 25
+    val remainder = cents %% 25
+    ...
+
+I would do this at the scala> prompt:
+
+  scala> val cents = 33
+  cents: Int = 33
+
+and then paste in each line of my function one by one and make sure that each intermediate value
+is what I expected.
+
+  scala> val quarters = cents / 25
+  quarters: Int = 1
+
+  scala> val remainder = cents %% 25 
+  remainder: Int = 8
+
+Debugging is a process of trial and error!
+---
+===
+Even professional programmers almost never write code that compiles without any errors the first
+time, much less code that works correctly the first time. It's so rare, in fact, that when it does
+happen, you sit back for a second and say, whoa, what did I just do?
+
+Writing code is a much different experience than writing a paper or a lab report -- you literally
+have no idea how long it'll take you to get it right. I saw a tweet the other day that captured it:
+
+  ProTip:
+  It's a bad idea to think "I'll shower after I fix this bug" because it could be 3 days later.
+  - https://twitter.com/#!/hoserama99/status/145236519999909888
+
+Debugging is a universal experience that all programmers go through. It can be frustrating at times.
+But there is no comparison to that moment of elation when everything finally works!
+---
+===

@@ -1,0 +1,324 @@
+
+ == LEVEL 9 ==
+
+Evaluating expressions and computing values is great and all (and you certainly have an arsenal of
+tools at this point for doing just that!) but your programs aren't going to be all that useful until
+they can interact with the outside world -- input from the keyboard, output to the screen or a
+network connection, reading data from a file or from a database, creating a file or database entry,
+or updating a preexisting one.
+
+Thankfully, all these things can be done in Scala through an interface you're already familiar with:
+functions! Scala comes with many built-in functions for doing input and output of all kinds.
+(Really, they are not part of the language, rather they are part of the "standard library" of data
+structures and functions that come with Scala.)
+---
+===
+Let's look at one of them: println (pronounced "print line"). It's a function that takes a String
+and prints it to the console.
+
+Try it! Type println("Hello, world!")
+---
+===
+Great! You can see that Scala doesn't report a return value like it normally does ("res2" for
+example). That's because println doesn't return anything. Instead it has a "side effect" --
+in this case, printing something to the screen.
+
+But every function in Scala we've seen so far has a return type. If println doesn't return a value,
+does that mean it doesn't have a return type? Let's see if we can get Scala to tell us the return
+type of println. Try this:
+
+  val r = println("hello")
+---
+declared[Unit]("r")
+===
+There, okay. Functions like println that don't have anything useful to return, or whose purpose is
+just to produce effects, not to return a value, have the return type Unit. There is only one value
+of type Unit, (), which is pronounced "unit".
+
+When you write an expression at the scala> prompt whose type is Unit, Scala omits displaying the
+value () and doesn't bother assigning it to a "res" val, simply because () is not very useful on its
+own.
+---
+===
+As a simple illustration, write a function called sayHiTo that takes a String argument called name
+and prints "Hi, <name>!" to the screen. For example, sayHiTo("Nina") should print "Hi, Nina!".
+---
+hasTypeFn("sayHiTo", "(name: String)", "Unit")
+evalIO("sayHiTo(\"Steve\")", "Hi, Steve!")
+===
+Great! You can see that Scala infers the return type of sayHiTo to be Unit, because all that's in
+the body of the function is a function (println) whose return type is Unit.
+---
+===
+Do you remember the function "stars" you wrote back in Level 3? It took an Int argument and returned
+a String containing that many *s.
+
+  def stars(howMany: Int) = "*" * howMany
+
+Now, write a function called printStars that takes an Int argument called howMay and prints that
+many stars to the console.
+---
+hasTypeFn("printStars", "(howMany: Int)", "Unit")
+evalIO("printStars(5)", "*****")
+evalIO("printStars(10)", "**********")
+===
+Good!
+
+Now what's the difference between stars and printStars? It's maybe a little subtle.
+
+If your program calls stars, it can assign its return value (a String) to a val and manipulate it
+(concatenate it with other strings, reverse it, find its length, etc). Nothing is printed to the
+screen unless your program explicitly calls println with some String.
+
+In contrast, if your program calls printStars, there is no return value for the rest of your
+program to make use of. Instead, evaluating printStars just has the side effect of printing
+something to the screen.
+---
+===
+There are also some special characters you can put in Strings you pass to println to change the
+the way the text is printed to the screen. The most common is the newline character, written \n.
+
+Try this: println("This is line 1\nThis is line 2")
+---
+===
+Neat, huh?
+
+It turns out that println is actually appending a \n to the end of the String you give it.
+
+Try this:
+
+  def printSomeLines() = {
+    println("This is line 1")
+    println("This is line 2")
+  }
+
+and call it like this:
+
+  printSomeLines()
+---
+evalIO("printSomeLines()", "This is line 1\nThis is line 2")
+===
+There, see? If you don't want the \n appended automatically, you can use print instead of println.
+
+Try this:
+
+  def printOneLine() = {
+    print("This is the beginning of the line,")
+    println(" and this is the end.")
+  }
+
+  printOneLine()
+---
+evalIO("printOneLine()", "This is the beginning of the line, and this is the end.")
+===
+Great!
+
+You can also use \r as a "carriage return" -- it moves the cursor to the beginning of the current
+line. Anything that comes after the \r will overwrite what we previously there. Try this:
+
+  println("This is the beginning of the line\rNo, this is.")
+---
+===
+Cool, huh?
+
+There are also special characters for changing the color of the text printed to the console.
+
+Try this:
+
+  println("This word is " + Console.RED + "red" + Console.RESET)
+---
+===
+Crazy!
+
+Here is a list of text colors you can use:
+
+  Console.BLACK   Console.WHITE
+  Console.RED     Console.GREEN    Console.BLUE
+  Console.CYAN    Console.MAGENTA  Console.YELLOW
+
+and background colors:
+
+  Console.BLACK_B   Console.WHITE_B
+  Console.RED_B     Console.GREEN_B    Console.BLUE_B
+  Console.CYAN_B    Console.MAGENTA_B  Console.YELLOW_B
+
+and some styles:
+  
+  Console.BOLD    Console.UNDERLINED
+
+Console.RESET resets the style, the text color and the background color back to the default.
+
+Play around with it for a bit if you want!
+---
+===
+Now it's time for a little exercise. You are going to write a function that prints out a row
+from a multiplication table for a given number. For example, tableRow(6) will print
+
+    | 1  2  3  4  5  6  7  8  9
+   -+---------------------------
+   6| 6 12 18 24 30 36 42 48 54
+
+But let me first show you a feature of Scala that makes this a little easier. It's called a
+"for" loop. The idea is borrowed from many other programming languages, but in Scala, for loops
+are quite a bit more useful. For now, though, you'll use them like this:
+
+  for (i <- 1 to 9) {
+    println("i is now " + i)
+  }
+
+Try it now!
+---
+===
+You can see that a for loop is given a range (which can be any two Ints, or expressions that
+evaluate to Ints) and a block, and evaluates the block once for every value in the range. The
+loop variable (here, i, though you can name it anything you want) is usable from within the body
+and takes on the current value in the range.
+
+You don't have to use the loop variable inside the body of the for loop; you can use the loop
+purely to repeat something a certain number of times. For instance, you could have written
+printStars this way:
+
+  def printStars(times: Int) = {
+    for (n <- 1 to times) {
+      print("*")
+    }
+    println()
+  }
+
+It's also worth pointing out that the body of the for loop, like any block, can have as many
+lines as you want. If any of the lines contain expressions with side effects (like printing)
+they will be executed in the order they appear in the block.
+---
+===
+Okay, you should be all set to implement tableRow as a function that takes an Int argument called
+n and prints out the row of multiplication table for n. For example, tableRow(9) should print
+something like this:
+
+    | 1  2  3  4  5  6  7  8  9
+   -+---------------------------
+   9| 9 18 27 36 45 54 63 72 81
+
+I'm not going to check your answer, since there are a lot of ways to do it with spaces and drawing
+the table borders and all. Just get to something you're happy with and then type ok.
+---
+===
+Okay, great! Now let's extend that to the full multiplication table. Write a function called
+multiplicationTable that takes no arguments and prints a complete multiplication table for the
+numbers 1 through 9.
+
+To declare a function that takes no arguments, do it like this:
+
+  def multiplicationTable() = ...
+
+and call it the same way, with empty parents: multiplicationTable().
+
+Your complete multiplication table should look something like this:
+
+   |  1  2  3  4  5  6  7  8  9
+  -+---------------------------
+  1|  1  2  3  4  5  6  7  8  9
+  2|  2  4  6  8 10 12 14 16 18
+  3|  3  6  9 12 15 18 21 24 27
+  4|  4  8 12 16 20 24 28 32 36
+  5|  5 10 15 20 25 30 35 40 45
+  6|  6 12 18 24 30 36 42 48 54
+  7|  7 14 21 28 35 42 49 56 63
+  8|  8 16 24 32 40 48 56 64 72
+  9|  9 18 27 36 45 54 63 72 81
+
+Hint: you should "decompose" your function tableRow into 2 functions: printHeader() and printRow(n)
+such that you could rewrite tableRow as
+
+  def tableRow(n: Int) = {
+    printHeader()
+    printRow(n)
+  }
+
+Then, write multiplicationTable by calling printHeader once and calling printRow one time for each
+row you want to print.
+
+Again, I'm not going to check your answer, just work on it until you're happy with it and type ok.
+---
+===
+Awesome!
+
+You probably have code that looks like this:
+
+  def printRow(n: Int) = {
+    print(n + "|")
+    for (i <- 1 to 9) {
+      val v = n * i
+      print(if (v < 10) "  " else " ")
+      print(v)
+    }
+    println()
+  }
+
+  def multiplicationTable() = {
+    printHeader()
+    for (j <- 1 to 9) {
+      printRow(j)
+    }
+  }
+
+More or less?
+---
+===
+If you "expand" the definition of printRow(j) inside of multiplicationTable, you end up with this:
+
+  def multiplicationTable() = {
+    printHeader()
+    for (j <- 1 to 9) {
+      print(j + "|")
+      for (i <- 1 to 9) {
+        val v = j * i
+        print(if (v < 10) "  " else " ")
+        print(v)
+      }
+      println()
+    }
+  }
+
+For loops within for loops! Nothing to be afraid of. You already wrote essentially this exact code!
+This construct is called a "nested for loop" -- the idea is that the "inner" loop gets evaluated
+fully (here, 9 times) each time the "outer" loop gets evaluated (here, for a total of 81 times).
+More concretely, j starts at 1, and i goes from 1 to 9, and then j becomes 2, and i goes from 1 to 9
+again, and then j becomes 3, etc.
+
+There's nothing fundamentally new going on here. It's things you already know, just maybe in an
+arrangement you haven't seen before.
+
+Nested for loops are especially common when you're dealing with 2-dimensional data, like a table, or
+maybe an image (consisting of rows and columns of pixels), or even a text file containing lines
+of text, where each line contains multiple words separated by commas.
+---
+===
+Okay, enough output for now. Let's have a look at input. Input can come from a file, maybe from the
+network, or from the keyboard. Let's start with keyboard input.
+
+Keyboard input is done through a function called readLine. Calling it (with no arguments) actually
+pauses your program and waits for the user to type something in and hit enter. Whatever the user
+typed becomes the return value of readLine (as a String) and you can use it in your code like any
+other String. Simple, huh? Let's try it out.
+
+Type this:
+
+  val name = readLine()
+
+and then type your name.
+---
+declared[String]("name")
+===
+That's cool! But in a real program you'll want to prompt the user about what you want them to type
+in. Try this:
+
+  def sayHi() = {
+    print("What's your name? ")
+    val name = readLine()
+    println("Hi, " + name + "!")
+  }
+---
+evalIO("sayHi", "What's your name? Hi, Steve!", "Steve")
+===
+Cool!
+
