@@ -92,6 +92,7 @@ At any time you can type 'help' for help remembering what each command does.""".
   }
 
   def show() {
+    if (i > 0) println("%s %d/%d [Lvl %d] ---\n".format("-"*81, i+1, prompts.length, level))
     if (i < prompts.length) curr.show() else eol()
   }
 
@@ -172,7 +173,6 @@ At any time you can type 'help' for help remembering what each command does.""".
     if (curr.check()) {
       sendProgress(true)
       next()
-      println()
       show()
     } else {
       sendProgress(false)
