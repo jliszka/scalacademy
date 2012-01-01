@@ -70,16 +70,16 @@ You can use :: with any List on the right. Try this:
 ---
 declared[List[Int]]("newList", List(1, 2, 3, 4))
 ===
-There, you just created a new List by prepending 1 onto an existing List, list!
+There, you just created a new List by "prepending" 1 onto an existing List, list!
 
 And as usual, both the item and the list on either side of the :: can be expressions (but you might
 have to use parens). So this will work:
 
-  (10 - 9) :: (if (true) 2 else 7) :: "abc".length :: "wxyz".length :: newList
+  (10 - 6) :: (if (true) 3 else 7) :: "ab".length :: 1 :: newList
 
 Try it!
 ---
-hasValue[List[Int]](List(1, 2, 3, 4, 1, 2, 3, 4))
+hasValue[List[Int]](List(4, 3, 2, 1, 1, 2, 3, 4))
 ===
 In general, the way you should think about Lists is that any List is either
 
@@ -105,15 +105,14 @@ hasValue[String]("this list is 1 followed by List(2, 3, 4)")
 ===
 Okay!
 
-A match is an expression, which has a value, just like any expression. It consists of a scrutinee,
-which is the thing being scrutinized against some patterns (here, newList, but it can be any
-expression) followed by the word match, followed by several cases mapping patterns to expressions
-with the double arrow =>. Scala finds the first pattern that matches the scrutinee, and the ENTIRE
-match evaluates to the expression that corresponds to that pattern.
+A match is a lot like an if/else, but instead of evaluating a Boolean expression, it matches
+a "scrutinee" against several patterns. In this last example, the scrutinee is newList (but it
+can be any expression) and is followed by the word "match" and several cases. Each case maps a
+pattern to an expression with the double arrow =>. Scala finds the FIRST pattern that matches
+the scrutinee, and the ENTIRE match evaluates to the expression that corresponds to that pattern.
 
 It's important to know that ONLY the expression corresponding to the pattern that got picked is
-evaluated. It's a lot like an if/else, except instead of evaluating Boolean expressions, it matches
-patterns.
+evaluated -- just like if/else!
 
 Okay, try typing out this function that uses the match expression above to "scrutinize" a list.
 
@@ -223,7 +222,7 @@ Okay, all you have to do is add up all the numbers in the List, and add up all t
 1 and 10, and subtract them. The difference is the missing number!
 
 Now, write a function called missingNumber that takes a List[Int] argument called numbers that
-is assumed to contain all the numbers between 1 and length(numbers) + 1, with no repeats, and
+is assumed to contain only numbers between 1 and length(numbers) + 1, with no repeats, and
 returns the missing number. You don't have to worry about cases where there are repeats or
 the List contains numbers not between 1 and length(numbers) + 1.
 
@@ -256,7 +255,7 @@ item increased by 1. For example, addOne(List(2, 3, 5)) should return List(3, 4,
 
 Do it recursively! Break it down with the usual rules for recursive functions.
 
-Hint: In your recursive case, use :: to construct a new List made from any item and any List.
+Hint: In your recursive case, use :: to construct a new List from an item and another List.
 ---
 hasTypeFn("addOne", "(list: List[Int])", "List[Int]")
 eval[List[Int]]("addOne(Nil)", Nil)
@@ -276,8 +275,8 @@ Excellent! Here's what I came up with:
 Alright, one last challenge. You are going to write a function that sorts a List in order from
 smallest to largest. Don't worry, I'll walk you through it!
 
-We'll do it a couple of parts. First, let's write a function that inserts a number into a sorted
-List so that the resulting List is still sorted. For instance, inserting 5 into the already-sorted
+We'll do it in two parts. First, let's write a function that inserts a number into a sorted List
+so that the resulting List is still sorted. For instance, inserting 5 into the already-sorted
 List(1, 3, 6, 9) gives List(1, 3, 5, 6, 9).
 
 This will be a recursive function, so let's break it down and apply our recursive function rules.

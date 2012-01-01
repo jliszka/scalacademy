@@ -20,7 +20,7 @@ val metersPerMile = 1609
 def milesToMeters(miles: Int) = miles + metersPerMile
 milesToMeters(15)
 
-Then save the file by hitting Command-s. Give the file a name like script.scala and save it to 
+Then save the file by hitting Command-s. Give the file a name like level4.scala and save it to 
 the scalacademy folder (to get there you might have to click on the little "down" triangle next 
 to the text box labeled "Save As").
 
@@ -29,7 +29,7 @@ Also, make sure the checkbox labeled "If no extension is provided, use .txt" is 
 When you're done with all that, come back here and type ok to continue.
 ---
 ===
-Now, type :load script.scala.
+Now, type :load level4.scala.
 
 If Scala says "That file does not exist", go back and make sure you followed the instructions
 exactly. I promise it works!
@@ -53,13 +53,23 @@ Wait, there's a bug! Do you see it?
 Yep, it should be miles * metersPerMiles, not miles + metersPerMile. Silly.
 
 Fix the bug by editing your code in TextEdit, and save the file by hitting Command-s.
-Then, reload the file by typing :load script.scala again.
+Then, reload the file by typing :load level4.scala again.
 
 Once the file is reloaded, type milesToMeters(21) to make sure the bug is fixed.
 ---
 hasValue[Int](33789)
 ===
 Cool! Not so bad, huh?
+
+I strongly recommend that from now on you use a text editor for all your function defintions.
+Not only is it easier to edit multi-line functions, but it also lets you save your work so that
+you can refer back to it later. For that reason, I also recommend that you save each level's work
+in a different file -- level5.scala, level6.scala, etc. Don't delete code as you go; there's no
+harm in keeping it around and :load'ing it in each time. You never know when you might need to
+refer back to it!
+---
+===
+Alright, back to your regularly scheduled programming.
 
 You might be wondering what happened to the old definition of milesToMeters. You've essentially
 defined it twice, right? Well, the answer is that you can't get to it. The new definition is

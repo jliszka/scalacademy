@@ -181,7 +181,7 @@ It could look something like this:
 
 Try it! Type readIntInRange(1, 3) and try giving it different numbers.
 ---
-evalIO("readIntInRange(5, 8)", "I need a number between 5 and 8! Try again: ", "2\n7\n")
+evalIO("readIntInRange(1, 10)", "I need a number between 1 and 10! Try again: ", "12\n7\n")
 ===
 Alright! Now try using readIntInRange instead of readInt in stones2PlayerLoop.
 ---
