@@ -1,0 +1,188 @@
+
+ == LEVEL 10 ==
+
+Okay, here we go! Let's have a look at input. Input is the way information gets into your program
+from the outside world. It can come from a file, maybe from the network, or from the keyboard.
+Let's start with keyboard input.
+
+Keyboard input is done through a function called readLine. Calling it (with no arguments) pauses
+your program and waits for the user to type something in and hit enter. Whatever the user types
+becomes the return value of readLine (as a String) and you can use it in your code like any other
+String. Simple, huh? Let's try it out.
+
+Type this:
+
+  val name = readLine()
+
+and then type your name and hit enter.
+---
+declared[String]("name")
+===
+That's cool! But in a real program you'll want to prompt the user about what you want them to type
+in. Try this:
+
+  def sayHi() = {
+    print("What's your name? ")
+    val name = readLine()
+    println("Hi, " + name + "!")
+  }
+---
+evalIO("sayHi", "What's your name? Hi, Steve!", "Steve")
+===
+Nice!
+
+Just as you can use readLine() to get a String from the keyboard, you can also use readInt() and
+readDouble() to get an Int or a Double. Try it!
+
+  def askAge() = {
+    print("How old are you? ")
+    val age = readInt()
+    println("That's " + (age*12) + " months!")
+  }
+---
+evalIO("askAge", "20", "That's 240 months!")
+===
+Great!
+
+Remember the game you wrote back in level 5, where you took turns taking stones from a pile? Let's
+revisit it with input and output, to make it feel more like an interactive game.
+
+A sample game could look like this:
+
+  scala> playStones(15)
+  The computer takes 3 stones, leaving 12 stones in the pile.
+
+  How many stones would you like to take (1-3)? 3
+  You take 3 stones, leaving 9 stones in the pile.
+  The computer takes 1 stones, leaving 8 stones in the pile.
+
+  How many stones would you like to take (1-3)? 2
+  You take 2 stones, leaving 6 stones in the pile.
+  The computer takes 2 stones, leaving 4 stones in the pile.
+
+  How many stones would you like to take (1-3)? 1
+  You take 1 stones, leaving 3 stones in the pile.
+  The computer takes the last 3 stones and wins!
+
+You should use the same strategy as before -- the computer always takes a number of stones so as to
+leave a multiple of 4 stones in the pile. If you want to go ahead and write it now, I'll wait.
+If you get stuck, or need help getting started, type ok and I'll give you an idea about how to
+structure your code.
+---
+===
+Here's an outline of the way you could write playStones:
+
+  def playStones(stones: Int): Unit = {
+    // Decide how many stones the computer should take.
+
+    // If the computer has won, print it and be done.
+
+    // Otherwise, do the following:
+
+    // Print the computer's move.
+
+    // Ask the user how many stones to take.
+
+    // Print the user's move.
+
+    // Figure out how many stones are left and call playStones recursively to loop around.
+
+  }
+
+By the way, the above is valid Scala code. Lines starting with "//" are called comments and are
+ignored by the compiler. Comments let you intersperse explanations or notes in your code. I often
+use it to outline my code before I start writing it, filling in each section one at a time.
+
+Okay, now implement playStones using the outline above. I won't be checking your work, so you can
+do it any way you want. Just get to something you're happy with and type ok.
+---
+hasTypeFn("playStones", "(stones: Int)", "Unit")
+===
+Awesome!
+
+Now let's make it a 2-player game! It should look something like this:
+
+  scala> playStones2Player(9)
+
+  Player 1, what is your name? Nina
+  Hi, Nina!
+  
+  Player 2, what is your name? Max
+  Hi, Max!
+
+  Good luck to you both!
+
+  There are 9 stones in the pile.
+  Nina, how many would you like to take (1-3)? 1
+  
+  There are 8 stones in the pile.
+  Max, how many would you like to take (1-3)? 3
+  
+  There are 5 stones in the pile.
+  Nina, how many would you like to take (1-3)? 1
+  
+  There are 4 stones in the pile.
+  Max, how many would you like to take (1-3)? 2
+  
+  There are 2 stones in the pile.
+  Nina, how many would you like to take (1-3)? 2
+  
+  Nina wins!!
+
+Like before, if you want to try to code it up now, go ahead. If you need help, I'll suggest an
+outline after you type ok.
+---
+===
+Here's one way to do it, decomposing it into 2 functions:
+
+  def playStones2Player(stones: Int) = {
+    // Get player 1's name and say hi.
+
+    // Get player 2's name and say hi.
+
+    // Call stones2PlayerLoop(player1, player2, stones)
+  }
+
+  def stones2PlayerLoop(currentPlayer: String, otherPlayer: String, stones: Int): Unit = {
+    // Print the number of stones left and ask currentPlayer how many they want to take.
+
+    // Figure out the number of stones remaining.
+
+    // If there are no stones left, currentPlayer wins! Print and be done.
+
+    // Otherwise, call stones2PlayerLoop(otherPlayer, currentPlayer, stonesLeft) to loop around.
+  }
+
+One trick here is that stones2PlayerLoop switches currentPlayer and otherPlayer each time it
+loops around. Make sense?
+
+Okay, go ahead and write the game. I won't check your work, to give you leeway to do it however
+you want. Just get to something you're happy with and type ok.
+---
+===
+Okay, great!!
+
+One more thing you might have thought about: the game asks you for a number between 1 and 3,
+but you can really type any number you want. How do you prevent the players from cheating?
+
+You want a way to validate input and to ask the user to try again if they give you something that's
+invalid. One way to do that is to write a function that you can call instead of readInt that calls
+readInt repeatedly until the result is valid, and returns the valid result.
+
+It could look something like this:
+
+  def readIntInRange(min: Int, max: Int): Int = {
+    val n = readInt()
+    if (min <= n && n <= max) n else {
+      print("I need a number between " + min + " and " + max + "! Try again: ")
+      readIntInRange(min, max)
+    }
+  }
+
+Try it! Type readIntInRange(1, 3) and try giving it different numbers.
+---
+evalIO("readIntInRange(5, 8)", "I need a number between 5 and 8! Try again: ", "2\n7\n")
+===
+Alright! Now try using readIntInRange instead of readInt in stones2PlayerLoop.
+---
+===
