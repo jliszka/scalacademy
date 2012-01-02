@@ -108,86 +108,9 @@ or a tuple of Lists of tuples, or anything. Which one should you use? It all dep
 your problem domain the best.
 ---
 ===
-Let's try an exercise. Write a function called partition that takes an Int called pivot and a
-List[Int] called list and returns two List[Int]s, in a tuple (that is, (List[Int], List[Int])).
-The first item in the tuple should be a List containing all the items in list that are smaller
-than pivot, and the second item in the tuple should be a List containing all the other items in
-list.
-
-For example, partition(5, List(2, 9, 1, 5, 11, 8)) should return (List(2, 1), List(9, 5, 11, 8)).
-
-Hint: Do it recursively! Pattern match on the result of the recursive call to partition.
----
-hasTypeFn("partition", "(pivot: Int,list: List[Int])", "(List[Int], List[Int])")
-eval[(List[Int], List[Int])]("partition(5, Nil)", (Nil, Nil))
-eval[(List[Int], List[Int])]("partition(5, List(1, 2))", (List(1, 2), Nil))
-eval[(List[Int], List[Int])]("partition(5, List(9, 8))", (Nil, List(9, 8)))
-eval[(List[Int], List[Int])]("partition(5, List(2, 9, 1, 11, 5))", (List(2, 1), List(9, 11, 5)))
-===
-Awesome!
-
-Here's how I did it, but there's more than one way!
-
-  def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
-    list match {
-      case Nil => (Nil, Nil)
-      case h :: t => {
-        val (smaller, rest) = partition(pivot, t)
-        if (h < pivot) (h :: smaller, rest) else (smaller, h :: rest)
-      }
-    }
-  }
-
-As a brief aside, I've found it a useful strategy to keep the types of all the sub-expressions in
-mind when I'm trying to write a function. Very often, functions "write themselves" if I let the
-types guide me -- for instance, when you know you need something of a certain type and you only
-have one thing available of that type, you can (very often) just plug it in. At the very least,
-it will guide your thinking as to the general form of what "goes in the blank", and prevent you
-from making silly mistakes.
----
-===
-You might not realize it, but you are one small step away from writing a very well-known list
-sorting algorithm called Quicksort. Here's how it goes:
-
-  0. If the list is empty, return it.
-  1. Otherwise, take the head of the list and call it the "pivot".
-  2. Partition the tail into two lists: items smaller than the pivot and everything else.
-  3. Recursively sort the two lists.
-  4. Concatenate the sorted lists back together with the pivot between them.
-
-Go on, code it up! You can do it! Call your function quicksort and have it take a single List[Int]
-argument called list.
-
-Hint: Use ++ to concatenate Lists: List(1, 2) ++ List(3, 4) is List(1, 2, 3, 4)
----
-hasTypeFn("quicksort", "(list: List[Int])", "List[Int]")
-eval[List[Int]]("quicksort(Nil)", Nil)
-eval[List[Int]]("quicksort(List(2, 1))", List(1, 2))
-eval[List[Int]]("quicksort(List(4, 3, 1, 8))", List(1, 3, 4, 8))
-eval[List[Int]]("quicksort(List(51, 6, -11, 23, 99, 41, 15, 8, 100, -5))", List(-11, -5, 6, 8, 15, 23, 41, 51, 99, 100))
-===
-Excellent!
-
-Here's what my code looks like:
-
-  def quicksort(list: List[Int]): List[Int] = {
-    list match {
-      case Nil => Nil
-      case pivot :: tail => {
-        val (smaller, rest) = partition(pivot, tail)
-	quicksort(smaller) ++ (pivot :: quicksort(rest))
-      }
-    }
-  }
-
-When I interview Software Engineers, I ask them to code up Quicksort. You've come a long way!
-
-Have a look at the Quicksort article on Wikipedia: http://en.wikipedia.org/wiki/Quicksort
----
-===
-Tuples are also a good way to represent points on a plane, like the way you see them in math
-class: (3, 4) represents the point 3 units over in the horizontal (x) direction and 4 units up
-in the vertical (y) direction.
+Tuples are a good way to represent points on a plane, like the way you see them in math class:
+(3, 4) represents the point 3 units over in the horizontal (x) direction and 4 units up in the
+vertical (y) direction.
 
 Complex numbers, if you remember them from high school math, are another kind of mathematical
 object that can be represented by two numbers. The complex number 3 + 4i could be represented
@@ -283,7 +206,151 @@ That would be so much easier to write, not to mention easier to read! Well, I am
 that it IS possible to do this in Scala, and it's not all that difficult either! Scala lets you
 create your own user-defined types, and you get to define how they behave. In fact, professional
 programmers do it all the time. But unfortunately it's a subject for a bit later on.
-
-Next up: input and output!
 ---
 ===
+Let's try another exercise. Write a function called partition that takes an Int called pivot and a
+List[Int] called list and returns two List[Int]s, in a tuple (that is, (List[Int], List[Int])).
+The first item in the tuple should be a List containing all the items in list that are smaller
+than pivot, and the second item in the tuple should be a List containing all the other items in
+list.
+
+For example, partition(5, List(2, 9, 1, 5, 11, 8)) should return (List(2, 1), List(9, 5, 11, 8)).
+
+Hint: Do it recursively! Pattern match on the result of the recursive call to partition.
+---
+hasTypeFn("partition", "(pivot: Int,list: List[Int])", "(List[Int], List[Int])")
+eval[(List[Int], List[Int])]("partition(5, Nil)", (Nil, Nil))
+eval[(List[Int], List[Int])]("partition(5, List(1, 2))", (List(1, 2), Nil))
+eval[(List[Int], List[Int])]("partition(5, List(9, 8))", (Nil, List(9, 8)))
+eval[(List[Int], List[Int])]("partition(5, List(2, 9, 1, 11, 5))", (List(2, 1), List(9, 11, 5)))
+===
+Awesome!
+
+Here's how I did it, but there's more than one way!
+
+  def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
+    list match {
+      case Nil => (Nil, Nil)
+      case h :: t => {
+        val (smaller, rest) = partition(pivot, t)
+        if (h < pivot) (h :: smaller, rest) else (smaller, h :: rest)
+      }
+    }
+  }
+
+As a brief aside, I've found it a useful strategy to keep the types of all the sub-expressions in
+mind when I'm trying to write a function. Very often, functions "write themselves" if I let the
+types guide me -- for instance, when you know you need something of a certain type and you only
+have one thing available of that type, you can (very often) just plug it in. At the very least,
+it will guide your thinking as to the general form of what "goes in the blank", and prevent you
+from making silly mistakes.
+---
+===
+Here's how that might work when you're writing a function like partition. First, start with an
+empty function with the proper return type:
+
+  def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
+    ??
+  }
+
+Now I know I'm going to be writing a recursive function on a list, so I'll set up my match:
+
+  def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
+    list match {
+      case Nil => ??
+      case h :: t => ??
+    }
+  }
+
+For the base case, I know I need to return a tuple containing 2 lists. About the only thing
+I can write is (Nil, Nil)
+
+  def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
+    list match {
+      case Nil => (Nil, Nil)
+      case h :: t => ??
+    }
+  }
+---
+===
+Now, for the recursive case, it's usually a good idea to just write down the recursive call
+right away and build up everything around it. So let's start with that:
+
+  def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
+    list match {
+      case Nil => (Nil, Nil)
+      case h :: t => {
+        val ?? = partition(pivot, t)
+        ??
+      }
+    }
+  }
+
+I know partition returns a tuple, and a tuple isn't very useful by itself, so let's pattern match
+out the parts of the tuple:
+
+  def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
+    list match {
+      case Nil => (Nil, Nil)
+      case h :: t => {
+        val (smaller, rest) = partition(pivot, t)
+        ??
+      }
+    }
+  }
+
+Alright, now I want to return a tuple of two lists, and we haven't used h yet. Thinking about the
+problem at hand, I want to put h in one of the two lists, depending on how it compares to pivot.
+
+  def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
+    list match {
+      case Nil => (Nil, Nil)
+      case h :: t => {
+        val (smaller, rest) = partition(pivot, t)
+        if (h < pivot) (h :: smaller, rest) else (smaller, h :: rest)
+      }
+    }
+  }
+
+Done!
+---
+===
+You might not realize it, but you are one small step away from writing a very well-known list
+sorting algorithm called Quicksort. Here's how it goes:
+
+  0. If the list is empty, return it.
+  1. Otherwise, take the head of the list and call it the "pivot".
+  2. Partition the tail into two lists: items smaller than the pivot and everything else.
+  3. Recursively sort the two lists.
+  4. Concatenate the sorted lists back together with the pivot between them.
+
+Go on, code it up! You can do it! Call your function quicksort and have it take a single List[Int]
+argument called list.
+
+Hint: Use ++ to concatenate Lists: List(1, 2) ++ List(3, 4) is List(1, 2, 3, 4)
+---
+hasTypeFn("quicksort", "(list: List[Int])", "List[Int]")
+eval[List[Int]]("quicksort(Nil)", Nil)
+eval[List[Int]]("quicksort(List(2, 1))", List(1, 2))
+eval[List[Int]]("quicksort(List(4, 3, 1, 8))", List(1, 3, 4, 8))
+eval[List[Int]]("quicksort(List(51, 6, -11, 23, 99, 41, 15, 8, 100, -5))", List(-11, -5, 6, 8, 15, 23, 41, 51, 99, 100))
+===
+Excellent!
+
+Here's what my code looks like:
+
+  def quicksort(list: List[Int]): List[Int] = {
+    list match {
+      case Nil => Nil
+      case pivot :: tail => {
+        val (smaller, rest) = partition(pivot, tail)
+	quicksort(smaller) ++ (pivot :: quicksort(rest))
+      }
+    }
+  }
+
+When I interview Software Engineers, I ask them to code up Quicksort. You've come a long way!
+
+Have a look at the Quicksort article on Wikipedia: http://en.wikipedia.org/wiki/Quicksort
+
+Next up: input and output!
