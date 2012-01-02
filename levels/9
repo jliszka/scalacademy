@@ -41,7 +41,7 @@ own.
 ---
 ===
 As a simple illustration, write a function called sayHiTo that takes a String argument called name
-and prints "Hi, <name>!" to the screen. For example, sayHiTo("Nina") should print "Hi, Nina!".
+and prints "Hi, <name>!" to the screen. For example, sayHiTo("Anna") should print "Hi, Anna!".
 ---
 hasTypeFn("sayHiTo", "(name: String)", "Unit")
 evalIO("sayHiTo(\"Steve\")", "Hi, Steve!")
@@ -297,5 +297,4 @@ of text, where each line contains multiple words separated by commas.
 ---
 ===
 Alright! Output is great! In the next lesson, we'll look at its counterpart, input.
----
-===
+

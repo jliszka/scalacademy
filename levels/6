@@ -358,5 +358,3 @@ Here's how I did it. There's more than one way!
     else
       worksForN && worksForEverythingUpTo(n-1)
   }
----
-===

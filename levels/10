@@ -167,7 +167,7 @@ but you can really type any number you want. How do you prevent the players from
 
 You want a way to validate input and to ask the user to try again if they give you something that's
 invalid. One way to do that is to write a function that you can call instead of readInt that calls
-readInt repeatedly until the result is valid, and returns the valid result.
+readInt repeatedly until the result is valid, and returns only the valid result.
 
 It could look something like this:
 
@@ -183,6 +183,7 @@ Try it! Type readIntInRange(1, 3) and try giving it different numbers.
 ---
 evalIO("readIntInRange(1, 10)", "I need a number between 1 and 10! Try again: ", "12\n7\n")
 ===
-Alright! Now try using readIntInRange instead of readInt in stones2PlayerLoop.
+Alright! Now you can use readIntInRange instead of readInt in stones2PlayerLoop.
+
 ---
 ===

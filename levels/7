@@ -272,6 +272,25 @@ Excellent! Here's what I came up with:
   }
 ---
 ===
+Let's take a look at the evaluation of addOne(List(2, 3, 5)), step by step:
+
+   addOne(List(2, 3, 5))
+   ^^^^^^^^^^^^^^^^^^^^^
+=> (2 + 1) :: addOne(List(3, 5))
+    ^^^^^
+=> 3 :: addOne(List(3, 5))
+        ^^^^^^^^^^^^^^^^^^
+=> 3 :: ((3 + 1) :: addOne(List(5)))
+          ^^^^^
+=> 3 :: (4 :: addOne(List(5)))
+              ^^^^^^^^^^^^^^^
+=> 3 :: (4 :: ((5 + 1) :: addOne(Nil)))
+                ^^^^^
+=> 3 :: (4 :: (6 :: addOne(Nil)))
+                    ^^^^^^^^^^^
+=> 3 :: (4 :: (6 :: Nil))
+---
+===
 Alright, one last challenge. You are going to write a function that sorts a List in order from
 smallest to largest. Don't worry, I'll walk you through it!
 
@@ -311,7 +330,7 @@ Wow, great job!!
 
 Here's what I did, how does yours compare?
 
-  def insert(x: Int, list: List[Int]): List[Int] = {
+  def insert(x: Int, sortedList: List[Int]): List[Int] = {
     list match {
       case Nil => x :: Nil
       case head :: tail => if (x < head) x :: list else head :: insert(x, tail)
@@ -346,8 +365,6 @@ A couple of things to notice:
 
  - Typical implementations insert each item into a sorted prefix of the list rather than into the
    sorted tail. But it's the same idea.
- - The pseudocode implementation is like twice as much code as your Scala implementation!
+ - The pseudocode implementation is almost twice as much code as your Scala implementation!
  - There are other sorting algorithms out there, some more efficient on larger lists. Some of them
    are particularly suited to recursive style. We'll see one or two of them a little later on.
----
-===

@@ -246,5 +246,4 @@ eval[String]("willIMakeIt(15, 0.20, 25, 85)", "You will run out of gas with 10.0
 eval[String]("willIMakeIt(15, 0.20, 32, 80)", "You will make it with 0.5 gallons to spare!")
 ===
 Yay, you did it!
----
-===
+
