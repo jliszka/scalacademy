@@ -74,7 +74,7 @@ declared[Double]("x", 3.5)
 declared[Double]("y", 0.25)
 declared[Double]("z", -1.0)
 ===
-Neat, huh?
+Neat, huh? You can see that that created 3 separate vals, x, y, and z.
 
 Now write a single expression that calls quotrem(50, 7) and uses pattern matching to assign the
 result to two vals called quotient and remainder, respectively.
@@ -176,31 +176,31 @@ Here's one way to do it:
 Division we'll leave for another time.
 
 So now you can implement a function that operates on complex numbers instead of just real numbers.
-Before, you implemented f(x) = 2*x + 3. Now, implement f(z) = z*z + 0.25 + 0.125i. Use the functions
+Before, you implemented f(x) = 2*x + 3. Now, implement f(z) = z*z + 0.25 + 3.0i. Use the functions
 you already wrote!
 ---
 hasTypeFn("f", "(z: (Double, Double))", "(Double, Double)")
-eval[(Double, Double)]("f((0.0, 0.0))", (0.25, 0.125))
-eval[(Double, Double)]("f((1.0, 0.0))", (1.25, 0.125))
-eval[(Double, Double)]("f((0.0, 1.0))", (-0.75, 0.125))
+eval[(Double, Double)]("f((0.0, 0.0))", (0.25, 3.0))
+eval[(Double, Double)]("f((1.0, 0.0))", (1.25, 3.0))
+eval[(Double, Double)]("f((0.0, 1.0))", (-0.75, 3.0))
 ===
 Nice!
 
 You probably wrote code like this:
 
-  def f(z: (Double, Double)): (Double, Double) = addComplex(multiplyComplex(z, z), (0.25, 0.125))
+  def f(z: (Double, Double)): (Double, Double) = addComplex(multiplyComplex(z, z), (0.25, 3.0))
 
 and are wondering whether it's possible to get Scala to just let you write it like this:
 
-  def f(z: (Double, Double)): (Double, Double) = z*z + (0.25, 0.125)
+  def f(z: (Double, Double)): (Double, Double) = z*z + (0.25, 3.0)
 
 or maybe like this:
 
-  def f(z: (Double, Double)): (Double, Double) = z*z + 0.25 + 0.125i
+  def f(z: (Double, Double)): (Double, Double) = z*z + 0.25 + 3.0i
 
 or maybe even like this:
 
-  def f(z: Complex): Complex = z*z + 0.25 + 0.125i.
+  def f(z: Complex): Complex = z*z + 0.25 + 3.0i.
 
 That would be so much easier to write, not to mention easier to read! Well, I am happy to inform you
 that it IS possible to do this in Scala, and it's not all that difficult either! Scala lets you
@@ -208,46 +208,26 @@ create your own user-defined types, and you get to define how they behave. In fa
 programmers do it all the time. But unfortunately it's a subject for a bit later on.
 ---
 ===
-Let's try another exercise. Write a function called partition that takes an Int called pivot and a
-List[Int] called list and returns two List[Int]s, in a tuple (that is, (List[Int], List[Int])).
-The first item in the tuple should be a List containing all the items in list that are smaller
-than pivot, and the second item in the tuple should be a List containing all the other items in
-list.
+As a general strategy, I've found it useful to keep the types of all the sub-expressions in mind
+when I'm trying to write a function. Very often, functions "write themselves" if I let the types
+guide me -- for instance, when you know you need something of a certain type and you only have one
+thing available of that type, you can (very often) just plug it in. At the very least, it will
+guide your thinking as to the general form of what "goes in the blank", and prevent you from making
+silly mistakes.
 
-For example, partition(5, List(2, 9, 1, 5, 11, 8)) should return (List(2, 1), List(9, 5, 11, 8)).
+Let's see how that might work with another exercise. You're going to write a function called
+partition that takes an Int called pivot and a List[Int] called list and returns two List[Int]s,
+in a tuple (that is, (List[Int], List[Int])). The first item in the tuple will be a List containing
+all the items in list that are smaller than pivot, and the second item in the tuple should be a List
+containing all the other items in list.
 
-Hint: Do it recursively! Pattern match on the result of the recursive call to partition.
----
-hasTypeFn("partition", "(pivot: Int,list: List[Int])", "(List[Int], List[Int])")
-eval[(List[Int], List[Int])]("partition(5, Nil)", (Nil, Nil))
-eval[(List[Int], List[Int])]("partition(5, List(1, 2))", (List(1, 2), Nil))
-eval[(List[Int], List[Int])]("partition(5, List(9, 8))", (Nil, List(9, 8)))
-eval[(List[Int], List[Int])]("partition(5, List(2, 9, 1, 11, 5))", (List(2, 1), List(9, 11, 5)))
-===
-Awesome!
+For example, partition(5, List(2, 9, 1, 5, 11, 8)) will return (List(2, 1), List(9, 5, 11, 8)).
 
-Here's how I did it, but there's more than one way!
-
-  def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
-    list match {
-      case Nil => (Nil, Nil)
-      case h :: t => {
-        val (smaller, rest) = partition(pivot, t)
-        if (h < pivot) (h :: smaller, rest) else (smaller, h :: rest)
-      }
-    }
-  }
-
-As a brief aside, I've found it a useful strategy to keep the types of all the sub-expressions in
-mind when I'm trying to write a function. Very often, functions "write themselves" if I let the
-types guide me -- for instance, when you know you need something of a certain type and you only
-have one thing available of that type, you can (very often) just plug it in. At the very least,
-it will guide your thinking as to the general form of what "goes in the blank", and prevent you
-from making silly mistakes.
+If you want to try to write it on your own, go ahead. I'll walk you through how I think through it
+with the aid of types after you type ok.
 ---
 ===
-Here's how that might work when you're writing a function like partition. First, start with an
-empty function with the proper return type:
+First, just start with an empty function with the proper return type:
 
   def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
     ??
@@ -263,7 +243,7 @@ Now I know I'm going to be writing a recursive function on a list, so I'll set u
   }
 
 For the base case, I know I need to return a tuple containing 2 lists. About the only thing
-I can write is (Nil, Nil)
+I can write is (Nil, Nil):
 
   def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
     list match {
@@ -271,10 +251,12 @@ I can write is (Nil, Nil)
       case h :: t => ??
     }
   }
+
+If you want to fill out the recursive case on your own, go ahead. I'll continue after you type ok.
 ---
 ===
-Now, for the recursive case, it's usually a good idea to just write down the recursive call
-right away and build up everything around it. So let's start with that:
+For the recursive case, it's usually a good idea to just write down the recursive call
+right away and build up everything around it later. So let's start with that:
 
   def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
     list match {
@@ -299,8 +281,13 @@ out the parts of the tuple:
     }
   }
 
-Alright, now I want to return a tuple of two lists, and we haven't used h yet. Thinking about the
-problem at hand, I want to put h in one of the two lists, depending on how it compares to pivot.
+Alright, now I want to return a tuple of two lists, and we haven't used h yet. Think about what
+partition needs to return and figure out what goes in the last ??. I'll walk you through it after
+you type ok.
+---
+===
+Thinking about the problem at hand, I want to put h in one of the two lists, depending on how it
+compares to pivot.
 
   def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
     list match {
@@ -312,9 +299,16 @@ problem at hand, I want to put h in one of the two lists, depending on how it co
     }
   }
 
-Done!
+And that's it! Complete the function if you haven't done so already, and type ok.
 ---
+hasTypeFn("partition", "(pivot: Int,list: List[Int])", "(List[Int], List[Int])")
+eval[(List[Int], List[Int])]("partition(5, Nil)", (Nil, Nil))
+eval[(List[Int], List[Int])]("partition(5, List(1, 2))", (List(1, 2), Nil))
+eval[(List[Int], List[Int])]("partition(5, List(9, 8))", (Nil, List(9, 8)))
+eval[(List[Int], List[Int])]("partition(5, List(2, 9, 1, 11, 5))", (List(2, 1), List(9, 11, 5)))
 ===
+Awesome!
+
 You might not realize it, but you are one small step away from writing a very well-known list
 sorting algorithm called Quicksort. Here's how it goes:
 
@@ -349,7 +343,7 @@ Here's what my code looks like:
     }
   }
 
-When I interview Software Engineers, I ask them to code up Quicksort. You've come a long way!
+When I interview software engineers, I ask them to code up Quicksort. You've come a long way!
 
 Have a look at the Quicksort article on Wikipedia: http://en.wikipedia.org/wiki/Quicksort
 
