@@ -286,8 +286,23 @@ partition needs to return and figure out what goes in the last ??. I'll walk you
 you type ok.
 ---
 ===
-Thinking about the problem at hand, I want to put h in one of the two lists, depending on how it
-compares to pivot.
+So I need to return a tuple of two lists. What two lists do I have?
+
+  def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
+    list match {
+      case Nil => (Nil, Nil)
+      case h :: t => {
+        val (smaller, rest) = partition(pivot, t)
+        ?? (smaller, rest) ??
+      }
+    }
+  }
+
+That's *almost* right. I still need to use h. (If you haven't used everything you're given, you're
+not done.)
+
+Thinking about the problem at hand, I want to prepend h onto one of the two lists, depending on how
+it compares to pivot.
 
   def partition(pivot: Int, list: List[Int]): (List[Int], List[Int]) = {
     list match {
@@ -299,7 +314,9 @@ compares to pivot.
     }
   }
 
-And that's it! Complete the function if you haven't done so already, and type ok.
+And that's it!
+
+Complete the function if you haven't done so already, and type ok.
 ---
 hasTypeFn("partition", "(pivot: Int,list: List[Int])", "(List[Int], List[Int])")
 eval[(List[Int], List[Int])]("partition(5, Nil)", (Nil, Nil))
