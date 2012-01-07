@@ -99,7 +99,7 @@ doesn't match, Scala will give you an error. Try typing val (a, b) = (1, 2, 3), 
 ===
 See?
 
-Pattern matching is the more "idiomatic" way to get values out of a tuple, but I see people using
+Pattern matching is the more "natural" way to get values out of a tuple, but I see people using
 _1 and _2 plenty as well.
 
 You can pass tuples to a function just like any other value. You can also have a List of tuples
@@ -108,7 +108,7 @@ or a tuple of Lists of tuples, or anything. Which one should you use? It all dep
 your problem domain the best.
 ---
 ===
-Tuples are a good way to represent points on a plane, like the way you see them in math class:
+Tuples are a good way to represent points on a graph, like the way you see them in math class:
 (3, 4) represents the point 3 units over in the horizontal (x) direction and 4 units up in the
 vertical (y) direction.
 
@@ -176,7 +176,8 @@ Here's one way to do it:
 Division we'll leave for another time.
 
 So now you can implement a function that operates on complex numbers instead of just real numbers.
-Before, you implemented f(x) = 2*x + 3. Now, implement f(z) = z*z + 0.25 + 3.0i. Use the functions
+Back in level 3, you implemented f(x) = 2*x + 3. Now, implement a new function called f that takes
+an argument z of type (Double, Double) and computes f(z) = z*z + 0.25 + 3.0i. Use the functions
 you already wrote!
 ---
 hasTypeFn("f", "(z: (Double, Double))", "(Double, Double)")

@@ -184,6 +184,3 @@ Try it! Type readIntInRange(1, 3) and try giving it different numbers.
 evalIO("readIntInRange(1, 10)", "I need a number between 1 and 10! Try again: ", "12\n7\n")
 ===
 Alright! Now you can use readIntInRange instead of readInt in stones2PlayerLoop.
-
----
-===

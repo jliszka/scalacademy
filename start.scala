@@ -12,9 +12,6 @@ object state_ {
   val (id, secret) = findOrGetId()
   val baseUrl = "http://www.scalacademy.com/%%s?id=%d&secret=%d".format(id, secret)
 
-  def curr = prompts(i)
-  def next() { i = i + 1 }
-
   def cleanTypeName(t: String) = t.replaceAll("scala.collection.immutable.", "").replaceAll("java.lang.", "")
   def hasType[T: Manifest](ident: String) = repl.typeForIdent(ident).exists(t => cleanTypeName(t) == cleanTypeName(implicitly[Manifest[T]].toString))
   def hasTypeStr(ident: String, typ: String)(unused: String) = repl.typeForIdent(ident).exists(t => cleanTypeName(t) == cleanTypeName(typ))
@@ -149,6 +146,12 @@ At any time you can type 'help' for help remembering what each command does.""".
     i = 0
   }
 
+  def curr = prompts(i)
+
+  def next() { 
+    i = i + 1 
+  }
+
   def sendProgress(correct: Boolean) {
     if (!local) {
       try {
@@ -170,7 +173,10 @@ At any time you can type 'help' for help remembering what each command does.""".
   }
 
   def check() {
-    if (curr.check()) {
+    if (i >= prompts.length) {
+      nextLevel()
+      show()
+    } else if (curr.check()) {
       sendProgress(true)
       next()
       show()
