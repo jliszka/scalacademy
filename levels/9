@@ -114,7 +114,7 @@ evalIO("printOneLine()", "This is the beginning of the line, and this is the end
 Great!
 
 You can also use \r as a "carriage return" -- it moves the cursor to the beginning of the current
-line WITHOUT moving to a new line. Anything you print after the \r will overwrite what was previousl
+line WITHOUT moving to a new line. Anything you print after the \r will overwrite what was previously
 there. Try this:
 
   println("This is the beginning of the line\rNo, this is.")
@@ -150,7 +150,10 @@ and some styles:
 Printing Console.RESET resets the style, the text color and the background color back to the
 default.
 
-Play around with it for a bit if you want!
+Play around with it for a bit if you want! If you ever get into a weird state where everything
+is green or bold (because you forgot to reset the style), just type println(Console.RESET) at
+the scala> prompt.
+
 ---
 ===
 Now it's time for a little exercise. You are going to write a function that prints out a row
@@ -229,7 +232,7 @@ Your complete multiplication table should look something like this:
   8|  8 16 24 32 40 48 56 64 72
   9|  9 18 27 36 45 54 63 72 81
 
-Hint: you should "decompose" your function tableRow into 2 functions: printHeader() and printRow(n)
+Hint: You should "decompose" your function tableRow into 2 functions: printHeader() and printRow(n)
 such that you could rewrite tableRow as
 
   def tableRow(n: Int) = {
@@ -268,7 +271,7 @@ You probably have code that looks like this:
 More or less?
 ---
 ===
-If you "expand" the definition of printRow(j) inside of multiplicationTable, you end up with this:
+If you plug in the definition of printRow(j) inside of multiplicationTable, you end up with this:
 
   def multiplicationTable() = {
     printHeader()
